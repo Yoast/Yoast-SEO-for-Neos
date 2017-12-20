@@ -72,7 +72,13 @@ import '../Styles/Main.scss';
                 });
                 app.refresh();
 
-                focusKeywordField.addEventListener('change', app.refresh.bind(app));
+                // Update analysis when focus keyword changes
+                const observer = new MutationObserver(function(mutations) {
+                    app.refresh();
+                });
+
+                const config = {characterData: true, subtree: true};
+                observer.observe(focusKeywordField, config);
             })
             .catch((err) => {
                 errorOutput.textContent = err;

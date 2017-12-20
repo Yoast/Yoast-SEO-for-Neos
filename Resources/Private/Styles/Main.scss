@@ -44,6 +44,12 @@ body {
     }
 }
 
+.yoast-seo__output {
+    ul {
+        padding-left: 0;
+    }
+}
+
 .yoast-seo__previewUrl,
 .yoast-seo__baseUrl {
     display: none;
