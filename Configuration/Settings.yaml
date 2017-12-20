@@ -1,7 +1,7 @@
 Shel:
   Neos:
     YoastSeo:
-      foo: bar
+      devMode: true
 
 Neos:
   Neos:

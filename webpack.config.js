@@ -2,6 +2,7 @@ const path = require('path');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const OptimizeCssAssetsPlugin = require("optimize-css-assets-webpack-plugin");
+const BrowserSyncPlugin = require('browser-sync-webpack-plugin');
 
 const devMode = process.env.NODE_ENV === "development";
 
@@ -30,6 +31,8 @@ const optimizeCss = new OptimizeCssAssetsPlugin({
     }
 });
 
+const browserSync = new BrowserSyncPlugin();
+
 module.exports = {
     entry: './Resources/Private/Scripts/App.js',
     output: {
@@ -45,12 +48,12 @@ module.exports = {
                     use: [{
                         loader: "css-loader",
                         options: {
-                            sourceMap: !devMode
+                            sourceMap: devMode
                         }
                     }, {
                         loader: "sass-loader",
                         options: {
-                            sourceMap: !devMode
+                            sourceMap: devMode
                         }
                     }],
                     // use style-loader in development
@@ -61,6 +64,7 @@ module.exports = {
     },
     plugins: [
         extractSass,
-        uglifyJs
+        uglifyJs,
+        browserSync
     ]
 };

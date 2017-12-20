@@ -72,6 +72,12 @@ prototype(Shel.Neos.YoastSeo:Documents.YoastSeoView) < prototype(Neos.Neos:Page)
                     }
                 }
             }
+
+            browserSync = Neos.Fusion:Template {
+                templatePath = 'resource://Shel.Neos.YoastSeo/Private/Templates/YoastSeoView.html'
+                sectionName = 'browserSync'
+                @if.inDevMode = ${Configuration.setting('Shel.Neos.YoastSeo.devMode')}
+            }
         }
     }
 }
