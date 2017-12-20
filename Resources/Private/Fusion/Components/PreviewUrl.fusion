@@ -1,0 +1,10 @@
+prototype(Shel.Neos.YoastSeo:Component.PreviewUrl) < prototype(Neos.Fusion:Tag) {
+    attributes {
+        id = 'previewUrl'
+        class = 'yoast-seo__previewUrl'
+    }
+    content = Neos.Neos:NodeUri {
+        node = ${q(documentNode).context({workspaceName: 'live'}).get(0)}
+        absolute = true
+    }
+}

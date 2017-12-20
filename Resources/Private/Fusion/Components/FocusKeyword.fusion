@@ -1,0 +1,29 @@
+prototype(Shel.Neos.YoastSeo:Component.FocusKeyword) < prototype(Neos.Fusion:Tag) {
+    attributes.class = 'yoast-seo__focus-keyword-wrap'
+
+    content = Neos.Fusion:Array {
+        focusKeywordLabel = Neos.Fusion:Tag {
+            tagName = 'div'
+            content = 'Focus keyword'
+        }
+
+        focusKeyword = Neos.Fusion:Tag {
+            tagName = 'div'
+            attributes {
+                id = 'focusKeyword'
+                class = 'yoast-seo__focus-keyword'
+            }
+            content = Neos.Fusion:Tag {
+                tagName = 'span'
+                content = ${q(documentNode).property('focusKeyword')}
+                @process.contentElementEditableWrapping = Neos.Neos:ContentElementEditable {
+                    property = ${'focusKeyword'}
+                    node = ${documentNode}
+                }
+            }
+            @process.contentElementWrapping = Neos.Neos:ContentElementWrapping {
+                node = ${documentNode}
+            }
+        }
+    }
+}

@@ -1,0 +1,77 @@
+prototype(Shel.Neos.YoastSeo:Documents.YoastSeoView) < prototype(Neos.Neos:Page) {
+    head {
+        stylesheets >
+        stylesheets = Neos.Fusion:Array {
+            main = Neos.Fusion:Tag {
+                tagName = 'link'
+                attributes {
+                    rel = 'stylesheet'
+                    type = 'text/css'
+                    href = Neos.Fusion:ResourceUri {
+                        path = 'resource://Shel.Neos.YoastSeo/Public/Styles/main.css'
+                    }
+                }
+            }
+        }
+    }
+
+    bodyTag.attributes.class = 'neos-shel-yoast-seo-view-mode'
+
+    body {
+        templatePath = 'resource://Shel.Neos.YoastSeo/Private/Templates/YoastSeoView.html'
+        sectionName = 'body'
+
+        previewWrapper = Neos.Fusion:Tag {
+            tagName = 'main'
+            attributes.class = 'yoast-seo__wrapper'
+
+            content = Neos.Fusion:Array {
+                header = Neos.Fusion:Tag {
+                    tagName = 'h1'
+                    content = 'Yoast SEO analysis'
+                }
+
+                focusKeyword = Shel.Neos.YoastSeo:Component.FocusKeyword
+
+                snippetPreview = Neos.Fusion:Tag {
+                    attributes {
+                        id = 'snippet'
+                        class = 'yoast-seo__snippet'
+                    }
+                }
+
+                output = Neos.Fusion:Tag {
+                    attributes {
+                        id = 'output'
+                        class = 'yoast-seo__output'
+                    }
+                }
+
+                previewUrl = Shel.Neos.YoastSeo:Component.PreviewUrl
+
+                pageUriPathSegment = Shel.Neos.YoastSeo:Component.PageUriPathSegment
+
+                baseUrl = Shel.Neos.YoastSeo:Component.BaseUrl
+
+                errorOutput = Neos.Fusion:Tag {
+                    attributes {
+                        id = 'errorOutput'
+                        class = 'yoast-seo__errorOutput'
+                    }
+                }
+            }
+        }
+
+        javascripts {
+            app = Neos.Fusion:Tag {
+                tagName = 'script'
+                attributes {
+                    async = 'async'
+                    src = Neos.Fusion:ResourceUri {
+                        path = 'resource://Shel.Neos.YoastSeo/Public/Scripts/Bundle.js'
+                    }
+                }
+            }
+        }
+    }
+}

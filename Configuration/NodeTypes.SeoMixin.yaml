@@ -1,0 +1,11 @@
+'Shel.Neos.YoastSeo:SeoMixin':
+  abstract: true
+  ui:
+    inlineEditable: true
+  properties:
+    focusKeyword:
+      type: string
+      ui:
+        inlineEditable: true
+        aloha:
+          placeholder: i18n

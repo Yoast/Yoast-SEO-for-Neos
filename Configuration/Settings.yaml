@@ -1,0 +1,24 @@
+Shel:
+  Neos:
+    YoastSeo:
+      foo: bar
+
+Neos:
+  Neos:
+    userInterface:
+      editPreviewModes:
+        shelYoastSeoView:
+          isEditingMode: false
+          isPreviewMode: true
+          fusionRenderingPath: shelYoastSeoView
+          title: 'Shel.Neos.YoastSeo:Main:editPreviewModes.yoastSeoView'
+          position: 'after inPlace'
+
+      translation:
+        autoInclude:
+          Shel.Neos.YoastSeo:
+            - 'NodeTypes/*'
+
+    fusion:
+      autoInclude:
+        Shel.Neos.YoastSeo: true

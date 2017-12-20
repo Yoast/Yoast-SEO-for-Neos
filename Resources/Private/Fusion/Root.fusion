@@ -1,0 +1,6 @@
+include: Components/*.fusion
+include: Documents/*.fusion
+
+shelYoastSeoView = Shel.Neos.YoastSeo:Documents.YoastSeoView
+
+# TODO: override prototype(Neos.Neos:ContentCollection) to find them via js

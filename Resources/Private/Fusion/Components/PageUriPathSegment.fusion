@@ -1,0 +1,7 @@
+prototype(Shel.Neos.YoastSeo:Component.PageUriPathSegment) < prototype(Neos.Fusion:Tag) {
+    attributes {
+        id = 'pageUriPathSegment'
+        class = 'yoast-seo__pageUriPathSegment'
+    }
+    content = ${q(documentNode).property('pageUriPathSegment')}
+}
