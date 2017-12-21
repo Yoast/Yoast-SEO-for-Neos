@@ -17,15 +17,15 @@ import '../Styles/Main.scss';
 
     window.onload = () => {
         // Editable fields
-        const focusKeywordField = document.getElementById('focusKeyword').querySelector('span');
-        const pageUriPathSegmentField = document.getElementById('pageUriPathSegment');
-        const seoTitleField = document.getElementById('seoTitle');
-        const metaDescriptionField = document.getElementById('metaDescription');
-        const snippetFieldsWrap = document.getElementById('snippet-fields');
+        const focusKeywordField = document.querySelector('.yoast-seo__focus-keyword');
+        const snippetFieldsWrap = document.querySelector('.yoast-seo__snippet-fields');
+        const uriPathSegmentField = document.querySelector('.yoast-seo__uri-path-segment');
+        const titleField = document.querySelector('.yoast-seo__title');
+        const metaDescriptionField = document.querySelector('.yoast-seo__meta-description');
 
         // Containers for rendering
-        const errorOutput = document.getElementById('errorOutput');
-        const snippet = document.getElementById('snippet');
+        const errorOutput = document.querySelector('.yoast-seo__errorOutput');
+        const snippet = document.querySelector('.yoast-seo__snippet-preview');
 
         // Constants
         const previewUrl = document.getElementById('previewUrl').textContent;
@@ -36,13 +36,15 @@ import '../Styles/Main.scss';
             .then((previewDocument) => {
                 const parser = new DOMParser();
                 const parsedPreviewDocument = parser.parseFromString(previewDocument, "text/html");
+
+                // Extract meta block and content elements from parsed preview
                 const metaSection = parsedPreviewDocument.querySelector('head');
                 const contentElements = parsedPreviewDocument.querySelectorAll('.neos-contentcollection');
 
                 // Store metadata in object to make easily accessible
                 const metaData = {
                     title: metaSection.querySelector('title').textContent,
-                    description: metaSection.querySelector('meta[name="description"]').getAttribute('content')
+                    description: metaSection.querySelector('meta[name="description"]') ? metaSection.querySelector('meta[name="description"]').getAttribute('content') : ''
                 };
 
                 // Concat all found content elements
@@ -56,7 +58,7 @@ import '../Styles/Main.scss';
                     data: {
                         title: metaData.title,
                         metaDesc: metaData.description,
-                        urlPath: pageUriPathSegmentField.textContent
+                        urlPath: uriPathSegmentField.textContent
                     },
                     placeholder: {
                         urlPath: ''
@@ -84,18 +86,12 @@ import '../Styles/Main.scss';
                 });
                 app.refresh();
 
-                // Update analysis when focus keyword changes
-                const observer = new MutationObserver(function(mutations) {
-                    app.refresh();
-                });
-                observer.observe(focusKeywordField, {characterData: true, subtree: true});
-
                 // Replace snippet editor form parts with Neos inline editing fields
                 const snippetEditorForm = snippet.querySelector('.snippet-editor__form');
                 snippetEditorForm.prepend(snippetFieldsWrap);
 
                 // Move progress bars after new fields
-                seoTitleField.after(snippetEditorForm.querySelector('.snippet-editor__progress-title'));
+                titleField.after(snippetEditorForm.querySelector('.snippet-editor__progress-title'));
                 metaDescriptionField.after(snippetEditorForm.querySelector('.snippet-editor__progress-meta-description'));
 
                 // Remove all original fields
@@ -104,19 +100,25 @@ import '../Styles/Main.scss';
                 });
 
                 // Update snippet when editable fields are changed
-                const seoTitleObserver = new MutationObserver(function(mutations) {
-                    snippetPreviewContainer.setTitle(seoTitleField.textContent);
-                    snippetPreviewContainer.setUrlPath(pageUriPathSegmentField.textContent);
+                const snippetFieldsObserver = new MutationObserver(() => {
+                    snippetPreviewContainer.setTitle(titleField.textContent);
+                    snippetPreviewContainer.setUrlPath(uriPathSegmentField.textContent);
                     snippetPreviewContainer.setMetaDescription(metaDescriptionField.textContent);
                 });
 
                 // Observe editable fields for changes
-                seoTitleObserver.observe(seoTitleField, {characterData: true, subtree: true});
-                seoTitleObserver.observe(pageUriPathSegmentField, {characterData: true, subtree: true});
-                seoTitleObserver.observe(metaDescriptionField, {characterData: true, subtree: true});
+                snippetFieldsObserver.observe(titleField, {characterData: true, subtree: true});
+                snippetFieldsObserver.observe(uriPathSegmentField, {characterData: true, subtree: true});
+                snippetFieldsObserver.observe(metaDescriptionField, {characterData: true, subtree: true});
+
+                // Update analysis when focus keyword changes
+                const focusKeywordObserver = new MutationObserver(app.refresh);
+                focusKeywordObserver.observe(focusKeywordField, {characterData: true, subtree: true});
             })
             .catch((err) => {
+                console.log(err);
                 errorOutput.textContent = err;
+                errorOutput.classList.remove('hidden');
             });
     }
 })(document, window);

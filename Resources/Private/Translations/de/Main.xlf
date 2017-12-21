@@ -6,6 +6,28 @@
                 <source>Yoast SEO View</source>
                 <target>Yoast SEO Ansicht</target>
             </trans-unit>
+
+            <trans-unit id="header">
+                <source>Yoast SEO Analysis</source>
+                <source>Yoast SEO Analyse</source>
+            </trans-unit>
+
+            <trans-unit id="field.title">
+                <source>Title</source>
+                <target>Titel</target>
+            </trans-unit>
+            <trans-unit id="field.metaDescription">
+                <source>Meta Description</source>
+                <target>Meta Beschreibung</target>
+            </trans-unit>
+            <trans-unit id="field.uriPathSegment">
+                <source>Uri Path Segment</source>
+                <target>Uri Pfadsegment</target>
+            </trans-unit>
+            <trans-unit id="field.focusKeyword">
+                <source>Focus Keyword</source>
+                <target>Fokus Schlüsselwort</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

@@ -2,6 +2,14 @@
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
     <file original="" product="Shel.Neos.YoastSeo" source-language="en" target-language="de" datatype="plaintext">
         <body>
+            <trans-unit id="properties.title.aloha.placeholder">
+                <source>Enter the title for this page</source>
+                <target>Geben Sie den Titel für diese Seite ein</target>
+            </trans-unit>
+            <trans-unit id="properties.metaDescription.aloha.placeholder">
+                <source>Enter the meta description for this page</source>
+                <target>Geben Sie die Metabeschreibung für diese Seite ein</target>
+            </trans-unit>
             <trans-unit id="properties.focusKeyword.aloha.placeholder">
                 <source>Enter the main keyword for this page</source>
                 <target>Geben Sie das wichtigste Schlüsselwort für diese Seite ein</target>

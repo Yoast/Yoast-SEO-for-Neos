@@ -1,15 +1,6 @@
-prototype(Shel.Neos.YoastSeo:Component.PageUriPathSegment) < prototype(Shel.Neos.YoastSeo:Component.AbstractEditableField) {
-    attributes.class = 'yoast-seo__page-uri-path-segment-wrap'
-    @context.fieldName = 'uriPathSegment'
-
-    content {
-        label.content = 'Uri path segment'
-
-        value {
-            attributes {
-                id = 'pageUriPathSegment'
-                class = 'yoast-seo__page-uri-path-segment'
-            }
-        }
+prototype(Shel.Neos.YoastSeo:Component.UriPathSegment) < prototype(Shel.Neos.YoastSeo:Component.AbstractEditableField) {
+    @context {
+        fieldName = 'uriPathSegment'
+        fieldClass = 'uri-path-segment'
     }
 }
