@@ -1,6 +1,6 @@
 prototype(Shel.Neos.YoastSeo:Component.MetaDescription) < prototype(Shel.Neos.YoastSeo:Component.AbstractEditableField) {
     attributes.class = 'yoast-seo__meta-description-wrap'
-    @context.fieldName = 'description'
+    @context.fieldName = 'metaDescription'
 
     content {
         label.content = 'Meta description'

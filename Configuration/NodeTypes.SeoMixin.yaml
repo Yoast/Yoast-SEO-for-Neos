@@ -14,7 +14,7 @@
         inlineEditable: true
         aloha:
           placeholder: i18n
-    description:
+    metaDescription:
       ui:
         inlineEditable: true
         aloha:
