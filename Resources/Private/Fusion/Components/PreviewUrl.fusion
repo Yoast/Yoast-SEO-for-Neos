@@ -4,7 +4,10 @@ prototype(Shel.Neos.YoastSeo:Component.PreviewUrl) < prototype(Neos.Fusion:Tag) 
         class = 'yoast-seo__previewUrl'
     }
     content = Neos.Neos:NodeUri {
-        node = ${q(documentNode).context({workspaceName: 'live'}).get(0)}
+        node = ${documentNode}
         absolute = true
+        additionalParams = Neos.Fusion:RawArray {
+            shelYoastSeoPreviewMode = true
+        }
     }
 }

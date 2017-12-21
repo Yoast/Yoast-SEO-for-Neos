@@ -1,6 +1,13 @@
 include: Components/*.fusion
 include: Documents/*.fusion
 
+prototype(Neos.Fusion:GlobalCacheIdentifiers) {
+    shelYoastSeoPreviewMode = ${request.arguments.shelYoastSeoPreviewMode ? true : false}
+}
+
 shelYoastSeoView = Shel.Neos.YoastSeo:Documents.YoastSeoView
 
-# TODO: override prototype(Neos.Neos:ContentCollection) to find them via js
+// Disable edit preview mode when we render the yoast seo preview
+root.editPreviewMode {
+    condition.@process.disableInShelYoastSeoPreview = ${request.arguments.shelYoastSeoPreviewMode ? false : value}
+}
