@@ -101,9 +101,9 @@ import '../Styles/Main.scss';
 
                 // Update snippet when editable fields are changed
                 const snippetFieldsObserver = new MutationObserver(() => {
-                    snippetPreviewContainer.setTitle(titleField.textContent);
-                    snippetPreviewContainer.setUrlPath(uriPathSegmentField.textContent);
-                    snippetPreviewContainer.setMetaDescription(metaDescriptionField.textContent);
+                    snippetPreviewContainer.setTitle(titleField.innerText);
+                    snippetPreviewContainer.setUrlPath(uriPathSegmentField.innerText);
+                    snippetPreviewContainer.setMetaDescription(metaDescriptionField.innerText);
                 });
 
                 // Observe editable fields for changes
