@@ -1,0 +1,4 @@
+prototype(Shel.Neos.YoastSeo:Component.Header) < prototype(Neos.Fusion:Tag) {
+    tagName = 'h1'
+    content = 'Yoast SEO analysis'
+}

@@ -1,0 +1,6 @@
+prototype(Shel.Neos.YoastSeo:Component.Output) < prototype(Neos.Fusion:Tag) {
+    attributes {
+        id = 'output'
+        class = 'yoast-seo__output'
+    }
+}

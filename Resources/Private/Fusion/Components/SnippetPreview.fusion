@@ -1,0 +1,6 @@
+prototype(Shel.Neos.YoastSeo:Component.SnippetPreview) < prototype(Neos.Fusion:Tag) {
+    attributes {
+        id = 'snippet'
+        class = 'yoast-seo__snippet'
+    }
+}

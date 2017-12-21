@@ -26,51 +26,14 @@ prototype(Shel.Neos.YoastSeo:Documents.YoastSeoView) < prototype(Neos.Neos:Page)
             attributes.class = 'yoast-seo__wrapper'
 
             content = Neos.Fusion:Array {
-                header = Neos.Fusion:Tag {
-                    tagName = 'h1'
-                    content = 'Yoast SEO analysis'
-                }
-
-                snippetPreview = Neos.Fusion:Tag {
-                    attributes {
-                        id = 'snippet'
-                        class = 'yoast-seo__snippet'
-                    }
-                }
-
+                header = Shel.Neos.YoastSeo:Component.Header
+                snippetPreview = Shel.Neos.YoastSeo:Component.SnippetPreview
                 previewUrl = Shel.Neos.YoastSeo:Component.PreviewUrl
                 baseUrl = Shel.Neos.YoastSeo:Component.BaseUrl
                 focusKeyword = Shel.Neos.YoastSeo:Component.FocusKeyword
-
-                // Wrap editable fields for the current document node
-                editableFieldsWrap = Neos.Fusion:Tag {
-                    attributes {
-                        id = 'editable-fields-wrap'
-                        class = 'yoast-seo__editable-fields-wrap'
-                    }
-                    content = Neos.Fusion:Array {
-                        seoTitle = Shel.Neos.YoastSeo:Component.SeoTitle
-                        pageUriPathSegment = Shel.Neos.YoastSeo:Component.PageUriPathSegment
-                        metaDescription = Shel.Neos.YoastSeo:Component.MetaDescription
-                        @process.contentElementWrapping = Neos.Neos:ContentElementWrapping {
-                            node = ${documentNode}
-                        }
-                    }
-                }
-
-                output = Neos.Fusion:Tag {
-                    attributes {
-                        id = 'output'
-                        class = 'yoast-seo__output'
-                    }
-                }
-
-                errorOutput = Neos.Fusion:Tag {
-                    attributes {
-                        id = 'errorOutput'
-                        class = 'yoast-seo__errorOutput'
-                    }
-                }
+                snippetFields = Shel.Neos.YoastSeo:Component.SnippetFields
+                output = Shel.Neos.YoastSeo:Component.Output
+                errorOutput = Shel.Neos.YoastSeo:Component.ErrorOutput
             }
         }
 

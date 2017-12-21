@@ -1,5 +1,6 @@
 prototype(Shel.Neos.YoastSeo:Component.AbstractEditableField) < prototype(Neos.Fusion:Tag) {
     attributes.class = 'changeme'
+    attributes.class.@process.addFieldClass = ${value + ' yoast-seo__field-wrap'}
     @context.fieldName = 'changeme'
 
     content = Neos.Fusion:Array {
@@ -13,15 +14,12 @@ prototype(Shel.Neos.YoastSeo:Component.AbstractEditableField) < prototype(Neos.F
             attributes {
                 id = 'changeme'
                 class = 'changeme'
+                class.@process.addEditableClass = ${value + ' yoast-seo__field--editable'}
             }
-            content = Neos.Fusion:Tag {
-                tagName = 'span'
-                attributes.class = 'yoast-seo__field--editable'
-                content = ${q(documentNode).property(fieldName)}
-                @process.contentElementEditableWrapping = Neos.Neos:ContentElementEditable {
-                    property = ${fieldName}
-                    node = ${documentNode}
-                }
+            content = ${q(documentNode).property(fieldName)}
+            @process.contentElementEditableWrapping = Neos.Neos:ContentElementEditable {
+                property = ${fieldName}
+                node = ${documentNode}
             }
         }
     }

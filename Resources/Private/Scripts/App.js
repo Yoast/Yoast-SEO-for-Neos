@@ -21,7 +21,7 @@ import '../Styles/Main.scss';
         const pageUriPathSegmentField = document.getElementById('pageUriPathSegment');
         const seoTitleField = document.getElementById('seoTitle');
         const metaDescriptionField = document.getElementById('metaDescription');
-        const editableFieldsWrap = document.getElementById('editable-fields-wrap');
+        const snippetFieldsWrap = document.getElementById('snippet-fields');
 
         // Containers for rendering
         const errorOutput = document.getElementById('errorOutput');
@@ -92,7 +92,7 @@ import '../Styles/Main.scss';
 
                 // Replace snippet editor form parts with Neos inline editing fields
                 const snippetEditorForm = snippet.querySelector('.snippet-editor__form');
-                snippetEditorForm.prepend(editableFieldsWrap);
+                snippetEditorForm.prepend(snippetFieldsWrap);
 
                 // Move progress bars after new fields
                 seoTitleField.after(snippetEditorForm.querySelector('.snippet-editor__progress-title'));
