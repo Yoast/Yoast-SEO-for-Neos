@@ -31,12 +31,30 @@ prototype(Shel.Neos.YoastSeo:Documents.YoastSeoView) < prototype(Neos.Neos:Page)
                     content = 'Yoast SEO analysis'
                 }
 
-                focusKeyword = Shel.Neos.YoastSeo:Component.FocusKeyword
-
                 snippetPreview = Neos.Fusion:Tag {
                     attributes {
                         id = 'snippet'
                         class = 'yoast-seo__snippet'
+                    }
+                }
+
+                previewUrl = Shel.Neos.YoastSeo:Component.PreviewUrl
+                baseUrl = Shel.Neos.YoastSeo:Component.BaseUrl
+                focusKeyword = Shel.Neos.YoastSeo:Component.FocusKeyword
+
+                // Wrap editable fields for the current document node
+                editableFieldsWrap = Neos.Fusion:Tag {
+                    attributes {
+                        id = 'editable-fields-wrap'
+                        class = 'yoast-seo__editable-fields-wrap'
+                    }
+                    content = Neos.Fusion:Array {
+                        seoTitle = Shel.Neos.YoastSeo:Component.SeoTitle
+                        pageUriPathSegment = Shel.Neos.YoastSeo:Component.PageUriPathSegment
+                        metaDescription = Shel.Neos.YoastSeo:Component.MetaDescription
+                        @process.contentElementWrapping = Neos.Neos:ContentElementWrapping {
+                            node = ${documentNode}
+                        }
                     }
                 }
 
@@ -46,12 +64,6 @@ prototype(Shel.Neos.YoastSeo:Documents.YoastSeoView) < prototype(Neos.Neos:Page)
                         class = 'yoast-seo__output'
                     }
                 }
-
-                previewUrl = Shel.Neos.YoastSeo:Component.PreviewUrl
-
-                pageUriPathSegment = Shel.Neos.YoastSeo:Component.PageUriPathSegment
-
-                baseUrl = Shel.Neos.YoastSeo:Component.BaseUrl
 
                 errorOutput = Neos.Fusion:Tag {
                     attributes {

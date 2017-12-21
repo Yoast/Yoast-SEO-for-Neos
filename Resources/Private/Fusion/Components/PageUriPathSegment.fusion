@@ -1,7 +1,15 @@
-prototype(Shel.Neos.YoastSeo:Component.PageUriPathSegment) < prototype(Neos.Fusion:Tag) {
-    attributes {
-        id = 'pageUriPathSegment'
-        class = 'yoast-seo__pageUriPathSegment'
+prototype(Shel.Neos.YoastSeo:Component.PageUriPathSegment) < prototype(Shel.Neos.YoastSeo:Component.AbstractEditableField) {
+    attributes.class = 'yoast-seo__page-uri-path-segment-wrap'
+    @context.fieldName = 'uriPathSegment'
+
+    content {
+        label.content = 'Uri path segment'
+
+        value {
+            attributes {
+                id = 'pageUriPathSegment'
+                class = 'yoast-seo__page-uri-path-segment'
+            }
+        }
     }
-    content = ${q(documentNode).property('pageUriPathSegment')}
 }

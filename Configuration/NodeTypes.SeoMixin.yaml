@@ -9,3 +9,13 @@
         inlineEditable: true
         aloha:
           placeholder: i18n
+    title:
+      ui:
+        inlineEditable: true
+        aloha:
+          placeholder: i18n
+    description:
+      ui:
+        inlineEditable: true
+        aloha:
+          placeholder: i18n

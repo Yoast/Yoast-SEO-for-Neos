@@ -10,12 +10,13 @@
 @import "~yoastseo/css/tooltips";
 
 body {
-    --main-bg-color: #222;
+    --main-bg-color: #fff;
     --snippet-bg-color: #fff;
-    --border-color: #444;
+    --border-color: #ddd;
+    --text-color: #222;
 
     background-color: var(--main-bg-color);
-    color: white;
+    color: var(--text-color);
 }
 
 .yoast-seo__wrapper {
@@ -26,6 +27,15 @@ body {
 
 .yoast-seo__snippet {
     background-color: var(--snippet-bg-color);
+    border: 1px solid var(--border-color);
+}
+
+.yoast-seo__editable-fields-wrap {
+    display: none;
+
+    .snippet-editor__form & {
+        display: block;
+    }
 }
 
 .yoast-seo__focus-keyword-wrap {
@@ -34,14 +44,12 @@ body {
     padding: 1rem 0;
 }
 
-.yoast-seo__focus-keyword {
-    span {
-        border: 1px solid var(--border-color);
-        display: inline-block;
-        margin-top: .5rem;
-        padding: 3px 5px;
-        width: 200px;
-    }
+.yoast-seo__field--editable {
+    border: 1px solid var(--border-color);
+    display: inline-block;
+    margin-top: .5rem;
+    padding: 3px 5px;
+    width: 200px;
 }
 
 .yoast-seo__output {

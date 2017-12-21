@@ -1,0 +1,28 @@
+prototype(Shel.Neos.YoastSeo:Component.AbstractEditableField) < prototype(Neos.Fusion:Tag) {
+    attributes.class = 'changeme'
+    @context.fieldName = 'changeme'
+
+    content = Neos.Fusion:Array {
+        label = Neos.Fusion:Tag {
+            tagName = 'label'
+            content = 'changeme'
+        }
+
+        value = Neos.Fusion:Tag {
+            tagName = 'div'
+            attributes {
+                id = 'changeme'
+                class = 'changeme'
+            }
+            content = Neos.Fusion:Tag {
+                tagName = 'span'
+                attributes.class = 'yoast-seo__field--editable'
+                content = ${q(documentNode).property(fieldName)}
+                @process.contentElementEditableWrapping = Neos.Neos:ContentElementEditable {
+                    property = ${fieldName}
+                    node = ${documentNode}
+                }
+            }
+        }
+    }
+}

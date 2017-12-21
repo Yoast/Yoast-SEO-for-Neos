@@ -1,0 +1,15 @@
+prototype(Shel.Neos.YoastSeo:Component.SeoTitle) < prototype(Shel.Neos.YoastSeo:Component.AbstractEditableField) {
+    attributes.class = 'yoast-seo__seo-title-wrap'
+    @context.fieldName = 'title'
+
+    content {
+        label.content = 'SEO title'
+
+        value {
+            attributes {
+                id = 'seoTitle'
+                class = 'yoast-seo__seo-title'
+            }
+        }
+    }
+}
