@@ -27,6 +27,7 @@ body {
     font-family: 'Noto Sans', sans-serif;
     -webkit-font-smoothing: antialiased;
     padding: 1rem;
+    max-width: 800px;
 }
 
 .yoast-seo__snippet {
@@ -90,4 +91,8 @@ body {
     color: white;
     padding: 5px 8px;
     background-color: #ff4545;
+}
+
+.yoast-section {
+    max-width: none;
 }
