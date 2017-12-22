@@ -6,6 +6,10 @@
                 <source>Enter the title for this page</source>
                 <target>Geben Sie den Titel für diese Seite ein</target>
             </trans-unit>
+            <trans-unit id="properties.titleOverride.aloha.placeholder">
+                <source>Enter the optional title override for this page</source>
+                <target>Überscheiben Sie optional den Titel für diese Seite</target>
+            </trans-unit>
             <trans-unit id="properties.metaDescription.aloha.placeholder">
                 <source>Enter the meta description for this page</source>
                 <target>Geben Sie die Metabeschreibung für diese Seite ein</target>

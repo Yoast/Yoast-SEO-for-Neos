@@ -14,6 +14,12 @@
         inlineEditable: true
         aloha:
           placeholder: i18n
+    titleOverride:
+      ui:
+        reloadIfChanged: false
+        inlineEditable: true
+        aloha:
+          placeholder: i18n
     metaDescription:
       ui:
         inlineEditable: true

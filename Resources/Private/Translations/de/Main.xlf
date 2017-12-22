@@ -16,6 +16,10 @@
                 <source>Title</source>
                 <target>Titel</target>
             </trans-unit>
+            <trans-unit id="field.titleOverride">
+                <source>Title override</source>
+                <target>Titel überschreiben</target>
+            </trans-unit>
             <trans-unit id="field.metaDescription">
                 <source>Meta Description</source>
                 <target>Meta Beschreibung</target>

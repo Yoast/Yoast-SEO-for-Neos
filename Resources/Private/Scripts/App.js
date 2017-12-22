@@ -5,6 +5,12 @@ import '../Styles/Main.scss';
     const SnippetPreview = require("yoastseo").SnippetPreview;
     const App = require("yoastseo").App;
 
+    /**
+     * Request an url and get a Promise in return.
+     *
+     * @param {string} url
+     * @returns {Promise}
+     */
     function get(url) {
         return new Promise((resolve, reject) => {
             const req = new XMLHttpRequest();
@@ -15,12 +21,31 @@ import '../Styles/Main.scss';
         });
     }
 
+    /**
+     * Returns value of a editable snippet field.
+     * If a placeholder is shown, an empty string is returned.
+     * A second field can be provided as fallback.
+     *
+     * @param {Element} field
+     * @param {Element} fallbackField
+     * @returns {string}
+     */
+    function getSnippetFieldValue(field, fallbackField = null) {
+        let value = field.classList.contains('placeholder') ? '' : field.textContent;
+
+        if (fallbackField && !fallbackField.classList.contains('placeholder') && fallbackField.textContent) {
+            value = fallbackField.textContent;
+        }
+        return value.trim();
+    }
+
     window.onload = () => {
         // Editable fields
         const focusKeywordField = document.querySelector('.yoast-seo__focus-keyword');
         const snippetFieldsWrap = document.querySelector('.yoast-seo__snippet-fields');
         const uriPathSegmentField = document.querySelector('.yoast-seo__uri-path-segment');
         const titleField = document.querySelector('.yoast-seo__title');
+        const titleOverrideField = document.querySelector('.yoast-seo__title-override');
         const metaDescriptionField = document.querySelector('.yoast-seo__meta-description');
 
         // Containers for rendering
@@ -42,7 +67,7 @@ import '../Styles/Main.scss';
                 const contentElements = parsedPreviewDocument.querySelectorAll('.neos-contentcollection');
 
                 // Store metadata in object to make easily accessible
-                const metaData = {
+                const renderedMetaData = {
                     title: metaSection.querySelector('title').textContent,
                     description: metaSection.querySelector('meta[name="description"]') ? metaSection.querySelector('meta[name="description"]').getAttribute('content') : ''
                 };
@@ -56,9 +81,9 @@ import '../Styles/Main.scss';
                 // Create snippet preview
                 const snippetPreviewContainer = new SnippetPreview({
                     data: {
-                        title: metaData.title,
-                        metaDesc: metaData.description,
-                        urlPath: uriPathSegmentField.textContent
+                        title: getSnippetFieldValue(titleField, titleOverrideField),
+                        metaDesc: getSnippetFieldValue(metaDescriptionField),
+                        urlPath: getSnippetFieldValue(uriPathSegmentField)
                     },
                     placeholder: {
                         urlPath: ''
@@ -77,9 +102,12 @@ import '../Styles/Main.scss';
                     callbacks: {
                         getData: () => {
                             return {
-                                title: metaData.title,
-                                keyword: focusKeywordField.textContent.trim(),
-                                text: pageContent
+                                title: getSnippetFieldValue(titleField, titleOverrideField),
+                                metaTitle: renderedMetaData.title,
+                                keyword: getSnippetFieldValue(focusKeywordField),
+                                text: pageContent,
+                                excerpt: getSnippetFieldValue(metaDescriptionField),
+                                url: getSnippetFieldValue(uriPathSegmentField)
                             };
                         }
                     }
@@ -101,13 +129,14 @@ import '../Styles/Main.scss';
 
                 // Update snippet when editable fields are changed
                 const snippetFieldsObserver = new MutationObserver(() => {
-                    snippetPreviewContainer.setTitle(titleField.innerText);
-                    snippetPreviewContainer.setUrlPath(uriPathSegmentField.innerText);
-                    snippetPreviewContainer.setMetaDescription(metaDescriptionField.innerText);
+                    snippetPreviewContainer.setTitle(getSnippetFieldValue(titleField));
+                    snippetPreviewContainer.setUrlPath(getSnippetFieldValue(uriPathSegmentField));
+                    snippetPreviewContainer.setMetaDescription(getSnippetFieldValue(metaDescriptionField));
                 });
 
                 // Observe editable fields for changes
                 snippetFieldsObserver.observe(titleField, {characterData: true, subtree: true});
+                snippetFieldsObserver.observe(titleOverrideField, {characterData: true, subtree: true});
                 snippetFieldsObserver.observe(uriPathSegmentField, {characterData: true, subtree: true});
                 snippetFieldsObserver.observe(metaDescriptionField, {characterData: true, subtree: true});
 

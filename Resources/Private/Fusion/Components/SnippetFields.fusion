@@ -4,8 +4,10 @@ prototype(Shel.Neos.YoastSeo:Component.SnippetFields) < prototype(Neos.Fusion:Ta
     }
     content = Neos.Fusion:Array {
         title = Shel.Neos.YoastSeo:Component.Title
+        titleOverride = Shel.Neos.YoastSeo:Component.TitleOverride
         pageUriPathSegment = Shel.Neos.YoastSeo:Component.UriPathSegment
         metaDescription = Shel.Neos.YoastSeo:Component.MetaDescription
+
         @process.contentElementWrapping = Neos.Neos:ContentElementWrapping {
             node = ${documentNode}
         }
