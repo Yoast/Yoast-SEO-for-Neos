@@ -4,7 +4,7 @@ prototype(Shel.Neos.YoastSeo:Component.FocusKeyword) < prototype(Shel.Neos.Yoast
         fieldClass = 'focus-keyword'
     }
 
-    content.@process.contentElementWrapping = Neos.Neos:ContentElementWrapping {
+    @process.contentElementWrapping = Neos.Neos:ContentElementWrapping {
         node = ${documentNode}
     }
 }
