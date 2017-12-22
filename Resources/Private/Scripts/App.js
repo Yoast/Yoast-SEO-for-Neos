@@ -64,7 +64,6 @@ import '../Styles/Main.scss';
 
                 // Extract meta block and content elements from parsed preview
                 const metaSection = parsedPreviewDocument.querySelector('head');
-                const contentElements = parsedPreviewDocument.querySelectorAll('.neos-contentcollection');
 
                 // Store metadata in object to make easily accessible
                 const renderedMetaData = {
@@ -72,11 +71,16 @@ import '../Styles/Main.scss';
                     description: metaSection.querySelector('meta[name="description"]') ? metaSection.querySelector('meta[name="description"]').getAttribute('content') : ''
                 };
 
-                // Concat all found content elements
-                let pageContent = '';
-                contentElements.forEach((element) => {
-                    pageContent += element.innerHTML;
+                // Remove problematic tags for the Yoast plugin from preview document
+                let scriptTags = parsedPreviewDocument.querySelectorAll('script,svg');
+                scriptTags.forEach((scriptTag) => {
+                    scriptTag.remove();
                 });
+
+                let pageContent = parsedPreviewDocument.querySelector('body').innerHTML;
+
+                const re = /data-.*=".*"/gim;
+                pageContent = pageContent.replace(re, '');
 
                 // Create snippet preview
                 const snippetPreviewContainer = new SnippetPreview({
