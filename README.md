@@ -1,8 +1,8 @@
 # Yoast SEO integration for Neos CMS
 
-[![Latest Stable Version](https://poser.pugx.org/shel/yoast-seo-neos/v/stable)](https://packagist.org/packages/shel/yoast-seo-neos)
-[![Total Downloads](https://poser.pugx.org/shel/yoast-seo-neos/downloads)](https://packagist.org/packages/shel/yoast-seo-neos)
-[![License](https://poser.pugx.org/shel/yoast-seo-neos/license)](https://packagist.org/packages/shel/yoast-seo-neos)
+[![Latest Stable Version](https://poser.pugx.org/shel/neos-yoast-seo/v/stable)](https://packagist.org/packages/shel/neos-yoast-seo)
+[![Total Downloads](https://poser.pugx.org/shel/neos-yoast-seo/downloads)](https://packagist.org/packages/shel/neos-yoast-seo)
+[![License](https://poser.pugx.org/shel/neos-yoast-seo/license)](https://packagist.org/packages/shel/neos-yoast-seo)
 
 ## What does it do
 
@@ -18,7 +18,7 @@ problems as it just provides an additional view in Neos.
 
 ## Example
 
-![Plugin example in Neos demo site](Documentation/Neos-Yoast-SEO-Example.png | width=300) 
+![Plugin example in Neos demo site](Documentation/Neos-Yoast-SEO-Example.png) 
 
 ## Installation
 
