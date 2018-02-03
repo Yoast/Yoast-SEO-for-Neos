@@ -6,7 +6,7 @@
 
 ## What does it do
 
-This package provides a new backend preview in **Neos CMS** to look at your page with the help of the **Yoast SEO** plugin.
+This package provides a new backend preview in [Neos CMS](https://neos.io) to look at your page with the help of the [Yoast SEO](https://github.com/Yoast/YoastSEO.js) plugin.
 
 This view will show you a preview snippet how the selected page will look in the Google search results
 and will give you insights and helpers to further improve the page for search engines.
@@ -18,7 +18,7 @@ problems as it just provides an additional view in Neos.
 
 ## Example
 
-TODO: Add screenshot 
+![Plugin example in Neos demo site](Documentation/Neos-Yoast-SEO-Example.png | width=300) 
 
 ## Installation
 
