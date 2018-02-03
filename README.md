@@ -22,7 +22,7 @@ problems as it just provides an additional view in Neos.
 
 ## Installation
 
-    composer require shel/neos-yoast-seo
+    composer require shel/neos-yoast-seo:dev-master
     
 ## Dependencies
 
