@@ -8,8 +8,8 @@ Neos:
     userInterface:
       editPreviewModes:
         shelYoastSeoView:
-          isEditingMode: false
-          isPreviewMode: true
+          isEditingMode: true
+          isPreviewMode: false
           fusionRenderingPath: shelYoastSeoView
           title: 'Shel.Neos.YoastSeo:Main:editPreviewModes.yoastSeoView'
 
