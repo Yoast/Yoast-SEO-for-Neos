@@ -19,7 +19,7 @@ TODO: Add screenshot
 
 ## Installation
 
-    composer require shel/yoast-seo-neos
+    composer require shel/neos-yoast-seo
     
 ## Dependencies
 
