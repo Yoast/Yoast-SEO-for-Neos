@@ -1,7 +1,6 @@
 const path = require('path');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
-const OptimizeCssAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const BrowserSyncPlugin = require('browser-sync-webpack-plugin');
 
 const devMode = process.env.NODE_ENV === "development";
@@ -22,15 +21,6 @@ const uglifyJs = new UglifyJSPlugin({
     }
 });
 
-const optimizeCss = new OptimizeCssAssetsPlugin({
-    assetNameRegExp: /\.min\.css$/,
-    cssProcessorOptions: {
-        discardComments: {
-            removeAll: true
-        }
-    }
-});
-
 const browserSync = new BrowserSyncPlugin();
 
 module.exports = {
@@ -39,7 +29,7 @@ module.exports = {
         filename: 'Bundle.js',
         path: path.resolve(__dirname, 'Resources/Public/Scripts')
     },
-    devtool: "cheap-module-eval-source-map",
+    devtool: devMode ? "cheap-module-eval-source-map" : '',
     module: {
         rules: [
             {
