@@ -13,6 +13,9 @@ and will give you insights and helpers to further improve the page for search en
 
 These insights are generated via the official **Yoast SEO** javascript plugin.
 
+**Attention!** This package is still an alpha version but you should be able to use it without 
+problems as it just provides an additional view in Neos. 
+
 ## Example
 
 TODO: Add screenshot 
@@ -51,3 +54,10 @@ You can generate the `js` and `css` files by running the following commands in t
 Rebuilding the assets with browsersync when developing:
 
     npm run watch
+
+### Roadmap
+
+* Implement inspector view to see some feedback from Yoast plugin while editing a page
+* Test plugin with various projects to check behavior
+* Implement more features from the Yoast javascript library (Text reading ease, etc...)
+* Nicer backend view
