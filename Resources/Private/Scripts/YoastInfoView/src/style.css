@@ -1,0 +1,41 @@
+.yoastInfoView {
+    background-color: var(--colors-ContrastNeutral);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    &__item {
+        padding: 8px;
+        border-bottom: 1px solid #222;
+        line-height: 20px;
+        min-height: 20px;
+
+        &:last-child {
+            border-bottom: none;
+        }
+    }
+
+    &__title {
+        font-weight: bold;
+    }
+
+    &__content {
+        font-size: 13px;
+
+        a {
+            color: var(--colors-PrimaryBlue);
+        }
+    }
+
+    &__rating_bad {
+        color: #dc3232;
+    }
+
+    &__rating_ok {
+        color: #ee7c1b;
+    }
+
+    &__rating_good {
+        color: #7ad03a;
+    }
+}

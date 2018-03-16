@@ -1,0 +1,22 @@
+{
+  "description": "Shel.Neos.YoastSeo:YoastInfoView",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "build": "neos-react-scripts build",
+    "watch": "neos-react-scripts watch"
+  },
+  "devDependencies": {
+    "@neos-project/neos-ui-extensibility": "^1.0.0",
+    "@neos-project/react-ui-components": "^1.0.0",
+    "prop-types": "^15.6.0",
+    "recompose": "^0.25.1"
+  },
+  "neos": {
+    "buildTargetDirectory": "../../../Public/YoastInfoView"
+  },
+  "dependencies": {
+    "lodash.upperfirst": "^4.3.1",
+    "yoastseo": "^1.31.0"
+  }
+}

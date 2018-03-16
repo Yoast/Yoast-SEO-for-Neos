@@ -10,6 +10,11 @@
           label: 'Yoast'
           position: 10
           icon: yoast
+      views:
+        yoastInfo:
+          label: i18n
+          group: 'seometa'
+          view: 'Shel.Neos.YoastSeo/Inspector/Views/YoastInfoView'
 
   properties:
     focusKeyword:
