@@ -1,0 +1,9 @@
+prototype(Shel.Neos.YoastSeo:Component.Locale) < prototype(Neos.Fusion:Tag) {
+    attributes {
+        id = 'locale'
+        class = 'yoast-seo__locale'
+    }
+
+    languageDimension = ${Configuration.setting('Neos.ContentRepository.dimensionTypes.language') != null ? Configuration.setting('Neos.ContentRepository.dimensionTypes.language') : 'language'}
+    content = ${String.replace(documentNode.context.dimensions[this.languageDimension][0], '_', '-')}
+}

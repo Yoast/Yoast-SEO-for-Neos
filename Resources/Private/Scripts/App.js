@@ -55,6 +55,7 @@ import '../Styles/Main.scss';
         // Constants
         const previewUrl = document.getElementById('previewUrl').textContent;
         const baseUrl = document.getElementById('baseUrl').textContent;
+        const locale = document.getElementById('locale').textContent;
 
         // Generate preview then initialize plugin
         get(previewUrl)
@@ -103,6 +104,7 @@ import '../Styles/Main.scss';
                     targets: {
                         output: 'output'
                     },
+                    locale: locale,
                     callbacks: {
                         getData: () => {
                             return {

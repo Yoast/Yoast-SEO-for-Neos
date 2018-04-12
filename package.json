@@ -19,14 +19,14 @@
     "babel-preset-es2015-native-modules": "^6.9.4",
     "browser-sync": "^2.23.6",
     "browser-sync-webpack-plugin": "^1.2.0",
-    "css-loader": "^0.28.9",
+    "css-loader": "^0.28.11",
     "extract-text-webpack-plugin": "^3.0.2",
-    "node-sass": "^4.7.2",
-    "sass-loader": "^6.0.6",
+    "node-sass": "^4.8.3",
+    "sass-loader": "^6.0.7",
     "style-loader": "^0.19.1",
-    "uglifyjs-webpack-plugin": "^1.1.8",
-    "webpack": "^3.10.0",
-    "yoastseo": "^1.29.0"
+    "uglifyjs-webpack-plugin": "^1.2.4",
+    "webpack": "^3.11.0",
+    "yoastseo": "^1.30.2"
   },
   "scripts": {
     "build": "NODE_ENV=production webpack",

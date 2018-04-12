@@ -36,13 +36,19 @@ the `neos/seo` package.
 After installation the new preview mode is available in the Neos backend.
 
 Currently there is no configuration needed. But additional configuration options
-might be added in the future to make the plugin work well with different site setups.  
+might be added in the future to make the plugin work well with different site setups.
+
+## Notes about the packages capabilities
+
+* The language of your content is used in the analyzer but the summaries are currently english only.
+* We try to render your site as good as possible for the YoastSEO analyzer to parse it. This might not work for every usecase! 
 
 ## Contributing
 
-Contributions are very welcome. 
-Please create issues for problems or new ideas your have.
-Pull requests are even better!
+* Contributions are very welcome. 
+* Please open issues on Github if you have problems with the backend module or other Neos specific features.
+* Please open issues on [Yoast SEO](https://github.com/Yoast/YoastSEO.js) if you have problems with the analyzer itself.
+* Pull requests are even better!
 
 ### Building the assets
 

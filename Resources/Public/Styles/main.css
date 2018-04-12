@@ -281,7 +281,7 @@
   background-image: url("data:image/svg+xml;charset=utf8,%3Csvg%20width%3D%221792%22%20height%3D%221792%22%20viewBox%3D%220%200%201792%201792%22%20xmlns%3D%22http%3A%2F%2Fwww%2Ew3%2Eorg%2F2000%2Fsvg%22%3E%3Cpath%20fill%3D%22%231074a8%22%20d%3D%22M1216%20448v896q0%2026%2D19%2045t%2D45%2019%2D45%2D19l%2D448%2D448q%2D19%2D19%2D19%2D45t19%2D45l448%2D448q19%2D19%2045%2D19t45%2019%2019%2045z%22%2F%3E%3C%2Fsvg%3E"); }
 
 .snippet-editor__meta-description {
-  height: 70px; }
+  height: 84px; }
 
 .snippet-editor__submit {
   margin-top: 1em; }
@@ -748,7 +748,8 @@ body {
     padding-left: 0; }
 
 .yoast-seo__previewUrl,
-.yoast-seo__baseUrl {
+.yoast-seo__baseUrl,
+.yoast-seo__locale {
   display: none; }
 
 .yoast-seo__errorOutput {
