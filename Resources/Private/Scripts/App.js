@@ -56,6 +56,7 @@ import '../Styles/Main.scss';
         const previewUrl = document.getElementById('previewUrl').textContent;
         const baseUrl = document.getElementById('baseUrl').textContent;
         const locale = document.getElementById('locale').textContent;
+        const cornerstone = document.getElementById('cornerstone').textContent;
 
         // Generate preview then initialize plugin
         get(previewUrl)
@@ -118,6 +119,7 @@ import '../Styles/Main.scss';
                         }
                     }
                 });
+                app.switchAssessors(cornerstone ? true : false);
                 app.refresh();
 
                 // Replace snippet editor form parts with Neos inline editing fields

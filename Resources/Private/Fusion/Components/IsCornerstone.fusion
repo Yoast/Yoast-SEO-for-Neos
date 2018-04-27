@@ -1,0 +1,7 @@
+prototype(Shel.Neos.YoastSeo:Component.IsCornerstone) < prototype(Neos.Fusion:Tag) {
+    attributes {
+        id = 'cornerstone'
+        class = 'yoast-seo__cornerstone hidden'
+    }
+    content = ${q(documentNode).property('isCornerstone')}
+}
