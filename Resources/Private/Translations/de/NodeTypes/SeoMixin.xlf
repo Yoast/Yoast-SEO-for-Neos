@@ -8,7 +8,7 @@
             </trans-unit>
             <trans-unit id="properties.isCornerstone">
                 <source>is Cornerstone</source>
-                <target>Fokuswort</target>
+                <target>ist Hauptdokument</target>
             </trans-unit>
             <trans-unit id="properties.title.aloha.placeholder">
                 <source>Enter the title for this page</source>

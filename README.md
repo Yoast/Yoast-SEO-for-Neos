@@ -38,6 +38,11 @@ After installation the new preview mode is available in the Neos backend.
 Currently there is no configuration needed. But additional configuration options
 might be added in the future to make the plugin work well with different site setups.
 
+In the inspector a new group "yoast" is added in the SEO-Tab with the following fields:
+
+* focusKeyword: The main keyword this document is optimzed for. This is needed by yoast for calculating metrics.
+* isCornerstone: Mark the document as exceptionally important for yoast. This will enforce more strict content-rules.
+
 ## Notes about the packages capabilities
 
 * The language of your content is used in the analyzer but the summaries are currently english only.
