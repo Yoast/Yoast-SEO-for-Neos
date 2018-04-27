@@ -80,7 +80,7 @@ import '../Styles/Main.scss';
 
                 let pageContent = parsedPreviewDocument.querySelector('body').innerHTML;
 
-                const re = /data-.*=".*"/gim;
+                const re = /data-.*?=".*?"/gim;
                 pageContent = pageContent.replace(re, '');
 
                 // Create snippet preview
