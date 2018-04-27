@@ -17,10 +17,8 @@
         }
     ],
     "require": {
-        "neos/neos": "~3.0"
-    },
-    "suggest": {
-        "neos/seo": "~2.0"
+        "neos/neos": "^3.0 || ^4.0 || dev-master",
+        "neos/seo": "^2.0"
     },
     "autoload": {
         "psr-4": {
