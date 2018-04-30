@@ -57,6 +57,9 @@ If you use a locale that Yoast doesn't understand don't expect perfect results.
 
 After installation the new preview mode is available in the Neos backend which you can select form the `Edit / Preview` panel.
 
+This is useful to check several pages after another and optimize SEO properties.
+The preview also shows a preview how a page could look as Google search result.
+
 ### Inspector
 
 In the inspector a new group "Yoast" is added in the SEO-Tab with the following fields:
@@ -67,6 +70,8 @@ In the inspector a new group "Yoast" is added in the SEO-Tab with the following 
 The group also contains a live analyzer which will check your content and SEO data and show you the results.
 Depending on your nodetype configuration the analyzer will update after you change something and show you up-to-date
 information without needing a reload of the whole page.  
+
+This view is helpful when optimizing a single page while working on it's content.
 
 ## Notes about the packages capabilities
 
