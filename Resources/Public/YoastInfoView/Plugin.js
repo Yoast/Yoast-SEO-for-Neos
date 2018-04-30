@@ -21733,7 +21733,8 @@ var YoastInfoView = (_dec = (0, _reactRedux.connect)(function (state) {
                         title: metaSection.querySelector('title') ? metaSection.querySelector('title').textContent : '',
                         description: metaSection.querySelector('meta[name="description"]') ? metaSection.querySelector('meta[name="description"]').getAttribute('content') : '',
                         isAnalyzing: false
-                    }
+                    },
+                    results: {}
                 }, _this.refreshAnalysis);
             });
         };
@@ -21765,6 +21766,18 @@ var YoastInfoView = (_dec = (0, _reactRedux.connect)(function (state) {
             _this.refreshSeoAnalysis(paper, i18n);
         };
 
+        _this.parseResults = function (results) {
+            return results.reduce(function (obj, result) {
+                obj[result._identifier] = {
+                    identifier: result._identifier,
+                    rating: _yoastseo.helpers.scoreToRating(result.score),
+                    score: result.score,
+                    text: result.text
+                };
+                return obj;
+            }, {});
+        };
+
         _this.refreshSeoAnalysis = function (paper, i18n) {
             var seoAssessor = void 0;
             if (_this.state.isCornerstone) {
@@ -21777,13 +21790,7 @@ var YoastInfoView = (_dec = (0, _reactRedux.connect)(function (state) {
             _this.setState({
                 seo: {
                     score: seoAssessor.calculateOverallScore(),
-                    results: seoAssessor.getValidResults().map(function (result) {
-                        return {
-                            score: result.score,
-                            text: result.text,
-                            identifier: result._identifier
-                        };
-                    }),
+                    results: _this.parseResults(seoAssessor.getValidResults()),
                     isAnalyzing: false
                 }
             });
@@ -21801,38 +21808,107 @@ var YoastInfoView = (_dec = (0, _reactRedux.connect)(function (state) {
             _this.setState({
                 content: {
                     score: contentAssessor.calculateOverallScore(),
-                    results: contentAssessor.getValidResults().map(function (result) {
-                        return {
-                            score: result.score,
-                            text: result.text,
-                            identifier: result._identifier
-                        };
-                    }),
+                    results: _this.parseResults(contentAssessor.getValidResults()),
                     isAnalyzing: false
                 }
             });
         };
 
-        _this.renderResults = function (results) {
-            return results.map(function (result) {
-                var rating = _yoastseo.helpers.scoreToRating(result.score);
+        _this.renderResults = function (filter) {
+            var groupedResults = {
+                'bad': [],
+                'ok': [],
+                'good': []
+            };
 
-                return _react2.default.createElement(
-                    'li',
-                    { className: _style2.default.yoastInfoView__item },
-                    _react2.default.createElement(
-                        'div',
-                        { className: _style2.default.yoastInfoView__title },
-                        _react2.default.createElement(
-                            'span',
-                            { className: _style2.default['yoastInfoView__rating_' + rating] },
-                            result.identifier
-                        )
-                    ),
-                    _react2.default.createElement('div', { className: _style2.default.yoastInfoView__content,
-                        dangerouslySetInnerHTML: { __html: result.text } })
-                );
+            var allResults = Object.assign({}, _this.state.content.results, _this.state.seo.results);
+
+            Object.values(allResults).forEach(function (result) {
+                if (filter.indexOf(result.identifier) === -1) {
+                    groupedResults[result.rating].push(result);
+                }
             });
+
+            var renderedResults = Object.values(groupedResults).map(function (group) {
+                return group.map(function (result) {
+                    return _this.renderRating(result);
+                });
+            });
+
+            return _react2.default.createElement(
+                'li',
+                { className: _style2.default.yoastInfoView__item },
+                _react2.default.createElement(
+                    'div',
+                    { className: _style2.default.yoastInfoView__title },
+                    _this.props.i18nRegistry.translate('inspector.results', 'Results', {}, 'Shel.Neos.YoastSeo')
+                ),
+                groupedResults.bad.map(function (result) {
+                    return _this.renderRating(result);
+                }),
+                groupedResults.ok.map(function (result) {
+                    return _this.renderRating(result);
+                }),
+                _this.state.expandGoodResults && groupedResults.good.map(function (result) {
+                    return _this.renderRating(result);
+                })
+            );
+        };
+
+        _this.handleExpandClick = function () {
+            _this.setState({ expandGoodResults: true });
+        };
+
+        _this.renderRating = function (result) {
+            return result && _react2.default.createElement(
+                'p',
+                { className: _style2.default.yoastInfoView__content,
+                    title: _this.props.i18nRegistry.translate('inspector.resultType.' + result.identifier, result.identifier, {}, 'Shel.Neos.YoastSeo') },
+                _react2.default.createElement(
+                    'svg',
+                    { height: '13', width: '6', className: _style2.default['yoastInfoView__rating_' + result.rating] },
+                    _react2.default.createElement('circle', { cx: '3', cy: '9', r: '3' })
+                ),
+                _react2.default.createElement('span', { dangerouslySetInnerHTML: { __html: result.text } })
+            );
+        };
+
+        _this.renderTitleRating = function () {
+            return _react2.default.createElement(
+                'li',
+                { className: _style2.default.yoastInfoView__item },
+                _react2.default.createElement(
+                    'div',
+                    { className: _style2.default.yoastInfoView__title },
+                    _this.props.i18nRegistry.translate('inspector.title', 'Title', {}, 'Shel.Neos.YoastSeo')
+                ),
+                _react2.default.createElement(
+                    'div',
+                    { className: _style2.default.yoastInfoView__value },
+                    _this.state.page.title
+                ),
+                _this.renderRating(_this.state.seo.results.titleWidth),
+                _this.renderRating(_this.state.seo.results.titleKeyword)
+            );
+        };
+
+        _this.renderDescriptionRating = function () {
+            return _react2.default.createElement(
+                'li',
+                { className: _style2.default.yoastInfoView__item },
+                _react2.default.createElement(
+                    'div',
+                    { className: _style2.default.yoastInfoView__title },
+                    _this.props.i18nRegistry.translate('inspector.description', 'Description', {}, 'Shel.Neos.YoastSeo')
+                ),
+                _react2.default.createElement(
+                    'div',
+                    { className: _style2.default.yoastInfoView__value },
+                    _this.state.page.description
+                ),
+                _this.renderRating(_this.state.seo.results.metaDescriptionKeyword),
+                _this.renderRating(_this.state.seo.results.metaDescriptionLength)
+            );
         };
 
         var _this$props = _this.props,
@@ -21847,6 +21923,7 @@ var YoastInfoView = (_dec = (0, _reactRedux.connect)(function (state) {
             previewUri: (0, _plowJs.$get)('previewUri', node),
             focusKeyword: (0, _plowJs.$get)('properties.focusKeyword', node),
             isCornerstone: (0, _plowJs.$get)('properties.isCornerstone', node),
+            expandGoodResults: false,
             page: {
                 title: '',
                 description: '',
@@ -21881,76 +21958,53 @@ var YoastInfoView = (_dec = (0, _reactRedux.connect)(function (state) {
     }, {
         key: 'render',
         value: function render() {
+            var filterFromAllResults = ['titleWidth', 'titleKeyword', 'metaDescriptionKeyword', 'metaDescriptionLength'];
+
             return _react2.default.createElement(
                 'ul',
                 { className: _style2.default.yoastInfoView },
-                !this.state.page.isAnalyzing && _react2.default.createElement(
+                !this.state.content.isAnalyzing && !this.state.seo.isAnalyzing && _react2.default.createElement(
                     'li',
                     { className: _style2.default.yoastInfoView__item },
                     _react2.default.createElement(
                         'div',
                         { className: _style2.default.yoastInfoView__title },
-                        'Title'
-                    ),
-                    _react2.default.createElement(
-                        'div',
-                        { className: _style2.default.yoastInfoView__content },
-                        this.state.page.title
-                    )
-                ),
-                !this.state.page.isAnalyzing && _react2.default.createElement(
-                    'li',
-                    { className: _style2.default.yoastInfoView__item },
-                    _react2.default.createElement(
-                        'div',
-                        { className: _style2.default.yoastInfoView__title },
-                        'Description'
-                    ),
-                    _react2.default.createElement(
-                        'div',
-                        { className: _style2.default.yoastInfoView__content },
-                        this.state.page.description
-                    )
-                ),
-                !this.state.content.isAnalyzing && _react2.default.createElement(
-                    'li',
-                    { className: _style2.default.yoastInfoView__item },
-                    _react2.default.createElement(
-                        'div',
-                        { className: _style2.default.yoastInfoView__title },
-                        'Content score'
-                    ),
-                    _react2.default.createElement(
-                        'div',
-                        { className: _style2.default.yoastInfoView__content },
+                        this.props.i18nRegistry.translate('inspector.contentScore', 'Content Score', {}, 'Shel.Neos.YoastSeo'),
+                        ': ',
                         this.state.content.score
-                    )
-                ),
-                !this.state.seo.isAnalyzing && _react2.default.createElement(
-                    'li',
-                    { className: _style2.default.yoastInfoView__item },
-                    _react2.default.createElement(
-                        'div',
-                        { className: _style2.default.yoastInfoView__title },
-                        'SEO score'
                     ),
                     _react2.default.createElement(
                         'div',
-                        { className: _style2.default.yoastInfoView__content },
+                        { className: _style2.default.yoastInfoView__title },
+                        this.props.i18nRegistry.translate('inspector.seoScore', 'SEO Score', {}, 'Shel.Neos.YoastSeo'),
+                        ': ',
                         this.state.seo.score
                     )
                 ),
-                !this.state.content.isAnalyzing && this.renderResults(this.state.content.results),
-                !this.state.seo.isAnalyzing && this.renderResults(this.state.seo.results),
+                !this.state.seo.isAnalyzing && this.renderTitleRating(),
+                !this.state.seo.isAnalyzing && this.renderDescriptionRating(),
+                !this.state.content.isAnalyzing && !this.state.seo.isAnalyzing && this.renderResults(filterFromAllResults),
                 (this.state.page.isAnalyzing || this.state.content.isAnalyzing || this.state.seo.isAnalyzing) && _react2.default.createElement(
                     'li',
                     { className: _style2.default.yoastInfoView__item, style: { textAlign: 'center' } },
-                    _react2.default.createElement(_reactUiComponents.Icon, {
-                        spin: true,
-                        icon: 'spinner'
-                    }),
+                    _react2.default.createElement(_reactUiComponents.Icon, { spin: true, icon: 'spinner' }),
                     '\xA0',
-                    'Loading...'
+                    this.props.i18nRegistry.translate('inspector.loading', 'Loading…', {}, 'Shel.Neos.YoastSeo')
+                ),
+                !this.state.page.isAnalyzing && !this.state.expandGoodResults && _react2.default.createElement(
+                    'li',
+                    { className: _style2.default.yoastInfoView__item, style: { textAlign: 'center' } },
+                    _react2.default.createElement(
+                        _reactUiComponents.Button,
+                        { style: 'clean', hoverStyle: 'clean', onClick: this.handleExpandClick },
+                        _react2.default.createElement(
+                            'span',
+                            null,
+                            _react2.default.createElement(_reactUiComponents.Icon, { icon: 'plus' }),
+                            '\xA0',
+                            this.props.i18nRegistry.translate('inspector.showAllResults', 'Show all results', {}, 'Shel.Neos.YoastSeo')
+                        )
+                    )
                 )
             );
         }
@@ -37602,7 +37656,7 @@ exports = module.exports = __webpack_require__(560)(false);
 
 
 // module
-exports.push([module.i, ":root {}\n:root {}\n:root {}\n:root {}\n:root {}\n:root {}\n:root {}\n:root {}\n:root {}\n:root {}\n:root {}\n:root {}\n:root {}\n:root {}\n:root {}\n:root {}\n:root {}\n:root {}\n:root {}\n:root {}\n:root {}\n:root {}\n:root {}\n:root {}\n:root {}\n:root {}\n:root {}\n:root {}\n:root {}\n:root {}\n:root {}\n:root {}\n:root {}\n:root {}\n:root {}\n:root {}\n:root {}\n:root {}\n:root {}\n:root {}\n:root {}\n:root {}\n:root {}\n:root {}\n:root {}\n:root {}\n:root {}\n:root {}\n:root {}\n:root {}\n:root {}\n:root {}\n.style__yoastInfoView___5BOWw {\n    background-color: #323232;\n    margin: 0;\n    padding: 0;\n    list-style: none;\n}\n.style__yoastInfoView__item___3sLd8 {\n    padding: 8px;\n    border-bottom: 1px solid #222;\n    line-height: 20px;\n    min-height: 20px;\n}\n.style__yoastInfoView__item___3sLd8:last-child {\n    border-bottom: none;\n}\n.style__yoastInfoView__title___1x1mz {\n    font-weight: bold;\n}\n.style__yoastInfoView__content___3V4hU {\n    font-size: 13px;\n}\n.style__yoastInfoView__content___3V4hU a {\n    color: #00ADEE;\n}\n.style__yoastInfoView__rating_bad___3r6IV {\n    color: #dc3232;\n}\n.style__yoastInfoView__rating_ok___2gUck {\n    color: #ee7c1b;\n}\n.style__yoastInfoView__rating_good___2Frfd {\n    color: #7ad03a;\n}\n", ""]);
+exports.push([module.i, ":root {}\n:root {}\n:root {}\n:root {}\n:root {}\n:root {}\n:root {}\n:root {}\n:root {}\n:root {}\n:root {}\n:root {}\n:root {}\n:root {}\n:root {}\n:root {}\n:root {}\n:root {}\n:root {}\n:root {}\n:root {}\n:root {}\n:root {}\n:root {}\n:root {}\n:root {}\n:root {}\n:root {}\n:root {}\n:root {}\n:root {}\n:root {}\n:root {}\n:root {}\n:root {}\n:root {}\n:root {}\n:root {}\n:root {}\n:root {}\n:root {}\n:root {}\n:root {}\n:root {}\n:root {}\n:root {}\n:root {}\n:root {}\n:root {}\n:root {}\n:root {}\n:root {}\n.style__yoastInfoView___5BOWw {\n\n    background-color: #323232;\n    margin: 0;\n    padding: 0;\n    list-style: none;\n}\n.style__yoastInfoView__item___3sLd8 {\n\n    padding: .7rem;\n\n    border-bottom: 1px solid #222;\n}\n.style__yoastInfoView__title___1x1mz {\n\n    font-weight: bold;\n}\n.style__yoastInfoView__content___3V4hU {\n\n    font-size: 13px;\n\n    margin: .7rem 0 0;\n}\n.style__yoastInfoView__content___3V4hU a {\n\n    color: #FFF;\n}\n.style__yoastInfoView__value___RNmd4 {\n\n    font-style: italic;\n\n    font-size: 13px;\n}\n.style__yoastInfoView__rating_bad___3r6IV {\n\n    color: #dc3232;\n}\nsvg.style__yoastInfoView__rating_bad___3r6IV {\n\n    fill: #dc3232;\n\n    margin-right: 5px;\n}\n.style__yoastInfoView__rating_ok___2gUck {\n\n    color: #ee7c1b;\n}\nsvg.style__yoastInfoView__rating_ok___2gUck {\n\n    fill: #ee7c1b;\n\n    margin-right: 5px;\n}\n.style__yoastInfoView__rating_good___2Frfd {\n\n    color: #7ad03a;\n}\nsvg.style__yoastInfoView__rating_good___2Frfd {\n\n    fill: #7ad03a;\n\n    margin-right: 5px;\n}\n", ""]);
 
 // exports
 exports.locals = {
@@ -37610,6 +37664,7 @@ exports.locals = {
 	"yoastInfoView__item": "style__yoastInfoView__item___3sLd8",
 	"yoastInfoView__title": "style__yoastInfoView__title___1x1mz",
 	"yoastInfoView__content": "style__yoastInfoView__content___3V4hU",
+	"yoastInfoView__value": "style__yoastInfoView__value___RNmd4",
 	"yoastInfoView__rating_bad": "style__yoastInfoView__rating_bad___3r6IV",
 	"yoastInfoView__rating_ok": "style__yoastInfoView__rating_ok___2gUck",
 	"yoastInfoView__rating_good": "style__yoastInfoView__rating_good___2Frfd"

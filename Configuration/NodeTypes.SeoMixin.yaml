@@ -13,7 +13,7 @@
       views:
         yoastInfo:
           label: i18n
-          group: 'seometa'
+          group: 'yoast'
           view: 'Shel.Neos.YoastSeo/Inspector/Views/YoastInfoView'
 
   properties:

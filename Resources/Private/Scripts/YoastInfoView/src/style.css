@@ -1,18 +1,18 @@
 .yoastInfoView {
+    --color-bad: #dc3232;
+    --color-ok: #ee7c1b;
+    --color-good: #7ad03a;
+    --icon-margin: 5px;
+    --text-font-size: 13px;
+
     background-color: var(--colors-ContrastNeutral);
     margin: 0;
     padding: 0;
     list-style: none;
 
     &__item {
-        padding: 8px;
+        padding: .7rem;
         border-bottom: 1px solid #222;
-        line-height: 20px;
-        min-height: 20px;
-
-        &:last-child {
-            border-bottom: none;
-        }
     }
 
     &__title {
@@ -20,22 +20,43 @@
     }
 
     &__content {
-        font-size: 13px;
+        font-size: var(--text-font-size);
+        margin: .7rem 0 0;
 
         a {
-            color: var(--colors-PrimaryBlue);
+            color: var(--colors-ContrastBrightest);
         }
     }
 
+    &__value {
+        font-style: italic;
+        font-size: var(--text-font-size);
+    }
+
     &__rating_bad {
-        color: #dc3232;
+        color: var(--color-bad);
+
+        svg& {
+            fill: var(--color-bad);
+            margin-right: var(--icon-margin);
+        }
     }
 
     &__rating_ok {
-        color: #ee7c1b;
+        color: var(--color-ok);
+
+        svg& {
+            fill: var(--color-ok);
+            margin-right: var(--icon-margin);
+        }
     }
 
     &__rating_good {
-        color: #7ad03a;
+        color: var(--color-good);
+
+        svg& {
+            fill: var(--color-good);
+            margin-right: var(--icon-margin);
+        }
     }
 }

@@ -25,6 +25,89 @@
             <trans-unit id="field.focusKeyword">
                 <source>Focus Keyword</source>
             </trans-unit>
+
+            <trans-unit id="inspector.loading">
+                <source>Loading…</source>
+            </trans-unit>
+            <trans-unit id="inspector.title">
+                <source>Title</source>
+            </trans-unit>
+            <trans-unit id="inspector.description">
+                <source>Description</source>
+            </trans-unit>
+            <trans-unit id="inspector.results">
+                <source>Results</source>
+            </trans-unit>
+            <trans-unit id="inspector.seoScore">
+                <source>SEO Score</source>
+            </trans-unit>
+            <trans-unit id="inspector.contentScore">
+                <source>Content Score</source>
+            </trans-unit>
+            <trans-unit id="inspector.showAllResults">
+                <source>Show all results</source>
+            </trans-unit>
+
+            <trans-unit id="inspector.resultType.titleWidth">
+                <source>Title width</source>
+            </trans-unit>
+            <trans-unit id="inspector.resultType.titleKeyword">
+                <source>Title keyword</source>
+            </trans-unit>
+            <trans-unit id="inspector.resultType.metaDescriptionKeyword">
+                <source>Meta description keyword</source>
+            </trans-unit>
+            <trans-unit id="inspector.resultType.metaDescriptionLength">
+                <source>Meta description length</source>
+            </trans-unit>
+            <trans-unit id="inspector.resultType.textSentenceLength">
+                <source>Text sentence length</source>
+            </trans-unit>
+            <trans-unit id="inspector.resultType.textImages">
+                <source>Text images</source>
+            </trans-unit>
+            <trans-unit id="inspector.resultType.textLength">
+                <source>Text length</source>
+            </trans-unit>
+            <trans-unit id="inspector.resultType.textParagraphTooLong">
+                <source>Text paragraph length</source>
+            </trans-unit>
+            <trans-unit id="inspector.resultType.textTransitionWords">
+                <source>Text transition words</source>
+            </trans-unit>
+            <trans-unit id="inspector.resultType.keywordDensity">
+                <source>Keyword density</source>
+            </trans-unit>
+            <trans-unit id="inspector.resultType.urlLength">
+                <source>URL length</source>
+            </trans-unit>
+            <trans-unit id="inspector.resultType.urlStopWords">
+                <source>URL stopwords</source>
+            </trans-unit>
+            <trans-unit id="inspector.resultType.urlKeyword">
+                <source>URL keyword</source>
+            </trans-unit>
+            <trans-unit id="inspector.resultType.subheadingsKeyword">
+                <source>Subheadings keyword occurency</source>
+            </trans-unit>
+            <trans-unit id="inspector.resultType.subheadingsTooLong">
+                <source>Subheading length</source>
+            </trans-unit>
+            <trans-unit id="inspector.resultType.fleschReadingEase">
+                <source>Flesch reading ease</source>
+            </trans-unit>
+            <trans-unit id="inspector.resultType.passiveVoice">
+                <source>Passive voice</source>
+            </trans-unit>
+            <trans-unit id="inspector.resultType.introductionKeyword">
+                <source>Introduction keyword</source>
+            </trans-unit>
+            <trans-unit id="inspector.resultType.externalLinks">
+                <source>External links</source>
+            </trans-unit>
+            <trans-unit id="inspector.resultType.internalLinks">
+                <source>Internal links</source>
+            </trans-unit>
         </body>
     </file>
 </xliff>
