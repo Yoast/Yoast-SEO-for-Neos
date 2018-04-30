@@ -31,17 +31,42 @@ This package expects some document node properties to be present like `titleOver
 are provided via the `neos/seo` package. But you can of course provide them yourself if you don't want to use
 the `neos/seo` package.
 
-## Usage
+## Configuration
 
-After installation the new preview mode is available in the Neos backend.
+In your `Settings.yaml` you can override the following options:
 
-Currently there is no configuration needed. But additional configuration options
-might be added in the future to make the plugin work well with different site setups.
+    Shel:
+      Neos:
+        YoastSeo:
+          defaultContentLocale: en-US
+          
+### defaultContentLocale 
 
-In the inspector a new group "yoast" is added in the SEO-Tab with the following fields:
+The analyzer will use the `lang` attribute rendered by the `Neos.Seo` package of your website to detect the 
+language of your content. This option sets the default if `Neos.Seo` cannot detect it.
+If no `lang` attribute is rendered the javascript part will use `en_US`.
+
+Note that the html standard requires a `-` in the locale while Neos and Yoast internally use `_` and convert if needed. 
+
+Check https://github.com/Yoast/YoastSEO.js#supported-languages for supported languages and the capabilities.
+If you use a locale that Yoast doesn't understand don't expect perfect results. 
+
+## Usage 
+
+### Preview mode
+
+After installation the new preview mode is available in the Neos backend which you can select form the `Edit / Preview` panel.
+
+### Inspector
+
+In the inspector a new group "Yoast" is added in the SEO-Tab with the following fields:
 
 * focusKeyword: The main keyword this document is optimzed for. This is needed by yoast for calculating metrics.
 * isCornerstone: Mark the document as exceptionally important for yoast. This will enforce more strict content-rules.
+
+The group also contains a live analyzer which will check your content and SEO data and show you the results.
+Depending on your nodetype configuration the analyzer will update after you change something and show you up-to-date
+information without needing a reload of the whole page.  
 
 ## Notes about the packages capabilities
 

@@ -100,6 +100,7 @@ export default class YoastInfoView extends PureComponent {
                 });
 
                 let pageContent = parsedPreviewDocument.querySelector('body').innerHTML;
+                let locale = (parsedPreviewDocument.querySelector('html').getAttribute('lang') || 'en_US').replace('-', '_');
 
                 // Remove problematic data attributes for the Yoast plugin from preview document
                 const re = /data-.*?=".*?"/gim;
@@ -108,7 +109,8 @@ export default class YoastInfoView extends PureComponent {
                 this.setState({
                     pageContent: pageContent,
                     page: {
-                        title: metaSection.querySelector('title').textContent,
+                        locale: locale,
+                        title: metaSection.querySelector('title') ? metaSection.querySelector('title').textContent : '',
                         description: metaSection.querySelector('meta[name="description"]') ? metaSection.querySelector('meta[name="description"]').getAttribute('content') : '',
                         isAnalyzing: false
                     }
@@ -137,7 +139,7 @@ export default class YoastInfoView extends PureComponent {
                 title: this.state.page.title,
                 titleWidth: this.state.page.title.length,
                 url: this.state.previewUri,
-                locale: "en_US",
+                locale: this.state.page.locale,
                 permalink: ""
             }
         );
@@ -147,12 +149,11 @@ export default class YoastInfoView extends PureComponent {
     }
 
     refreshSeoAnalysis = (paper, i18n) => {
-        // TODO: use correct locale
         let seoAssessor;
         if (this.state.isCornerstone) {
-            seoAssessor = new CornerstoneSEOAssessor(i18n, {locale: "en_US"});
+            seoAssessor = new CornerstoneSEOAssessor(i18n, {locale: this.state.page.locale});
         } else {
-            seoAssessor = new SEOAssessor(i18n, {locale: "en_US"});
+            seoAssessor = new SEOAssessor(i18n, {locale: this.state.page.locale});
         }
         seoAssessor.assess(paper);
 
@@ -172,12 +173,11 @@ export default class YoastInfoView extends PureComponent {
     }
 
     refreshContentAnalysis = (paper, i18n) => {
-        // TODO: use correct locale
         let contentAssessor;
         if (this.state.isCornerstone) {
-            contentAssessor = new CornerStoneContentAssessor(i18n, {locale: "en_US"});
+            contentAssessor = new CornerStoneContentAssessor(i18n, {locale: this.state.page.locale});
         } else {
-            contentAssessor = new ContentAssessor(i18n, {locale: "en_US"});
+            contentAssessor = new ContentAssessor(i18n, {locale: this.state.page.locale});
         }
         contentAssessor.assess(paper);
 

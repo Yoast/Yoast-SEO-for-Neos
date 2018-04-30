@@ -1,5 +1,4 @@
-include: Components/*.fusion
-include: Documents/*.fusion
+include: **/*.fusion
 
 prototype(Neos.Fusion:GlobalCacheIdentifiers) {
     shelYoastSeoPreviewMode = ${request.arguments.shelYoastSeoPreviewMode ? true : false}

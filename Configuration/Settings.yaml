@@ -2,6 +2,7 @@ Shel:
   Neos:
     YoastSeo:
       devMode: true
+      defaultContentLocale: en-US
 
 Neos:
   Neos:

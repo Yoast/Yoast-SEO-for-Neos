@@ -1,0 +1,6 @@
+prototype(Neos.Seo:LangAttribute) {
+    # Always render lang attribute to be able to use it for the analyzer
+    value.@process.addFallback = ${value ? value : Configuration.setting('Shel.Neos.YoastSeo.defaultContentLocale')}
+    @if.languageDimensionExists >
+    @if.onlyRenderWhenInLiveWorkspace >
+}

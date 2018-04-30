@@ -21720,6 +21720,7 @@ var YoastInfoView = (_dec = (0, _reactRedux.connect)(function (state) {
                 });
 
                 var pageContent = parsedPreviewDocument.querySelector('body').innerHTML;
+                var locale = (parsedPreviewDocument.querySelector('html').getAttribute('lang') || 'en_US').replace('-', '_');
 
                 // Remove problematic data attributes for the Yoast plugin from preview document
                 var re = /data-.*?=".*?"/gim;
@@ -21728,7 +21729,8 @@ var YoastInfoView = (_dec = (0, _reactRedux.connect)(function (state) {
                 _this.setState({
                     pageContent: pageContent,
                     page: {
-                        title: metaSection.querySelector('title').textContent,
+                        locale: locale,
+                        title: metaSection.querySelector('title') ? metaSection.querySelector('title').textContent : '',
                         description: metaSection.querySelector('meta[name="description"]') ? metaSection.querySelector('meta[name="description"]').getAttribute('content') : '',
                         isAnalyzing: false
                     }
@@ -21755,7 +21757,7 @@ var YoastInfoView = (_dec = (0, _reactRedux.connect)(function (state) {
                 title: _this.state.page.title,
                 titleWidth: _this.state.page.title.length,
                 url: _this.state.previewUri,
-                locale: "en_US",
+                locale: _this.state.page.locale,
                 permalink: ""
             });
 
@@ -21764,12 +21766,11 @@ var YoastInfoView = (_dec = (0, _reactRedux.connect)(function (state) {
         };
 
         _this.refreshSeoAnalysis = function (paper, i18n) {
-            // TODO: use correct locale
             var seoAssessor = void 0;
             if (_this.state.isCornerstone) {
-                seoAssessor = new _seoAssessor2.default(i18n, { locale: "en_US" });
+                seoAssessor = new _seoAssessor2.default(i18n, { locale: _this.state.page.locale });
             } else {
-                seoAssessor = new _yoastseo.SEOAssessor(i18n, { locale: "en_US" });
+                seoAssessor = new _yoastseo.SEOAssessor(i18n, { locale: _this.state.page.locale });
             }
             seoAssessor.assess(paper);
 
@@ -21789,12 +21790,11 @@ var YoastInfoView = (_dec = (0, _reactRedux.connect)(function (state) {
         };
 
         _this.refreshContentAnalysis = function (paper, i18n) {
-            // TODO: use correct locale
             var contentAssessor = void 0;
             if (_this.state.isCornerstone) {
-                contentAssessor = new _contentAssessor2.default(i18n, { locale: "en_US" });
+                contentAssessor = new _contentAssessor2.default(i18n, { locale: _this.state.page.locale });
             } else {
-                contentAssessor = new _yoastseo.ContentAssessor(i18n, { locale: "en_US" });
+                contentAssessor = new _yoastseo.ContentAssessor(i18n, { locale: _this.state.page.locale });
             }
             contentAssessor.assess(paper);
 
