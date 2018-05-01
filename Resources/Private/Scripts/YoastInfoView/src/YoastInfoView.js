@@ -51,15 +51,47 @@ export default class YoastInfoView extends PureComponent {
                 score: 0,
                 results: [],
                 isAnalyzing: false
-            }
+            },
+            i18n: {}
         };
     }
 
     componentDidMount() {
+        this.fetchTranslations();
         this.fetchContent();
         this.props.serverFeedbackHandlers.set('Neos.Neos.Ui:ReloadDocument/DocumentUpdated', (feedbackPayload, {store}) => {
             this.fetchContent();
         }, 'after Neos.Neos.Ui:ReloadDocument/Main');
+    }
+
+    fetchTranslations = () => {
+        fetchWithErrorHandling.withCsrfToken(csrfToken => ({
+            url: `/neosyoastseo/fetchTranslations`,
+            method: 'GET',
+            credentials: 'include',
+            headers: {
+                'X-Flow-Csrftoken': csrfToken,
+                'Content-Type': 'application/json'
+            }
+        }))
+            .then(response => response && response.json())
+            .then(translations => {
+                if (!translations || translations.error) {
+                    translations = {
+                        domain: "js-text-analysis",
+                        // eslint-disable-next-line camelcase
+                        locale_data: {
+                            "js-text-analysis": {
+                                "": {}
+                            }
+                        }
+                    };
+                }
+
+                this.setState({
+                    i18n: new Jed(translations)
+                });
+            });
     }
 
     fetchContent = () => {
@@ -121,18 +153,6 @@ export default class YoastInfoView extends PureComponent {
     }
 
     refreshAnalysis = () => {
-        // TODO: fetch translations from i18n
-        let defaultTranslations = {
-            domain: "js-text-analysis",
-            // eslint-disable-next-line camelcase
-            locale_data: {
-                "js-text-analysis": {
-                    "": {}
-                }
-            }
-        };
-        let i18n = new Jed(defaultTranslations);
-
         let paper = new Paper(
             this.state.pageContent,
             {
@@ -146,8 +166,8 @@ export default class YoastInfoView extends PureComponent {
             }
         );
 
-        this.refreshContentAnalysis(paper, i18n);
-        this.refreshSeoAnalysis(paper, i18n);
+        this.refreshContentAnalysis(paper);
+        this.refreshSeoAnalysis(paper);
     }
 
     parseResults = (results) => {
@@ -162,12 +182,12 @@ export default class YoastInfoView extends PureComponent {
         }, {});
     }
 
-    refreshSeoAnalysis = (paper, i18n) => {
+    refreshSeoAnalysis = (paper) => {
         let seoAssessor;
         if (this.state.isCornerstone) {
-            seoAssessor = new CornerstoneSEOAssessor(i18n, {locale: this.state.page.locale});
+            seoAssessor = new CornerstoneSEOAssessor(this.state.i18n, {locale: this.state.page.locale});
         } else {
-            seoAssessor = new SEOAssessor(i18n, {locale: this.state.page.locale});
+            seoAssessor = new SEOAssessor(this.state.i18n, {locale: this.state.page.locale});
         }
         seoAssessor.assess(paper);
 
@@ -180,12 +200,12 @@ export default class YoastInfoView extends PureComponent {
         });
     }
 
-    refreshContentAnalysis = (paper, i18n) => {
+    refreshContentAnalysis = (paper) => {
         let contentAssessor;
         if (this.state.isCornerstone) {
-            contentAssessor = new CornerStoneContentAssessor(i18n, {locale: this.state.page.locale});
+            contentAssessor = new CornerStoneContentAssessor(this.state.i18n, {locale: this.state.page.locale});
         } else {
-            contentAssessor = new ContentAssessor(i18n, {locale: this.state.page.locale});
+            contentAssessor = new ContentAssessor(this.state.i18n, {locale: this.state.page.locale});
         }
         contentAssessor.assess(paper);
 

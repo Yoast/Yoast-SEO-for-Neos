@@ -1,0 +1,9 @@
+-
+  name: 'Shel.Neos.YoastSeo'
+  uriPattern: 'neosyoastseo/{@action}'
+  defaults:
+    '@package':    'Shel.Neos.YoastSeo'
+    '@controller': 'Data'
+    '@format':     'json'
+    '@action':     'query'
+  appendExceedingArguments: true
