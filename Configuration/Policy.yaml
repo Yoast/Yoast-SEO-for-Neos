@@ -1,0 +1,11 @@
+privilegeTargets:
+  Neos\Flow\Security\Authorization\Privilege\Method\MethodPrivilege:
+    'Shel.Neos.YoastSeo:DataSources':
+      matcher: 'method(Shel\Neos\YoastSeo\Controller\DataController->(.*)Action())'
+
+roles:
+  'Neos.Neos:Editor':
+    privileges:
+      -
+        privilegeTarget: 'Shel.Neos.YoastSeo:DataSources'
+        permission: GRANT

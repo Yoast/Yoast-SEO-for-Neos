@@ -39,6 +39,7 @@ In your `Settings.yaml` you can override the following options:
       Neos:
         YoastSeo:
           defaultContentLocale: en-US
+          languageToLocaleMapping: [...]
           
 ### defaultContentLocale 
 
@@ -50,6 +51,23 @@ Note that the html standard requires a `-` in the locale while Neos and Yoast in
 
 Check https://github.com/Yoast/YoastSEO.js#supported-languages for supported languages and the capabilities.
 If you use a locale that Yoast doesn't understand don't expect perfect results. 
+
+### languageToLocaleMapping
+
+This array defines which translation should be used in the Yoast SEO analyzer depending on the selected interface
+language of a Neos user.
+
+See the `Settings.yaml` of this package and if you for example want a different version localized translation,
+check out the folder `Resources/Private/Languages` and see which ones are supported and then update the mapping
+accordingly.
+
+For example the default mapping for `de` is `de_DE` but can be changed to Swiss German with the following configuration:
+
+    Shel:
+      Neos:
+        YoastSeo:
+          languageToLocaleMapping: 
+            de: 'de_CH'
 
 ## Usage 
 

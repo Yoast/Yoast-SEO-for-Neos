@@ -9,7 +9,7 @@
 
             <trans-unit id="header">
                 <source>Yoast SEO Analysis</source>
-                <source>Yoast SEO Analyse</source>
+                <target>Yoast SEO Analyse</target>
             </trans-unit>
 
             <trans-unit id="field.title">

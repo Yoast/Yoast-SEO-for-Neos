@@ -21682,6 +21682,38 @@ var YoastInfoView = (_dec = (0, _reactRedux.connect)(function (state) {
 
         var _this = _possibleConstructorReturn(this, (YoastInfoView.__proto__ || Object.getPrototypeOf(YoastInfoView)).call(this, props));
 
+        _this.fetchTranslations = function () {
+            _neosUiBackendConnector.fetchWithErrorHandling.withCsrfToken(function (csrfToken) {
+                return {
+                    url: '/neosyoastseo/fetchTranslations',
+                    method: 'GET',
+                    credentials: 'include',
+                    headers: {
+                        'X-Flow-Csrftoken': csrfToken,
+                        'Content-Type': 'application/json'
+                    }
+                };
+            }).then(function (response) {
+                return response && response.json();
+            }).then(function (translations) {
+                if (!translations || translations.error) {
+                    translations = {
+                        domain: "js-text-analysis",
+                        // eslint-disable-next-line camelcase
+                        locale_data: {
+                            "js-text-analysis": {
+                                "": {}
+                            }
+                        }
+                    };
+                }
+
+                _this.setState({
+                    i18n: new _jed.Jed(translations)
+                });
+            });
+        };
+
         _this.fetchContent = function () {
             _this.setState({
                 page: _extends({}, _this.state.page, {
@@ -21740,18 +21772,6 @@ var YoastInfoView = (_dec = (0, _reactRedux.connect)(function (state) {
         };
 
         _this.refreshAnalysis = function () {
-            // TODO: fetch translations from i18n
-            var defaultTranslations = {
-                domain: "js-text-analysis",
-                // eslint-disable-next-line camelcase
-                locale_data: {
-                    "js-text-analysis": {
-                        "": {}
-                    }
-                }
-            };
-            var i18n = new _jed.Jed(defaultTranslations);
-
             var paper = new _yoastseo.Paper(_this.state.pageContent, {
                 keyword: _this.state.focusKeyword,
                 description: _this.state.page.description,
@@ -21762,8 +21782,8 @@ var YoastInfoView = (_dec = (0, _reactRedux.connect)(function (state) {
                 permalink: ""
             });
 
-            _this.refreshContentAnalysis(paper, i18n);
-            _this.refreshSeoAnalysis(paper, i18n);
+            _this.refreshContentAnalysis(paper);
+            _this.refreshSeoAnalysis(paper);
         };
 
         _this.parseResults = function (results) {
@@ -21778,12 +21798,12 @@ var YoastInfoView = (_dec = (0, _reactRedux.connect)(function (state) {
             }, {});
         };
 
-        _this.refreshSeoAnalysis = function (paper, i18n) {
+        _this.refreshSeoAnalysis = function (paper) {
             var seoAssessor = void 0;
             if (_this.state.isCornerstone) {
-                seoAssessor = new _seoAssessor2.default(i18n, { locale: _this.state.page.locale });
+                seoAssessor = new _seoAssessor2.default(_this.state.i18n, { locale: _this.state.page.locale });
             } else {
-                seoAssessor = new _yoastseo.SEOAssessor(i18n, { locale: _this.state.page.locale });
+                seoAssessor = new _yoastseo.SEOAssessor(_this.state.i18n, { locale: _this.state.page.locale });
             }
             seoAssessor.assess(paper);
 
@@ -21796,12 +21816,12 @@ var YoastInfoView = (_dec = (0, _reactRedux.connect)(function (state) {
             });
         };
 
-        _this.refreshContentAnalysis = function (paper, i18n) {
+        _this.refreshContentAnalysis = function (paper) {
             var contentAssessor = void 0;
             if (_this.state.isCornerstone) {
-                contentAssessor = new _contentAssessor2.default(i18n, { locale: _this.state.page.locale });
+                contentAssessor = new _contentAssessor2.default(_this.state.i18n, { locale: _this.state.page.locale });
             } else {
-                contentAssessor = new _yoastseo.ContentAssessor(i18n, { locale: _this.state.page.locale });
+                contentAssessor = new _yoastseo.ContentAssessor(_this.state.i18n, { locale: _this.state.page.locale });
             }
             contentAssessor.assess(paper);
 
@@ -21938,7 +21958,8 @@ var YoastInfoView = (_dec = (0, _reactRedux.connect)(function (state) {
                 score: 0,
                 results: [],
                 isAnalyzing: false
-            }
+            },
+            i18n: {}
         };
         return _this;
     }
@@ -21948,6 +21969,7 @@ var YoastInfoView = (_dec = (0, _reactRedux.connect)(function (state) {
         value: function componentDidMount() {
             var _this2 = this;
 
+            this.fetchTranslations();
             this.fetchContent();
             this.props.serverFeedbackHandlers.set('Neos.Neos.Ui:ReloadDocument/DocumentUpdated', function (feedbackPayload, _ref) {
                 var store = _ref.store;
