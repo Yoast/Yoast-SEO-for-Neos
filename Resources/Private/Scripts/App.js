@@ -74,7 +74,6 @@ import '../Styles/Main.scss';
             .then(newTranslations => {
                 if (newTranslations && !newTranslations.error) {
                     translations = newTranslations;
-                    console.log(newTranslations);
                 }
             })
             .then(() => {
