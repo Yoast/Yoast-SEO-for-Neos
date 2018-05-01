@@ -30,7 +30,6 @@ prototype(Shel.Neos.YoastSeo:Documents.YoastSeoView) < prototype(Neos.Neos:Page)
                 snippetPreview = Shel.Neos.YoastSeo:Component.SnippetPreview
                 previewUrl = Shel.Neos.YoastSeo:Component.PreviewUrl
                 baseUrl = Shel.Neos.YoastSeo:Component.BaseUrl
-                locale = Shel.Neos.YoastSeo:Component.Locale
                 cornerstone = Shel.Neos.YoastSeo:Component.IsCornerstone
                 focusKeyword = Shel.Neos.YoastSeo:Component.FocusKeyword
                 snippetFields = Shel.Neos.YoastSeo:Component.SnippetFields

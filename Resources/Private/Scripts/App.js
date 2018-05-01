@@ -54,108 +54,130 @@ import '../Styles/Main.scss';
 
         // Constants
         const previewUrl = document.getElementById('previewUrl').textContent;
+        const translationsUrl = '/neosyoastseo/fetchTranslations';
         const baseUrl = document.getElementById('baseUrl').textContent;
-        const locale = document.getElementById('locale').textContent;
         const cornerstone = document.getElementById('cornerstone').textContent;
 
-        // Generate preview then initialize plugin
-        get(previewUrl)
-            .then((previewDocument) => {
-                const parser = new DOMParser();
-                const parsedPreviewDocument = parser.parseFromString(previewDocument, "text/html");
+        // Retrieve translations
+        let translations = {
+            domain: "js-text-analysis",
+            // eslint-disable-next-line camelcase
+            locale_data: {
+                "js-text-analysis": {
+                    "": {}
+                }
+            }
+        };
 
-                // Extract meta block and content elements from parsed preview
-                const metaSection = parsedPreviewDocument.querySelector('head');
-
-                // Store metadata in object to make easily accessible
-                const renderedMetaData = {
-                    title: metaSection.querySelector('title').textContent,
-                    description: metaSection.querySelector('meta[name="description"]') ? metaSection.querySelector('meta[name="description"]').getAttribute('content') : ''
-                };
-
-                // Remove problematic tags for the Yoast plugin from preview document
-                let scriptTags = parsedPreviewDocument.querySelectorAll('script,svg');
-                scriptTags.forEach((scriptTag) => {
-                    scriptTag.remove();
-                });
-
-                let pageContent = parsedPreviewDocument.querySelector('body').innerHTML;
-
-                const re = /data-.*?=".*?"/gim;
-                pageContent = pageContent.replace(re, '');
-
-                // Create snippet preview
-                const snippetPreviewContainer = new SnippetPreview({
-                    data: {
-                        title: getSnippetFieldValue(titleField, titleOverrideField),
-                        metaDesc: getSnippetFieldValue(metaDescriptionField),
-                        urlPath: getSnippetFieldValue(uriPathSegmentField)
-                    },
-                    placeholder: {
-                        urlPath: ''
-                    },
-                    addTrailingSlash: false,
-                    baseURL: baseUrl,
-                    targetElement: snippet
-                });
-
-                // Initialize plugin
-                let app = new App({
-                    snippetPreview: snippetPreviewContainer,
-                    targets: {
-                        output: 'output'
-                    },
-                    locale: locale,
-                    callbacks: {
-                        getData: () => {
-                            return {
-                                title: getSnippetFieldValue(titleField, titleOverrideField),
-                                metaTitle: renderedMetaData.title,
-                                keyword: getSnippetFieldValue(focusKeywordField),
-                                text: pageContent,
-                                excerpt: getSnippetFieldValue(metaDescriptionField),
-                                url: getSnippetFieldValue(uriPathSegmentField)
-                            };
-                        }
-                    }
-                });
-                app.switchAssessors(cornerstone ? true : false);
-                app.refresh();
-
-                // Replace snippet editor form parts with Neos inline editing fields
-                const snippetEditorForm = snippet.querySelector('.snippet-editor__form');
-                snippetEditorForm.prepend(snippetFieldsWrap);
-
-                // Move progress bars after new fields
-                titleField.after(snippetEditorForm.querySelector('.snippet-editor__progress-title'));
-                metaDescriptionField.after(snippetEditorForm.querySelector('.snippet-editor__progress-meta-description'));
-
-                // Remove all original fields
-                snippetEditorForm.querySelectorAll('.snippet-editor__label').forEach((label) => {
-                    label.remove();
-                });
-
-                // Update snippet when editable fields are changed
-                const snippetFieldsObserver = new MutationObserver(() => {
-                    snippetPreviewContainer.setTitle(getSnippetFieldValue(titleField));
-                    snippetPreviewContainer.setUrlPath(getSnippetFieldValue(uriPathSegmentField));
-                    snippetPreviewContainer.setMetaDescription(getSnippetFieldValue(metaDescriptionField));
-                });
-
-                // Observe editable fields for changes
-                snippetFieldsObserver.observe(titleField, {characterData: true, subtree: true});
-                snippetFieldsObserver.observe(titleOverrideField, {characterData: true, subtree: true});
-                snippetFieldsObserver.observe(uriPathSegmentField, {characterData: true, subtree: true});
-                snippetFieldsObserver.observe(metaDescriptionField, {characterData: true, subtree: true});
-
-                // Update analysis when focus keyword changes
-                const focusKeywordObserver = new MutationObserver(app.refresh);
-                focusKeywordObserver.observe(focusKeywordField, {characterData: true, subtree: true});
+        get(translationsUrl)
+            .then(response => response && JSON.parse(response))
+            .then(newTranslations => {
+                if (newTranslations && !newTranslations.error) {
+                    translations = newTranslations;
+                    console.log(newTranslations);
+                }
             })
-            .catch((err) => {
-                console.log(err);
-                errorOutput.textContent = err;
-                errorOutput.classList.remove('hidden');
+            .then(() => {
+                // Generate preview then initialize plugin
+                get(previewUrl)
+                    .then((previewDocument) => {
+                        const parser = new DOMParser();
+                        const parsedPreviewDocument = parser.parseFromString(previewDocument, "text/html");
+
+                        // Extract meta block and content elements from parsed preview
+                        const metaSection = parsedPreviewDocument.querySelector('head');
+
+                        // Store metadata in object to make easily accessible
+                        const renderedMetaData = {
+                            title: metaSection.querySelector('title').textContent,
+                            description: metaSection.querySelector('meta[name="description"]') ? metaSection.querySelector('meta[name="description"]').getAttribute('content') : ''
+                        };
+
+                        // Remove problematic tags for the Yoast plugin from preview document
+                        let scriptTags = parsedPreviewDocument.querySelectorAll('script,svg');
+                        scriptTags.forEach((scriptTag) => {
+                            scriptTag.remove();
+                        });
+
+                        let pageContent = parsedPreviewDocument.querySelector('body').innerHTML;
+                        let locale = (parsedPreviewDocument.querySelector('html').getAttribute('lang') || 'en_US').replace('-', '_');
+
+                        const re = /data-.*?=".*?"/gim;
+                        pageContent = pageContent.replace(re, '');
+
+                        // Create snippet preview
+                        const snippetPreviewContainer = new SnippetPreview({
+                            data: {
+                                title: getSnippetFieldValue(titleField, titleOverrideField),
+                                metaDesc: getSnippetFieldValue(metaDescriptionField),
+                                urlPath: getSnippetFieldValue(uriPathSegmentField)
+                            },
+                            placeholder: {
+                                urlPath: ''
+                            },
+                            addTrailingSlash: false,
+                            baseURL: baseUrl,
+                            targetElement: snippet
+                        });
+
+                        // Initialize plugin
+                        let app = new App({
+                            snippetPreview: snippetPreviewContainer,
+                            targets: {
+                                output: 'output'
+                            },
+                            locale: locale,
+                            translations: translations,
+                            callbacks: {
+                                getData: () => {
+                                    return {
+                                        title: getSnippetFieldValue(titleField, titleOverrideField),
+                                        metaTitle: renderedMetaData.title,
+                                        keyword: getSnippetFieldValue(focusKeywordField),
+                                        text: pageContent,
+                                        excerpt: getSnippetFieldValue(metaDescriptionField),
+                                        url: getSnippetFieldValue(uriPathSegmentField)
+                                    };
+                                }
+                            }
+                        });
+                        app.switchAssessors(cornerstone ? true : false);
+                        app.refresh();
+
+                        // Replace snippet editor form parts with Neos inline editing fields
+                        const snippetEditorForm = snippet.querySelector('.snippet-editor__form');
+                        snippetEditorForm.prepend(snippetFieldsWrap);
+
+                        // Move progress bars after new fields
+                        titleField.after(snippetEditorForm.querySelector('.snippet-editor__progress-title'));
+                        metaDescriptionField.after(snippetEditorForm.querySelector('.snippet-editor__progress-meta-description'));
+
+                        // Remove all original fields
+                        snippetEditorForm.querySelectorAll('.snippet-editor__label').forEach((label) => {
+                            label.remove();
+                        });
+
+                        // Update snippet when editable fields are changed
+                        const snippetFieldsObserver = new MutationObserver(() => {
+                            snippetPreviewContainer.setTitle(getSnippetFieldValue(titleField));
+                            snippetPreviewContainer.setUrlPath(getSnippetFieldValue(uriPathSegmentField));
+                            snippetPreviewContainer.setMetaDescription(getSnippetFieldValue(metaDescriptionField));
+                        });
+
+                        // Observe editable fields for changes
+                        snippetFieldsObserver.observe(titleField, {characterData: true, subtree: true});
+                        snippetFieldsObserver.observe(titleOverrideField, {characterData: true, subtree: true});
+                        snippetFieldsObserver.observe(uriPathSegmentField, {characterData: true, subtree: true});
+                        snippetFieldsObserver.observe(metaDescriptionField, {characterData: true, subtree: true});
+
+                        // Update analysis when focus keyword changes
+                        const focusKeywordObserver = new MutationObserver(app.refresh);
+                        focusKeywordObserver.observe(focusKeywordField, {characterData: true, subtree: true});
+                    })
+                    .catch((err) => {
+                        errorOutput.textContent = err;
+                        errorOutput.classList.remove('hidden');
+                    });
             });
     }
 })(document, window);
