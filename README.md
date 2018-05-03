@@ -18,9 +18,11 @@ But this package is in no other way supported or affiliated with *Yoast BV*,
 **Attention!** This package is still a pre-release version but you should be able to use it without 
 problems as it just provides an additional view in Neos. 
 
-## Example
+## Examples
 
-![Plugin example in Neos demo site](Documentation/Neos-Yoast-SEO-Example.png) 
+![Preview in the Neos demo site](Documentation/Neos-Yoast-SEO-Example.png) 
+
+![Inspector view ina blog](Documentation/Neos-Yoast-SEO-Inspector.jpg) 
 
 ## Installation
 
