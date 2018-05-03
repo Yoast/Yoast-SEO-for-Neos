@@ -21777,7 +21777,7 @@ var YoastInfoView = (_dec = (0, _reactRedux.connect)(function (state) {
                 description: _this.state.page.description,
                 title: _this.state.page.title,
                 titleWidth: _this.getTitleWidth(),
-                url: _this.state.previewUri,
+                url: _this.state.slug,
                 locale: _this.state.page.locale,
                 permalink: ""
             });
@@ -21950,6 +21950,7 @@ var YoastInfoView = (_dec = (0, _reactRedux.connect)(function (state) {
         _this.state = {
             nodeUri: (0, _plowJs.$get)('uri', node),
             previewUri: (0, _plowJs.$get)('previewUri', node),
+            slug: new URL((0, _plowJs.$get)('previewUri', node)).pathname,
             focusKeyword: (0, _plowJs.$get)('properties.focusKeyword', node),
             isCornerstone: (0, _plowJs.$get)('properties.isCornerstone', node),
             expandGoodResults: false,

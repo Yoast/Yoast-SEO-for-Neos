@@ -34,6 +34,7 @@ export default class YoastInfoView extends PureComponent {
         this.state = {
             nodeUri: $get('uri', node),
             previewUri: $get('previewUri', node),
+            slug: new URL($get('previewUri', node)).pathname,
             focusKeyword: $get('properties.focusKeyword', node),
             isCornerstone: $get('properties.isCornerstone', node),
             expandGoodResults: false,
@@ -160,7 +161,7 @@ export default class YoastInfoView extends PureComponent {
                 description: this.state.page.description,
                 title: this.state.page.title,
                 titleWidth: this.getTitleWidth(),
-                url: this.state.previewUri,
+                url: this.state.slug,
                 locale: this.state.page.locale,
                 permalink: ""
             }
