@@ -234,7 +234,11 @@ export default class YoastInfoView extends PureComponent {
 
         Object.values(allResults).forEach(result => {
             if (filter.indexOf(result.identifier) === -1) {
-                groupedResults[result.rating].push(result);
+                if (result.rating in groupedResults) {
+                    groupedResults[result.rating].push(result);
+                } else {
+                    console.log(result.text);
+                }
             }
         });
 

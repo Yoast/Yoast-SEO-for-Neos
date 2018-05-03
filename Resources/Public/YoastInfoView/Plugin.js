@@ -21776,7 +21776,7 @@ var YoastInfoView = (_dec = (0, _reactRedux.connect)(function (state) {
                 keyword: _this.state.focusKeyword,
                 description: _this.state.page.description,
                 title: _this.state.page.title,
-                titleWidth: _this.state.page.title.length,
+                titleWidth: _this.getTitleWidth(),
                 url: _this.state.previewUri,
                 locale: _this.state.page.locale,
                 permalink: ""
@@ -21784,6 +21784,11 @@ var YoastInfoView = (_dec = (0, _reactRedux.connect)(function (state) {
 
             _this.refreshContentAnalysis(paper);
             _this.refreshSeoAnalysis(paper);
+        };
+
+        _this.getTitleWidth = function () {
+            // TODO: This is just a basic approximation and should be calculated in the future based on the actual text.
+            return _this.state.page.title.length * 8.5;
         };
 
         _this.parseResults = function (results) {
@@ -21845,7 +21850,11 @@ var YoastInfoView = (_dec = (0, _reactRedux.connect)(function (state) {
 
             Object.values(allResults).forEach(function (result) {
                 if (filter.indexOf(result.identifier) === -1) {
-                    groupedResults[result.rating].push(result);
+                    if (result.rating in groupedResults) {
+                        groupedResults[result.rating].push(result);
+                    } else {
+                        console.log(result.text);
+                    }
                 }
             });
 
