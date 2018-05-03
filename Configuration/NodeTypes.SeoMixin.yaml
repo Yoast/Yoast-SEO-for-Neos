@@ -4,12 +4,19 @@
   ui:
     inlineEditable: true
     inspector:
+      tabs:
+        yoast:
+          label: 'Yoast SEO'
+          position: 'after seo'
+          icon: yoast
+
       groups:
         yoast:
-          tab: seo
-          label: 'Yoast'
+          tab: yoast
+          label: 'Yoast SEO'
           position: 10
           icon: yoast
+
       views:
         yoastInfo:
           label: i18n
