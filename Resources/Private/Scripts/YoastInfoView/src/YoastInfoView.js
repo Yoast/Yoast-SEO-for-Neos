@@ -159,7 +159,7 @@ export default class YoastInfoView extends PureComponent {
                 keyword: this.state.focusKeyword,
                 description: this.state.page.description,
                 title: this.state.page.title,
-                titleWidth: this.state.page.title.length,
+                titleWidth: this.getTitleWidth(),
                 url: this.state.previewUri,
                 locale: this.state.page.locale,
                 permalink: ""
@@ -168,6 +168,11 @@ export default class YoastInfoView extends PureComponent {
 
         this.refreshContentAnalysis(paper);
         this.refreshSeoAnalysis(paper);
+    }
+
+    getTitleWidth = () => {
+        // TODO: This is just a basic approximation and should be calculated in the future based on the actual text.
+        return this.state.page.title.length * 8.5;
     }
 
     parseResults = (results) => {
