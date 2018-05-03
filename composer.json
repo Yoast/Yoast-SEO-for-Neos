@@ -2,7 +2,7 @@
     "name": "shel/neos-yoast-seo",
     "type": "neos-plugin",
     "description": "Yoast SEO for Neos CMS",
-    "license": "MIT",
+    "license": "GPL-3.0",
     "keywords": [
         "Neos CMS",
         "Yoast",

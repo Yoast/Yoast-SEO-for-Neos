@@ -1,6 +1,6 @@
 {
   "description": "Shel.Neos.YoastSeo:YoastInfoView",
-  "license": "MIT",
+  "license": "GPL-3.0",
   "private": true,
   "scripts": {
     "build": "neos-react-scripts build",

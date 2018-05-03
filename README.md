@@ -6,14 +6,16 @@
 
 ## What does it do
 
-This package provides a new backend preview in [Neos CMS](https://neos.io) to look at your page with the help of the [Yoast SEO](https://github.com/Yoast/YoastSEO.js) plugin.
+This package provides a new backend preview and inspector integration for [Neos CMS](https://neos.io) to look at 
+your page with the help of the [Yoast SEO](https://github.com/Yoast/YoastSEO.js) plugin.
 
 This view will show you a preview snippet how the selected page will look in the Google search results
 and will give you insights and helpers to further improve the page for search engines.
 
-These insights are generated via the official **Yoast SEO** javascript plugin.
+These insights are generated via the official Open Source **Yoast SEO** javascript plugin by [Yoast](https://yoast.com).
+But this package is in no other way supported or affiliated with *Yoast BV*,
 
-**Attention!** This package is still an alpha version but you should be able to use it without 
+**Attention!** This package is still a pre-release version but you should be able to use it without 
 problems as it just provides an additional view in Neos. 
 
 ## Example
