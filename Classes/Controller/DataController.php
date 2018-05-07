@@ -48,7 +48,7 @@ class DataController extends ActionController
      *
      * @Flow\SkipCsrfProtection
      */
-    public function fetchTranslationsAction() : void
+    public function fetchTranslationsAction()
     {
         $interfaceLanguage = $this->userService->getInterfaceLanguage();
 
@@ -82,7 +82,7 @@ class DataController extends ActionController
      * @param string $interfaceLanguage
      * @return string
      */
-    protected function getValidLocale($interfaceLanguage) : string
+    protected function getValidLocale($interfaceLanguage)
     {
         if (array_key_exists($interfaceLanguage, $this->languageToLocaleMapping)) {
             return $this->languageToLocaleMapping[$interfaceLanguage];

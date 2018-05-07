@@ -17,6 +17,7 @@
         }
     ],
     "require": {
+        "php": "~7.0",
         "neos/neos": "^3.0 || ^4.0 || dev-master",
         "neos/seo": "^2.0"
     },
