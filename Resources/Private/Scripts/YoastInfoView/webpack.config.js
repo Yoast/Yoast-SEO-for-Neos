@@ -43,7 +43,12 @@ module.exports = {
                     }, {
                         loader: "sass-loader",
                         options: {
-                            sourceMap: devMode
+                            sourceMap: devMode,
+                            options: {
+                                includePaths: [
+                                    path.resolve('node_modules')
+                                ]
+                            }
                         }
                     }],
                     // use style-loader in development

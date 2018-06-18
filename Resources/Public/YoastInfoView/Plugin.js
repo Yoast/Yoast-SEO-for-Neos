@@ -21875,7 +21875,7 @@ var _YoastInfoView = __webpack_require__(257);
 
 var _YoastInfoView2 = _interopRequireDefault(_YoastInfoView);
 
-var _neosUiExtensibility = __webpack_require__(566);
+var _neosUiExtensibility = __webpack_require__(567);
 
 var _neosUiExtensibility2 = _interopRequireDefault(_neosUiExtensibility);
 
@@ -21942,6 +21942,10 @@ var _jed = __webpack_require__(250);
 var _style = __webpack_require__(561);
 
 var _style2 = _interopRequireDefault(_style);
+
+var _pageParser = __webpack_require__(566);
+
+var _pageParser2 = _interopRequireDefault(_pageParser);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -22026,31 +22030,15 @@ var YoastInfoView = (_dec = (0, _reactRedux.connect)(function (state) {
                 };
             }).then(function (response) {
                 return response && response.text();
-            }).then(function (previewDocument) {
-                var parser = new DOMParser();
-                var parsedPreviewDocument = parser.parseFromString(previewDocument, "text/html");
-
-                var metaSection = parsedPreviewDocument.querySelector('head');
-
-                // Remove problematic tags for the Yoast plugin from preview document
-                var scriptTags = parsedPreviewDocument.querySelectorAll('script,svg');
-                scriptTags.forEach(function (scriptTag) {
-                    scriptTag.remove();
-                });
-
-                var pageContent = parsedPreviewDocument.querySelector('body').innerHTML;
-                var locale = (parsedPreviewDocument.querySelector('html').getAttribute('lang') || 'en_US').replace('-', '_');
-
-                // Remove problematic data attributes for the Yoast plugin from preview document
-                var re = /data-.*?=".*?"/gim;
-                pageContent = pageContent.replace(re, '');
+            }).then(function (documentContent) {
+                var pageParser = new _pageParser2.default(documentContent);
 
                 _this.setState({
-                    pageContent: pageContent,
+                    pageContent: pageParser.pageContent,
                     page: {
-                        locale: locale,
-                        title: metaSection.querySelector('title') ? metaSection.querySelector('title').textContent : '',
-                        description: metaSection.querySelector('meta[name="description"]') ? metaSection.querySelector('meta[name="description"]').getAttribute('content') : '',
+                        locale: pageParser.locale,
+                        title: pageParser.title,
+                        description: pageParser.description,
                         isAnalyzing: false
                     },
                     results: {}
@@ -38645,9 +38633,64 @@ module.exports = function (css) {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var PageParser = function () {
+    function PageParser(documentContent) {
+        _classCallCheck(this, PageParser);
+
+        this.parser = new DOMParser();
+        var parsedPreviewDocument = this.parser.parseFromString(documentContent, "text/html");
+
+        this.metaSection = parsedPreviewDocument.querySelector('head');
+
+        // Remove problematic tags for the Yoast plugin from preview document
+        var scriptTags = parsedPreviewDocument.querySelectorAll('script,svg');
+        scriptTags.forEach(function (scriptTag) {
+            scriptTag.remove();
+        });
+
+        this.locale = (parsedPreviewDocument.querySelector('html').getAttribute('lang') || 'en_US').replace('-', '_');
+
+        this.pageContent = parsedPreviewDocument.querySelector('body').innerHTML;
+        // Remove problematic data attributes for the Yoast plugin from preview document
+        var re = /data-.*?=".*?"/gim;
+        this.pageContent = this.pageContent.replace(re, '');
+    }
+
+    _createClass(PageParser, [{
+        key: 'title',
+        get: function get() {
+            return this.metaSection.querySelector('title') ? this.metaSection.querySelector('title').textContent : '';
+        }
+    }, {
+        key: 'description',
+        get: function get() {
+            return this.metaSection.querySelector('meta[name="description"]') ? this.metaSection.querySelector('meta[name="description"]').getAttribute('content') : '';
+        }
+    }]);
+
+    return PageParser;
+}();
+
+exports.default = PageParser;
+
+/***/ }),
+/* 567 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
 exports.createConsumerApi = undefined;
 
-var _createConsumerApi = __webpack_require__(567);
+var _createConsumerApi = __webpack_require__(568);
 
 var _createConsumerApi2 = _interopRequireDefault(_createConsumerApi);
 
@@ -38661,7 +38704,7 @@ exports.default = (0, _readFromConsumerApi2.default)('manifest');
 exports.createConsumerApi = _createConsumerApi2.default;
 
 /***/ }),
-/* 567 */
+/* 568 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38672,9 +38715,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = createConsumerApi;
 
-var _package = __webpack_require__(568);
+var _package = __webpack_require__(569);
 
-var _manifest = __webpack_require__(569);
+var _manifest = __webpack_require__(570);
 
 var _manifest2 = _interopRequireDefault(_manifest);
 
@@ -38703,13 +38746,13 @@ function createConsumerApi(manifests, exposureMap) {
 }
 
 /***/ }),
-/* 568 */
+/* 569 */
 /***/ (function(module, exports) {
 
 module.exports = {"name":"@neos-project/neos-ui-extensibility","version":"1.1.0","description":"Extensibility mechanisms for the Neos CMS UI","main":"./src/index.js","scripts":{"prebuild":"check-dependencies && yarn clean","test":"yarn jest -- -w 2 --coverage","test:watch":"yarn jest -- --watch","build":"exit 0","build:watch":"exit 0","clean":"rimraf ./lib ./dist","lint":"eslint src","jest":"NODE_ENV=test jest"},"devDependencies":{"@neos-project/babel-preset-neos-ui":"1.1.0","@neos-project/jest-preset-neos-ui":"1.1.0"},"dependencies":{"@neos-project/build-essentials":"1.1.0","@neos-project/positional-array-sorter":"1.1.0","babel-core":"^6.13.2","babel-eslint":"^7.1.1","babel-loader":"^7.1.2","babel-plugin-transform-decorators-legacy":"^1.3.4","babel-plugin-transform-object-rest-spread":"^6.20.1","babel-plugin-webpack-alias":"^2.1.1","babel-preset-es2015":"^6.13.2","babel-preset-react":"^6.3.13","babel-preset-stage-0":"^6.3.13","chalk":"^1.1.3","css-loader":"^0.28.4","file-loader":"^1.1.5","json-loader":"^0.5.4","postcss-loader":"^2.0.10","react-dev-utils":"^0.5.0","style-loader":"^0.19.0"},"bin":{"neos-react-scripts":"./bin/neos-react-scripts.js"},"jest":{"preset":"@neos-project/jest-preset-neos-ui"}}
 
 /***/ }),
-/* 569 */
+/* 570 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

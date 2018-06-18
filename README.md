@@ -30,7 +30,7 @@ problems as it just provides an additional view in Neos.
     
 ## Dependencies
 
-This package currently only requires Neos 3.* but it's suggested to also have the `neos/seo` package installed.
+This package currently only requires Neos >= 3.0 but it's suggested to also have the `neos/seo` package installed.
 This package expects some document node properties to be present like `titleOverride` and `metaDescription` which
 are provided via the `neos/seo` package. But you can of course provide them yourself if you don't want to use
 the `neos/seo` package.
@@ -111,16 +111,23 @@ This view is helpful when optimizing a single page while working on it's content
 
 You can generate the `js` and `css` files by running the following commands in the package folder:
 
-    npm install
-    npm run build
+    yarn install
+    yarn run build-all
     
-Rebuilding the assets with browsersync when developing:
+#### Building and watchting the app for the edit mode
+    
+    yarn run build-app
+    
+    yarn run watch-app
+    
+#### Building and watchting the inspector view
 
-    npm run watch
+    yarn run build-inspector
+    
+    yarn run watch-inspector
 
 ### Roadmap
 
-* Implement inspector view to see some feedback from Yoast plugin while editing a page
 * Test plugin with various projects to check behavior
 * Implement more features from the Yoast javascript library (Text reading ease, etc...)
 * Nicer backend view

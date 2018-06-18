@@ -11,6 +11,7 @@ import CornerstoneSEOAssessor from 'yoastseo/js/cornerstone/seoAssessor';
 import {fetchWithErrorHandling} from '@neos-project/neos-ui-backend-connector';
 import {Jed} from "jed";
 import style from './style.css';
+import PageParser from "./helper/pageParser";
 
 @connect(state => ({
     focusedNodeContextPath: selectors.CR.Nodes.focusedNodePathSelector(state),
@@ -121,31 +122,15 @@ export default class YoastInfoView extends PureComponent {
             }
         }))
             .then(response => response && response.text())
-            .then(previewDocument => {
-                const parser = new DOMParser();
-                const parsedPreviewDocument = parser.parseFromString(previewDocument, "text/html");
-
-                const metaSection = parsedPreviewDocument.querySelector('head');
-
-                // Remove problematic tags for the Yoast plugin from preview document
-                let scriptTags = parsedPreviewDocument.querySelectorAll('script,svg');
-                scriptTags.forEach((scriptTag) => {
-                    scriptTag.remove();
-                });
-
-                let pageContent = parsedPreviewDocument.querySelector('body').innerHTML;
-                let locale = (parsedPreviewDocument.querySelector('html').getAttribute('lang') || 'en_US').replace('-', '_');
-
-                // Remove problematic data attributes for the Yoast plugin from preview document
-                const re = /data-.*?=".*?"/gim;
-                pageContent = pageContent.replace(re, '');
+            .then(documentContent => {
+                let pageParser = new PageParser(documentContent);
 
                 this.setState({
-                    pageContent: pageContent,
+                    pageContent: pageParser.pageContent,
                     page: {
-                        locale: locale,
-                        title: metaSection.querySelector('title') ? metaSection.querySelector('title').textContent : '',
-                        description: metaSection.querySelector('meta[name="description"]') ? metaSection.querySelector('meta[name="description"]').getAttribute('content') : '',
+                        locale: pageParser.locale,
+                        title: pageParser.title,
+                        description: pageParser.description,
                         isAnalyzing: false
                     },
                     results: {}

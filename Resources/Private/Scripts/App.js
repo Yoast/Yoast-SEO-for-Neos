@@ -1,10 +1,8 @@
 import '../Styles/Main.scss';
+import PageParser from "./YoastInfoView/src/helper/pageParser";
+import {SnippetPreview, App} from './YoastInfoView/node_modules/yoastseo';
 
 ((document, window) => {
-
-    const SnippetPreview = require("yoastseo").SnippetPreview;
-    const App = require("yoastseo").App;
-
     /**
      * Request an url and get a Promise in return.
      *
@@ -79,30 +77,8 @@ import '../Styles/Main.scss';
             .then(() => {
                 // Generate preview then initialize plugin
                 get(previewUrl)
-                    .then((previewDocument) => {
-                        const parser = new DOMParser();
-                        const parsedPreviewDocument = parser.parseFromString(previewDocument, "text/html");
-
-                        // Extract meta block and content elements from parsed preview
-                        const metaSection = parsedPreviewDocument.querySelector('head');
-
-                        // Store metadata in object to make easily accessible
-                        const renderedMetaData = {
-                            title: metaSection.querySelector('title').textContent,
-                            description: metaSection.querySelector('meta[name="description"]') ? metaSection.querySelector('meta[name="description"]').getAttribute('content') : ''
-                        };
-
-                        // Remove problematic tags for the Yoast plugin from preview document
-                        let scriptTags = parsedPreviewDocument.querySelectorAll('script,svg');
-                        scriptTags.forEach((scriptTag) => {
-                            scriptTag.remove();
-                        });
-
-                        let pageContent = parsedPreviewDocument.querySelector('body').innerHTML;
-                        let locale = (parsedPreviewDocument.querySelector('html').getAttribute('lang') || 'en_US').replace('-', '_');
-
-                        const re = /data-.*?=".*?"/gim;
-                        pageContent = pageContent.replace(re, '');
+                    .then((documentContent) => {
+                        let pageParser = new PageParser(documentContent);
 
                         // Create snippet preview
                         const snippetPreviewContainer = new SnippetPreview({
@@ -125,22 +101,22 @@ import '../Styles/Main.scss';
                             targets: {
                                 output: 'output'
                             },
-                            locale: locale,
+                            locale: pageParser.locale,
                             translations: translations,
                             callbacks: {
                                 getData: () => {
                                     return {
                                         title: getSnippetFieldValue(titleField, titleOverrideField),
-                                        metaTitle: renderedMetaData.title,
+                                        metaTitle: pageParser.title,
                                         keyword: getSnippetFieldValue(focusKeywordField),
-                                        text: pageContent,
+                                        text: pageParser.pageContent,
                                         excerpt: getSnippetFieldValue(metaDescriptionField),
                                         url: getSnippetFieldValue(uriPathSegmentField)
                                     };
                                 }
                             }
                         });
-                        app.switchAssessors(cornerstone ? true : false);
+                        app.switchAssessors(!!cornerstone);
                         app.refresh();
 
                         // Replace snippet editor form parts with Neos inline editing fields
