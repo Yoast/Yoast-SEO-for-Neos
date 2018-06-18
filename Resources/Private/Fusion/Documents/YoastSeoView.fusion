@@ -1,4 +1,7 @@
 prototype(Shel.Neos.YoastSeo:Documents.YoastSeoView) < prototype(Neos.Neos:Page) {
+
+    @context.interfaceLanguage = Shel.Neos.YoastSeo:InterfaceLanguage
+
     head {
         stylesheets >
         stylesheets = Neos.Fusion:Array {

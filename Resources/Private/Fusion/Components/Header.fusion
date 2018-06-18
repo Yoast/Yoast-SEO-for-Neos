@@ -1,4 +1,4 @@
 prototype(Shel.Neos.YoastSeo:Component.Header) < prototype(Neos.Fusion:Tag) {
     tagName = 'h1'
-    content = ${I18n.translate('Shel.Neos.YoastSeo:Main:header')}
+    content = ${I18n.translate('header', null, [], 'Main', 'Shel.Neos.YoastSeo', null, interfaceLanguage)}
 }

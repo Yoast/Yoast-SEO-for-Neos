@@ -1,0 +1,29 @@
+<?php
+namespace Shel\Neos\YoastSeo\FusionObjects;
+
+use Neos\Flow\Annotations as Flow;
+use Neos\Fusion\FusionObjects\AbstractFusionObject;
+use Neos\Neos\Service\UserService;
+
+/**
+ * Object to retrieve the current backend users interface language
+ */
+class InterfaceLanguageImplementation extends AbstractFusionObject
+{
+
+    /**
+     * @Flow\Inject
+     * @var UserService
+     */
+    protected $userService;
+
+    /**
+     * Returns the interface language as string
+     *
+     * @return string
+     */
+    public function evaluate()
+    {
+        return $this->userService->getInterfaceLanguage();
+    }
+}

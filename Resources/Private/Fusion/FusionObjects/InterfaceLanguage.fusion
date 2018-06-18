@@ -1,0 +1,3 @@
+prototype(Shel.Neos.YoastSeo:InterfaceLanguage) {
+    @class = 'Shel\\Neos\\YoastSeo\\FusionObjects\\InterfaceLanguageImplementation'
+}

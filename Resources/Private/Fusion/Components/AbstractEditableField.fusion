@@ -12,7 +12,7 @@ prototype(Shel.Neos.YoastSeo:Component.AbstractEditableField) < prototype(Neos.F
     content = Neos.Fusion:Array {
         label = Neos.Fusion:Tag {
             tagName = 'label'
-            content = ${I18n.translate('Shel.Neos.YoastSeo:Main:field.' + fieldName)}
+            content = ${I18n.translate('field.' + fieldName, null, [], 'Main', 'Shel.Neos.YoastSeo', null, interfaceLanguage)}
         }
 
         value = Neos.Fusion:Tag {
