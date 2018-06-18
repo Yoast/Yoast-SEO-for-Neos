@@ -24,11 +24,11 @@ export default class YoastInfoView extends PureComponent {
     static propTypes = {
         focusedNodeContextPath: PropTypes.string,
         getNodeByContextPath: PropTypes.func.isRequired
-    }
+    };
 
     constructor(props) {
         super(props);
-        const {focusedNodeContextPath, getNodeByContextPath, i18nRegistry} = this.props;
+        const {focusedNodeContextPath, getNodeByContextPath} = this.props;
         const node = getNodeByContextPath(focusedNodeContextPath);
 
         this.state = {
@@ -60,7 +60,7 @@ export default class YoastInfoView extends PureComponent {
     componentDidMount() {
         this.fetchTranslations();
         this.fetchContent();
-        this.props.serverFeedbackHandlers.set('Neos.Neos.Ui:ReloadDocument/DocumentUpdated', (feedbackPayload, {store}) => {
+        this.props.serverFeedbackHandlers.set('Neos.Neos.Ui:ReloadDocument/DocumentUpdated', () => {
             this.fetchContent();
         }, 'after Neos.Neos.Ui:ReloadDocument/Main');
     }
@@ -93,7 +93,7 @@ export default class YoastInfoView extends PureComponent {
                     i18n: new Jed(translations)
                 });
             });
-    }
+    };
 
     fetchContent = () => {
         this.setState({
@@ -151,7 +151,7 @@ export default class YoastInfoView extends PureComponent {
                     results: {}
                 }, this.refreshAnalysis);
             });
-    }
+    };
 
     refreshAnalysis = () => {
         let paper = new Paper(
@@ -169,12 +169,12 @@ export default class YoastInfoView extends PureComponent {
 
         this.refreshContentAnalysis(paper);
         this.refreshSeoAnalysis(paper);
-    }
+    };
 
     getTitleWidth = () => {
         // TODO: This is just a basic approximation and should be calculated in the future based on the actual text.
         return this.state.page.title.length * 8.5;
-    }
+    };
 
     parseResults = (results) => {
         return results.reduce((obj, result) => {
@@ -183,10 +183,10 @@ export default class YoastInfoView extends PureComponent {
                 rating: helpers.scoreToRating(result.score),
                 score: result.score,
                 text: result.text
-            }
+            };
             return obj;
         }, {});
-    }
+    };
 
     refreshSeoAnalysis = (paper) => {
         let seoAssessor;
@@ -204,7 +204,7 @@ export default class YoastInfoView extends PureComponent {
                 isAnalyzing: false
             }
         });
-    }
+    };
 
     refreshContentAnalysis = (paper) => {
         let contentAssessor;
@@ -222,7 +222,7 @@ export default class YoastInfoView extends PureComponent {
                 isAnalyzing: false
             }
         });
-    }
+    };
 
     renderResults = (filter) => {
         let groupedResults = {
@@ -243,10 +243,6 @@ export default class YoastInfoView extends PureComponent {
             }
         });
 
-        let renderedResults = Object.values(groupedResults).map(group => group.map(result => {
-            return this.renderRating(result);
-        }));
-
         return (
             <li className={style.yoastInfoView__item}>
                 <div className={style.yoastInfoView__title}>
@@ -257,11 +253,11 @@ export default class YoastInfoView extends PureComponent {
                 {this.state.expandGoodResults && groupedResults.good.map(result => this.renderRating(result))}
             </li>
         );
-    }
+    };
 
     handleExpandClick = () => {
         this.setState({expandGoodResults: true});
-    }
+    };
 
     renderRating = (result) => {
         return result && (
@@ -271,7 +267,7 @@ export default class YoastInfoView extends PureComponent {
                 <span dangerouslySetInnerHTML={{__html: result.text}} />
             </p>
         );
-    }
+    };
 
     renderTitleRating = () => {
         return (
@@ -284,7 +280,7 @@ export default class YoastInfoView extends PureComponent {
                 {this.renderRating(this.state.seo.results.titleKeyword)}
             </li>
         );
-    }
+    };
 
     renderDescriptionRating = () => {
         return (
@@ -297,7 +293,7 @@ export default class YoastInfoView extends PureComponent {
                 {this.renderRating(this.state.seo.results.metaDescriptionLength)}
             </li>
         );
-    }
+    };
 
     render() {
         let filterFromAllResults = ['titleWidth', 'titleKeyword', 'metaDescriptionKeyword', 'metaDescriptionLength'];

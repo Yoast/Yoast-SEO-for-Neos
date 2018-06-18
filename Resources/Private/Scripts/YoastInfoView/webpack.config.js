@@ -24,10 +24,10 @@ const uglifyJs = new UglifyJSPlugin({
 const browserSync = new BrowserSyncPlugin();
 
 module.exports = {
-    entry: './Resources/Private/Scripts/App.js',
+    entry: '../App.js',
     output: {
         filename: 'Bundle.js',
-        path: path.resolve(__dirname, 'Resources/Public/Scripts')
+        path: path.resolve(__dirname, '../../../Public/Scripts')
     },
     devtool: devMode ? "cheap-module-eval-source-map" : '',
     module: {
