@@ -6,7 +6,7 @@
     "node": ">=6.10"
   },
   "scripts": {
-    "build-all": "npm run build-inspector && npm run build-app",
+    "build-all": "yarn build-inspector && yarn build-app",
     "build-inspector": "neos-react-scripts build",
     "watch-inspector": "neos-react-scripts watch",
     "build-app": "NODE_ENV=production webpack",
