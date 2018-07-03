@@ -21905,7 +21905,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _dec, _dec2, _class, _class2, _temp;
+var _dec, _dec2, _dec3, _class, _class2, _temp;
 
 var _react = __webpack_require__(258);
 
@@ -21939,6 +21939,8 @@ var _neosUiBackendConnector = __webpack_require__(560);
 
 var _jed = __webpack_require__(250);
 
+var _jed2 = _interopRequireDefault(_jed);
+
 var _style = __webpack_require__(561);
 
 var _style2 = _interopRequireDefault(_style);
@@ -21960,12 +21962,15 @@ var YoastInfoView = (_dec = (0, _reactRedux.connect)(function (state) {
         focusedNodeContextPath: _neosUiReduxStore.selectors.CR.Nodes.focusedNodePathSelector(state),
         getNodeByContextPath: _neosUiReduxStore.selectors.CR.Nodes.nodeByContextPath(state)
     };
-}), _dec2 = (0, _neosUiDecorators.neos)(function (globalRegistry) {
+}), _dec2 = (0, _reactRedux.connect)((0, _plowJs.$transform)({
+    contextPath: (0, _plowJs.$get)('ui.contentCanvas.contextPath'),
+    canvasSrc: (0, _plowJs.$get)('ui.contentCanvas.src')
+})), _dec3 = (0, _neosUiDecorators.neos)(function (globalRegistry) {
     return {
         i18nRegistry: globalRegistry.get('i18n'),
         serverFeedbackHandlers: globalRegistry.get('serverFeedbackHandlers')
     };
-}), _dec(_class = _dec2(_class = (_temp = _class2 = function (_PureComponent) {
+}), _dec(_class = _dec2(_class = _dec3(_class = (_temp = _class2 = function (_PureComponent) {
     _inherits(YoastInfoView, _PureComponent);
 
     function YoastInfoView(props) {
@@ -21976,7 +21981,7 @@ var YoastInfoView = (_dec = (0, _reactRedux.connect)(function (state) {
         _this.fetchTranslations = function () {
             _neosUiBackendConnector.fetchWithErrorHandling.withCsrfToken(function (csrfToken) {
                 return {
-                    url: '/neosyoastseo/fetchTranslations',
+                    url: '/neosyoastseo/data/fetchTranslations',
                     method: 'GET',
                     credentials: 'include',
                     headers: {
@@ -22000,7 +22005,7 @@ var YoastInfoView = (_dec = (0, _reactRedux.connect)(function (state) {
                 }
 
                 _this.setState({
-                    i18n: new _jed.Jed(translations)
+                    i18n: new _jed2.default(translations)
                 });
             });
         };
@@ -22020,7 +22025,7 @@ var YoastInfoView = (_dec = (0, _reactRedux.connect)(function (state) {
 
             _neosUiBackendConnector.fetchWithErrorHandling.withCsrfToken(function (csrfToken) {
                 return {
-                    url: _this.state.nodeUri + '?shelYoastSeoPreviewMode=true',
+                    url: '/neosyoastseo/page/renderPreviewPage?node=' + _this.props.contextPath,
                     method: 'GET',
                     credentials: 'include',
                     headers: {
@@ -22029,7 +22034,11 @@ var YoastInfoView = (_dec = (0, _reactRedux.connect)(function (state) {
                     }
                 };
             }).then(function (response) {
-                return response && response.text();
+                if (!response) {
+                    return;
+                }
+                _this.setState({ slug: new URL(response.url).pathname.split('@')[0] });
+                return response.text();
             }).then(function (documentContent) {
                 var pageParser = new _pageParser2.default(documentContent);
 
@@ -22217,8 +22226,6 @@ var YoastInfoView = (_dec = (0, _reactRedux.connect)(function (state) {
 
         _this.state = {
             nodeUri: (0, _plowJs.$get)('uri', node),
-            previewUri: (0, _plowJs.$get)('previewUri', node),
-            slug: new URL((0, _plowJs.$get)('previewUri', node)).pathname,
             focusKeyword: (0, _plowJs.$get)('properties.focusKeyword', node),
             isCornerstone: (0, _plowJs.$get)('properties.isCornerstone', node),
             expandGoodResults: false,
@@ -22310,9 +22317,11 @@ var YoastInfoView = (_dec = (0, _reactRedux.connect)(function (state) {
 
     return YoastInfoView;
 }(_react.PureComponent), _class2.propTypes = {
+    canvasSrc: _propTypes2.default.string,
+    contextPath: _propTypes2.default.string,
     focusedNodeContextPath: _propTypes2.default.string,
     getNodeByContextPath: _propTypes2.default.func.isRequired
-}, _temp)) || _class) || _class);
+}, _temp)) || _class) || _class) || _class);
 exports.default = YoastInfoView;
 
 /***/ }),

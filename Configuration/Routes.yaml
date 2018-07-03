@@ -1,9 +1,19 @@
 -
-  name: 'Shel.Neos.YoastSeo'
-  uriPattern: 'neosyoastseo/{@action}'
+  name: 'Shel.Neos.YoastSeo:Data'
+  uriPattern: 'neosyoastseo/data/{@action}'
   defaults:
     '@package':    'Shel.Neos.YoastSeo'
     '@controller': 'Data'
     '@format':     'json'
     '@action':     'query'
+  appendExceedingArguments: true
+
+-
+  name: 'Shel.Neos.YoastSeo:Page'
+  uriPattern: 'neosyoastseo/page/{@action}'
+  defaults:
+    '@package':    'Shel.Neos.YoastSeo'
+    '@controller': 'Page'
+    '@format':     'html'
+    '@action':     'renderPreviewPage'
   appendExceedingArguments: true

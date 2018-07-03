@@ -1,7 +1,7 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {$get} from 'plow-js';
+import {$transform, $get} from 'plow-js';
 import {Icon, Button} from '@neos-project/react-ui-components';
 import {neos} from '@neos-project/neos-ui-decorators';
 import {selectors} from '@neos-project/neos-ui-redux-store';
@@ -9,7 +9,7 @@ import {ContentAssessor, SEOAssessor, Paper, helpers} from 'yoastseo';
 import CornerStoneContentAssessor from 'yoastseo/js/cornerstone/contentAssessor';
 import CornerstoneSEOAssessor from 'yoastseo/js/cornerstone/seoAssessor';
 import {fetchWithErrorHandling} from '@neos-project/neos-ui-backend-connector';
-import {Jed} from "jed";
+import Jed from "jed";
 import style from './style.css';
 import PageParser from "./helper/pageParser";
 
@@ -17,12 +17,18 @@ import PageParser from "./helper/pageParser";
     focusedNodeContextPath: selectors.CR.Nodes.focusedNodePathSelector(state),
     getNodeByContextPath: selectors.CR.Nodes.nodeByContextPath(state)
 }))
+@connect($transform({
+    contextPath: $get('ui.contentCanvas.contextPath'),
+    canvasSrc: $get('ui.contentCanvas.src')
+}))
 @neos(globalRegistry => ({
     i18nRegistry: globalRegistry.get('i18n'),
     serverFeedbackHandlers: globalRegistry.get('serverFeedbackHandlers')
 }))
 export default class YoastInfoView extends PureComponent {
     static propTypes = {
+        canvasSrc: PropTypes.string,
+        contextPath: PropTypes.string,
         focusedNodeContextPath: PropTypes.string,
         getNodeByContextPath: PropTypes.func.isRequired
     };
@@ -34,8 +40,6 @@ export default class YoastInfoView extends PureComponent {
 
         this.state = {
             nodeUri: $get('uri', node),
-            previewUri: $get('previewUri', node),
-            slug: new URL($get('previewUri', node)).pathname,
             focusKeyword: $get('properties.focusKeyword', node),
             isCornerstone: $get('properties.isCornerstone', node),
             expandGoodResults: false,
@@ -68,7 +72,7 @@ export default class YoastInfoView extends PureComponent {
 
     fetchTranslations = () => {
         fetchWithErrorHandling.withCsrfToken(csrfToken => ({
-            url: `/neosyoastseo/fetchTranslations`,
+            url: '/neosyoastseo/data/fetchTranslations',
             method: 'GET',
             credentials: 'include',
             headers: {
@@ -113,7 +117,7 @@ export default class YoastInfoView extends PureComponent {
         });
 
         fetchWithErrorHandling.withCsrfToken(csrfToken => ({
-            url: `${this.state.nodeUri}?shelYoastSeoPreviewMode=true`,
+            url: `/neosyoastseo/page/renderPreviewPage?node=${this.props.contextPath}`,
             method: 'GET',
             credentials: 'include',
             headers: {
@@ -121,9 +125,15 @@ export default class YoastInfoView extends PureComponent {
                 'Content-Type': 'text/html'
             }
         }))
-            .then(response => response && response.text())
+            .then(response => {
+                if (!response) {
+                    return;
+                }
+                this.setState({ slug: new URL(response.url).pathname.split('@')[0]});
+                return response.text();
+            })
             .then(documentContent => {
-                let pageParser = new PageParser(documentContent);
+                const pageParser = new PageParser(documentContent);
 
                 this.setState({
                     pageContent: pageParser.pageContent,

@@ -52,7 +52,7 @@ import {SnippetPreview, App} from './YoastInfoView/node_modules/yoastseo';
 
         // Constants
         const previewUrl = document.getElementById('previewUrl').textContent;
-        const translationsUrl = '/neosyoastseo/fetchTranslations';
+        const translationsUrl = '/neosyoastseo/data/fetchTranslations';
         const baseUrl = document.getElementById('baseUrl').textContent;
         const cornerstone = document.getElementById('cornerstone').textContent;
 
