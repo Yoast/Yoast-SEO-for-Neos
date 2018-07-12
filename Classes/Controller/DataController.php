@@ -1,6 +1,7 @@
 <?php
 namespace Shel\Neos\YoastSeo\Controller;
 
+use Neos\Cache\Frontend\VariableFrontend;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\Controller\ActionController;
 use Neos\Flow\Mvc\View\JsonView;
@@ -44,6 +45,12 @@ class DataController extends ActionController
     protected $userService;
 
     /**
+     * @Flow\Inject
+     * @var VariableFrontend
+     */
+    protected $translationCache;
+
+    /**
      * Returns json data containing the Yoast SEO translations for the current users backend language
      *
      * @Flow\SkipCsrfProtection
@@ -51,29 +58,32 @@ class DataController extends ActionController
     public function fetchTranslationsAction()
     {
         $interfaceLanguage = $this->userService->getInterfaceLanguage();
-
         $locale = $this->getValidLocale($interfaceLanguage);
         $translationData = false;
         $error = '';
 
         if (!empty($locale)) {
-            try {
-                $translationData = file_get_contents('resource://Shel.Neos.YoastSeo/Private/Languages/wordpress-seo-' . $locale . '.json');
-                $translationData = json_decode(str_replace('wordpress-seo', 'js-text-analysis', $translationData), true);
-            } catch (\Exception $e) {
-                $error = $e->getMessage();
+            $translationData = $this->translationCache->get($locale);
+            if (!$translationData) {
+                try {
+                    $rawTranslationData = file_get_contents('resource://Shel.Neos.YoastSeo/Private/Languages/wordpress-seo-' . $locale . '.json');
+                    $translationData = json_decode(str_replace('wordpress-seo', 'js-text-analysis', $rawTranslationData),
+                        true);
+                    $this->translationCache->set($locale, $translationData);
+                } catch (\Exception $e) {
+                    $error = $e->getMessage();
+                }
             }
         }
 
         if ($translationData) {
-            $result = $translationData;
+            $this->view->assign('value', $translationData);
         } else {
-            $result = [
+            $this->view->assign('value', [
                 'error' => $error ? $error : 'No translation available for language ' . $interfaceLanguage
-            ];
+            ]);
         }
 
-        $this->view->assign('value', $result);
     }
 
     /**
