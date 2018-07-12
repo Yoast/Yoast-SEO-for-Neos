@@ -7,7 +7,7 @@
   },
   "scripts": {
     "build-all": "yarn build-inspector && yarn build-app",
-    "build-inspector": "neos-react-scripts build",
+    "build-inspector": "neos-react-scripts build && uglifyjs --compress --mangle -o ../../../Public/YoastInfoView/Plugin.js -- ../../../Public/YoastInfoView/Plugin.js",
     "watch-inspector": "neos-react-scripts watch",
     "build-app": "NODE_ENV=production webpack",
     "build-app-dev": "NODE_ENV=development webpack",
