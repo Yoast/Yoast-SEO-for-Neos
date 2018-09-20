@@ -31,7 +31,7 @@
     "style-loader": "^0.19.1",
     "uglifyjs-webpack-plugin": "^1.2.5",
     "webpack": "^3.12.0",
-    "yoastseo": "1.37.0"
+    "yoastseo": "1.38.4"
   },
   "neos": {
     "buildTargetDirectory": "../../../Public/YoastInfoView"
