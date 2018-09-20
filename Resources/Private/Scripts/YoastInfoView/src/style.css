@@ -25,6 +25,11 @@
 
         a {
             color: var(--colors-ContrastBrightest);
+            text-decoration: underline;
+
+            &:hover {
+                text-decoration: none;
+            }
         }
     }
 
