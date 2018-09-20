@@ -5,7 +5,10 @@ import {$transform, $get} from 'plow-js';
 import {Icon, Button} from '@neos-project/react-ui-components';
 import {neos} from '@neos-project/neos-ui-decorators';
 import {selectors} from '@neos-project/neos-ui-redux-store';
-import {ContentAssessor, SEOAssessor, Paper, helpers} from 'yoastseo';
+import SEOAssessor from 'yoastseo/js/seoAssessor';
+import Paper from 'yoastseo/js/values/Paper';
+import ContentAssessor from 'yoastseo/js/contentAssessor';
+import scoreToRating from 'yoastseo/js/interpreters/scoreToRating';
 import CornerStoneContentAssessor from 'yoastseo/js/cornerstone/contentAssessor';
 import CornerstoneSEOAssessor from 'yoastseo/js/cornerstone/seoAssessor';
 import {fetchWithErrorHandling} from '@neos-project/neos-ui-backend-connector';
@@ -175,7 +178,7 @@ export default class YoastInfoView extends PureComponent {
         return results.reduce((obj, result) => {
             obj[result._identifier] = {
                 identifier: result._identifier,
-                rating: helpers.scoreToRating(result.score),
+                rating: scoreToRating(result.score),
                 score: result.score,
                 text: result.text
             };

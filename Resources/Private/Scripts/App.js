@@ -1,6 +1,7 @@
 import '../Styles/Main.scss';
 import PageParser from "./YoastInfoView/src/helper/pageParser";
-import {SnippetPreview, App} from './YoastInfoView/node_modules/yoastseo';
+import SnippetPreview from './YoastInfoView/node_modules/yoastseo/js/snippetPreview';
+import App from './YoastInfoView/node_modules/yoastseo/js/app';
 
 ((document, window) => {
     /**
@@ -116,7 +117,7 @@ import {SnippetPreview, App} from './YoastInfoView/node_modules/yoastseo';
                                 }
                             }
                         });
-                        app.switchAssessors(!!cornerstone);
+                        app.changeAssessorOptions(!!cornerstone);
                         app.refresh();
 
                         // Replace snippet editor form parts with Neos inline editing fields

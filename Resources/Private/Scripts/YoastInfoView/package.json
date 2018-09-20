@@ -26,12 +26,12 @@
     "node-sass": "^4.9.0",
     "prop-types": "^15.6.0",
     "recompose": "^0.25.1",
-    "sassdash": "^0.9.0",
     "sass-loader": "^6.0.7",
+    "sassdash": "^0.9.0",
     "style-loader": "^0.19.1",
     "uglifyjs-webpack-plugin": "^1.2.5",
     "webpack": "^3.12.0",
-    "yoastseo": "^1.34.0"
+    "yoastseo": "1.36.0"
   },
   "neos": {
     "buildTargetDirectory": "../../../Public/YoastInfoView"
