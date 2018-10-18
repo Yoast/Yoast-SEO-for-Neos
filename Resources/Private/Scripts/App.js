@@ -46,6 +46,7 @@ import Jed from './YoastInfoView/node_modules/jed/jed';
         const titleField = document.querySelector('.yoast-seo__title');
         const titleOverrideField = document.querySelector('.yoast-seo__title-override');
         const metaDescriptionField = document.querySelector('.yoast-seo__meta-description');
+        const spinner = document.querySelector('.yoast-seo__spinner');
 
         // Containers for rendering
         const errorOutput = document.querySelector('.yoast-seo__errorOutput');
@@ -116,6 +117,9 @@ import Jed from './YoastInfoView/node_modules/jed/jed';
                                         excerpt: getSnippetFieldValue(metaDescriptionField),
                                         url: getSnippetFieldValue(uriPathSegmentField)
                                     };
+                                },
+                                updatedContentResults: () => {
+                                    spinner.classList.add('yoast-seo__spinner--hidden');
                                 }
                             }
                         });
