@@ -196,7 +196,6 @@ export default class YoastInfoView extends PureComponent {
 
         this.setState({
             seo: {
-                score: seoAssessor.calculateOverallScore(),
                 results: this.parseResults(seoAssessor.getValidResults()),
                 isAnalyzing: false
             }
@@ -214,7 +213,6 @@ export default class YoastInfoView extends PureComponent {
 
         this.setState({
             content: {
-                score: contentAssessor.calculateOverallScore(),
                 results: this.parseResults(contentAssessor.getValidResults()),
                 isAnalyzing: false
             }
@@ -297,17 +295,6 @@ export default class YoastInfoView extends PureComponent {
 
         return (
             <ul className={style.yoastInfoView}>
-                {!this.state.content.isAnalyzing && !this.state.seo.isAnalyzing && (
-                    <li className={style.yoastInfoView__item}>
-                        <div className={style.yoastInfoView__title}>
-                            {this.props.i18nRegistry.translate('inspector.contentScore', 'Content Score', {}, 'Shel.Neos.YoastSeo')}: {this.state.content.score}
-                        </div>
-                        <div className={style.yoastInfoView__title}>
-                            {this.props.i18nRegistry.translate('inspector.seoScore', 'SEO Score', {}, 'Shel.Neos.YoastSeo')}: {this.state.seo.score}
-                        </div>
-                    </li>
-                )}
-
                 {!this.state.seo.isAnalyzing && this.renderTitleRating()}
                 {!this.state.seo.isAnalyzing && this.renderDescriptionRating()}
                 {!this.state.content.isAnalyzing && !this.state.seo.isAnalyzing && this.renderResults(filterFromAllResults)}
