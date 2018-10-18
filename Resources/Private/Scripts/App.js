@@ -1,6 +1,7 @@
 import '../Styles/Main.scss';
 import PageParser from "./YoastInfoView/src/helper/pageParser";
 import {App, SnippetPreview} from './YoastInfoView/node_modules/yoastseo';
+import Jed from './YoastInfoView/node_modules/jed/jed';
 
 ((document, window) => {
     /**
@@ -79,9 +80,9 @@ import {App, SnippetPreview} from './YoastInfoView/node_modules/yoastseo';
                 get(previewUrl)
                     .then((documentContent) => {
                         let pageParser = new PageParser(documentContent);
+                        let jed = new Jed(translations);
 
-                        // Create snippet preview
-                        const snippetPreviewContainer = new SnippetPreview({
+                        const snippetPreview = new SnippetPreview({
                             data: {
                                 title: getSnippetFieldValue(titleField, titleOverrideField),
                                 metaDesc: getSnippetFieldValue(metaDescriptionField),
@@ -92,12 +93,14 @@ import {App, SnippetPreview} from './YoastInfoView/node_modules/yoastseo';
                             },
                             addTrailingSlash: false,
                             baseURL: baseUrl,
-                            targetElement: snippet
+                            targetElement: snippet,
+                            i18n: jed
                         });
+                        // Render template once to avoid race conditions with yoast pluggable system
+                        snippetPreview.renderTemplate();
 
-                        // Initialize plugin
                         let app = new App({
-                            snippetPreview: snippetPreviewContainer,
+                            snippetPreview: snippetPreview,
                             targets: {
                                 output: 'output'
                             },
@@ -134,9 +137,9 @@ import {App, SnippetPreview} from './YoastInfoView/node_modules/yoastseo';
 
                         // Update snippet when editable fields are changed
                         const snippetFieldsObserver = new MutationObserver(() => {
-                            snippetPreviewContainer.setTitle(getSnippetFieldValue(titleField));
-                            snippetPreviewContainer.setUrlPath(getSnippetFieldValue(uriPathSegmentField));
-                            snippetPreviewContainer.setMetaDescription(getSnippetFieldValue(metaDescriptionField));
+                            snippetPreview.setTitle(getSnippetFieldValue(titleField));
+                            snippetPreview.setUrlPath(getSnippetFieldValue(uriPathSegmentField));
+                            snippetPreview.setMetaDescription(getSnippetFieldValue(metaDescriptionField));
                         });
 
                         // Observe editable fields for changes
@@ -152,6 +155,7 @@ import {App, SnippetPreview} from './YoastInfoView/node_modules/yoastseo';
                     .catch((err) => {
                         errorOutput.textContent = err;
                         errorOutput.classList.remove('hidden');
+                        throw err;
                     });
             });
     }
