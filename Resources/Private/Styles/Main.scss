@@ -96,3 +96,27 @@ body {
 .yoast-section {
     max-width: none;
 }
+
+.yoast-seo__spinner {
+    animation: rotation 3s infinite linear;
+    display: inline-block;
+    margin-left: 1rem;
+}
+
+.yoast-seo__spinner--hidden {
+    display: none;
+}
+
+@keyframes rotation {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(359deg);
+    }
+}
+
+// Hide mark content button as it's not usable in this package yet
+.assessment-results__mark.icon-eye-inactive {
+    display: none;
+}

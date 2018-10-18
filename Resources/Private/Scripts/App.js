@@ -1,7 +1,7 @@
 import '../Styles/Main.scss';
 import PageParser from "./YoastInfoView/src/helper/pageParser";
-import SnippetPreview from './YoastInfoView/node_modules/yoastseo/js/snippetPreview';
-import App from './YoastInfoView/node_modules/yoastseo/js/app';
+import {App, SnippetPreview} from './YoastInfoView/node_modules/yoastseo';
+import Jed from './YoastInfoView/node_modules/jed/jed';
 
 ((document, window) => {
     /**
@@ -46,6 +46,7 @@ import App from './YoastInfoView/node_modules/yoastseo/js/app';
         const titleField = document.querySelector('.yoast-seo__title');
         const titleOverrideField = document.querySelector('.yoast-seo__title-override');
         const metaDescriptionField = document.querySelector('.yoast-seo__meta-description');
+        const spinner = document.querySelector('.yoast-seo__spinner');
 
         // Containers for rendering
         const errorOutput = document.querySelector('.yoast-seo__errorOutput');
@@ -80,9 +81,9 @@ import App from './YoastInfoView/node_modules/yoastseo/js/app';
                 get(previewUrl)
                     .then((documentContent) => {
                         let pageParser = new PageParser(documentContent);
+                        let jed = new Jed(translations);
 
-                        // Create snippet preview
-                        const snippetPreviewContainer = new SnippetPreview({
+                        const snippetPreview = new SnippetPreview({
                             data: {
                                 title: getSnippetFieldValue(titleField, titleOverrideField),
                                 metaDesc: getSnippetFieldValue(metaDescriptionField),
@@ -93,12 +94,14 @@ import App from './YoastInfoView/node_modules/yoastseo/js/app';
                             },
                             addTrailingSlash: false,
                             baseURL: baseUrl,
-                            targetElement: snippet
+                            targetElement: snippet,
+                            i18n: jed
                         });
+                        // Render template once to avoid race conditions with yoast pluggable system
+                        snippetPreview.renderTemplate();
 
-                        // Initialize plugin
                         let app = new App({
-                            snippetPreview: snippetPreviewContainer,
+                            snippetPreview: snippetPreview,
                             targets: {
                                 output: 'output'
                             },
@@ -114,6 +117,9 @@ import App from './YoastInfoView/node_modules/yoastseo/js/app';
                                         excerpt: getSnippetFieldValue(metaDescriptionField),
                                         url: getSnippetFieldValue(uriPathSegmentField)
                                     };
+                                },
+                                updatedContentResults: () => {
+                                    spinner.classList.add('yoast-seo__spinner--hidden');
                                 }
                             }
                         });
@@ -135,9 +141,9 @@ import App from './YoastInfoView/node_modules/yoastseo/js/app';
 
                         // Update snippet when editable fields are changed
                         const snippetFieldsObserver = new MutationObserver(() => {
-                            snippetPreviewContainer.setTitle(getSnippetFieldValue(titleField));
-                            snippetPreviewContainer.setUrlPath(getSnippetFieldValue(uriPathSegmentField));
-                            snippetPreviewContainer.setMetaDescription(getSnippetFieldValue(metaDescriptionField));
+                            snippetPreview.setTitle(getSnippetFieldValue(titleField));
+                            snippetPreview.setUrlPath(getSnippetFieldValue(uriPathSegmentField));
+                            snippetPreview.setMetaDescription(getSnippetFieldValue(metaDescriptionField));
                         });
 
                         // Observe editable fields for changes
@@ -153,6 +159,7 @@ import App from './YoastInfoView/node_modules/yoastseo/js/app';
                     .catch((err) => {
                         errorOutput.textContent = err;
                         errorOutput.classList.remove('hidden');
+                        throw err;
                     });
             });
     }

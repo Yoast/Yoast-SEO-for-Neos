@@ -5,13 +5,12 @@ import {$transform, $get} from 'plow-js';
 import {Icon, Button} from '@neos-project/react-ui-components';
 import {neos} from '@neos-project/neos-ui-decorators';
 import {selectors} from '@neos-project/neos-ui-redux-store';
-import SEOAssessor from 'yoastseo/js/seoAssessor';
-import Paper from 'yoastseo/js/values/Paper';
-import ContentAssessor from 'yoastseo/js/contentAssessor';
-import scoreToRating from 'yoastseo/js/interpreters/scoreToRating';
-import CornerStoneContentAssessor from 'yoastseo/js/cornerstone/contentAssessor';
-import CornerstoneSEOAssessor from 'yoastseo/js/cornerstone/seoAssessor';
 import {fetchWithErrorHandling} from '@neos-project/neos-ui-backend-connector';
+import {Paper, ContentAssessor} from 'yoastseo';
+import SEOAssessor from 'yoastseo/src/seoAssessor';
+import {scoreToRating} from 'yoastseo/src/interpreters';
+import CornerStoneContentAssessor from 'yoastseo/src/cornerstone/contentAssessor';
+import CornerstoneSEOAssessor from 'yoastseo/src/cornerstone/seoAssessor';
 import Jed from "jed";
 import style from './style.css';
 import PageParser from "./helper/pageParser";
@@ -197,7 +196,6 @@ export default class YoastInfoView extends PureComponent {
 
         this.setState({
             seo: {
-                score: seoAssessor.calculateOverallScore(),
                 results: this.parseResults(seoAssessor.getValidResults()),
                 isAnalyzing: false
             }
@@ -215,7 +213,6 @@ export default class YoastInfoView extends PureComponent {
 
         this.setState({
             content: {
-                score: contentAssessor.calculateOverallScore(),
                 results: this.parseResults(contentAssessor.getValidResults()),
                 isAnalyzing: false
             }
@@ -298,17 +295,6 @@ export default class YoastInfoView extends PureComponent {
 
         return (
             <ul className={style.yoastInfoView}>
-                {!this.state.content.isAnalyzing && !this.state.seo.isAnalyzing && (
-                    <li className={style.yoastInfoView__item}>
-                        <div className={style.yoastInfoView__title}>
-                            {this.props.i18nRegistry.translate('inspector.contentScore', 'Content Score', {}, 'Shel.Neos.YoastSeo')}: {this.state.content.score}
-                        </div>
-                        <div className={style.yoastInfoView__title}>
-                            {this.props.i18nRegistry.translate('inspector.seoScore', 'SEO Score', {}, 'Shel.Neos.YoastSeo')}: {this.state.seo.score}
-                        </div>
-                    </li>
-                )}
-
                 {!this.state.seo.isAnalyzing && this.renderTitleRating()}
                 {!this.state.seo.isAnalyzing && this.renderDescriptionRating()}
                 {!this.state.content.isAnalyzing && !this.state.seo.isAnalyzing && this.renderResults(filterFromAllResults)}
