@@ -1,7 +1,6 @@
 import '../Styles/Main.scss';
 import PageParser from "./YoastInfoView/src/helper/pageParser";
-import SnippetPreview from './YoastInfoView/node_modules/yoastseo/js/snippetPreview';
-import App from './YoastInfoView/node_modules/yoastseo/js/app';
+import {App, SnippetPreview} from './YoastInfoView/node_modules/yoastseo';
 
 ((document, window) => {
     /**
