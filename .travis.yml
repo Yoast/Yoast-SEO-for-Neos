@@ -1,0 +1,11 @@
+language: node_js
+
+sudo: false
+
+cache: yarn
+
+install:
+  - cd Resources/Private/Scripts/YoastInfoView && yarn install
+
+script:
+  - cd Resources/Private/Scripts/YoastInfoView && yarn build-all
