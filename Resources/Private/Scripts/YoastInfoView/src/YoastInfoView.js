@@ -14,6 +14,7 @@ import CornerstoneSEOAssessor from 'yoastseo/src/cornerstone/seoAssessor';
 import Jed from "jed";
 import style from './style.css';
 import PageParser from "./helper/pageParser";
+import {actions} from './actions';
 
 @connect(state => ({
     focusedNodeContextPath: selectors.CR.Nodes.focusedNodePathSelector(state),
@@ -23,16 +24,25 @@ import PageParser from "./helper/pageParser";
     contextPath: $get('ui.contentCanvas.contextPath'),
     canvasSrc: $get('ui.contentCanvas.src')
 }))
+@connect(state => ({
+        translations: $get('ui.yoastInfoView.translations', state)
+    })
+    , {
+        setTranslations: actions.setTranslations
+    }
+)
 @neos(globalRegistry => ({
     i18nRegistry: globalRegistry.get('i18n'),
     serverFeedbackHandlers: globalRegistry.get('serverFeedbackHandlers')
 }))
 export default class YoastInfoView extends PureComponent {
     static propTypes = {
+        translations: PropTypes.array,
         canvasSrc: PropTypes.string,
         contextPath: PropTypes.string,
         focusedNodeContextPath: PropTypes.string,
-        getNodeByContextPath: PropTypes.func.isRequired
+        getNodeByContextPath: PropTypes.func.isRequired,
+        setTranslations: PropTypes.func.isRequired
     };
 
     constructor(props) {
@@ -73,6 +83,13 @@ export default class YoastInfoView extends PureComponent {
     }
 
     fetchTranslations = () => {
+        if (this.props.translations) {
+            this.setState({
+                i18n: new Jed(this.props.translations)
+            });
+            return;
+        }
+
         fetchWithErrorHandling.withCsrfToken(csrfToken => ({
             url: '/neosyoastseo/data/fetchTranslations',
             method: 'GET',
@@ -99,6 +116,7 @@ export default class YoastInfoView extends PureComponent {
                 this.setState({
                     i18n: new Jed(translations)
                 });
+                this.props.setTranslations(translations);
             });
     };
 
@@ -131,7 +149,7 @@ export default class YoastInfoView extends PureComponent {
                 if (!response) {
                     return;
                 }
-                this.setState({ slug: new URL(response.url).pathname.split('@')[0]});
+                this.setState({slug: new URL(response.url).pathname.split('@')[0]});
                 return response.text();
             })
             .then(documentContent => {
@@ -258,8 +276,10 @@ export default class YoastInfoView extends PureComponent {
         return result && (
             <p className={style.yoastInfoView__content}
                title={this.props.i18nRegistry.translate('inspector.resultType.' + result.identifier, result.identifier, {}, 'Shel.Neos.YoastSeo')}>
-                <svg height="13" width="6" className={style['yoastInfoView__rating_' + result.rating]}><circle cx="3" cy="9" r="3" /></svg>
-                <span dangerouslySetInnerHTML={{__html: result.text}} />
+                <svg height="13" width="6" className={style['yoastInfoView__rating_' + result.rating]}>
+                    <circle cx="3" cy="9" r="3"/>
+                </svg>
+                <span dangerouslySetInnerHTML={{__html: result.text}}/>
             </p>
         );
     };
