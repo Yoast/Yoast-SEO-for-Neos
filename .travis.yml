@@ -1,0 +1,18 @@
+language: node_js
+
+sudo: false
+
+cache: yarn
+
+before_install:
+  - cd Resources/Private/Scripts/YoastInfoView
+
+install:
+  - yarn install
+
+jobs:
+  include:
+    - stage: inspector
+      script: yarn build-inspector
+    - stage: edit mode app
+      script: yarn build-app
