@@ -3,6 +3,7 @@
 [![Latest Stable Version](https://poser.pugx.org/shel/neos-yoast-seo/v/stable)](https://packagist.org/packages/shel/neos-yoast-seo)
 [![Total Downloads](https://poser.pugx.org/shel/neos-yoast-seo/downloads)](https://packagist.org/packages/shel/neos-yoast-seo)
 [![License](https://poser.pugx.org/shel/neos-yoast-seo/license)](https://packagist.org/packages/shel/neos-yoast-seo)
+[![Build Status](https://travis-ci.com/Sebobo/Shel.Neos.YoastSeo.svg?branch=master)](https://travis-ci.com/Sebobo/Shel.Neos.YoastSeo)
 
 ## What does it do
 
