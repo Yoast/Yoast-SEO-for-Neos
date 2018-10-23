@@ -39,10 +39,10 @@
                 <source>Results</source>
             </trans-unit>
             <trans-unit id="inspector.seoScore">
-                <source>SEO Score</source>
+                <source>SEO analysis</source>
             </trans-unit>
             <trans-unit id="inspector.contentScore">
-                <source>Content Score</source>
+                <source>Content analysis</source>
             </trans-unit>
             <trans-unit id="inspector.showAllResults">
                 <source>Show all results</source>
