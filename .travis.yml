@@ -4,8 +4,15 @@ sudo: false
 
 cache: yarn
 
-install:
-  - cd Resources/Private/Scripts/YoastInfoView && yarn install
+before_install:
+  - cd Resources/Private/Scripts/YoastInfoView
 
-script:
-  - cd Resources/Private/Scripts/YoastInfoView && yarn build-all
+install:
+  - yarn install
+
+jobs:
+  include:
+    - stage: inspector
+      script: yarn build-inspector
+    - stage: edit mode app
+      script: yarn build-app
