@@ -1,3 +1,7 @@
 'Neos.Neos:Document':
   superTypes:
     'Shel.Neos.YoastSeo:SeoMixin': true
+
+'Neos.Neos:Shortcut':
+  superTypes:
+    'Shel.Neos.YoastSeo:SeoMixin': false
