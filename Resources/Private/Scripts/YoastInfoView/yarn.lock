@@ -8683,10 +8683,10 @@ yeast@0.1.2:
   resolved "https://registry.yarnpkg.com/yeast/-/yeast-0.1.2.tgz#008e06d8094320c372dbc2f8ed76a0ca6c8ac419"
   integrity sha1-AI4G2AlDIMNy28L47XagymyKxBk=
 
-yoastseo@1.40.0:
-  version "1.40.0"
-  resolved "https://registry.yarnpkg.com/yoastseo/-/yoastseo-1.40.0.tgz#2be3b91422ddc614131ab4b6e5aab9e6c347170d"
-  integrity sha512-sA4KEi3CHsajG+wzj4oXBhAYb2B2BpM2hWitqyD7URgFJxwrC3PvNFhTF64haE71xx/xxQZKQEODT2iJRe1lAA==
+yoastseo@1.41.1:
+  version "1.41.1"
+  resolved "https://registry.yarnpkg.com/yoastseo/-/yoastseo-1.41.1.tgz#19c827a4a991f8f2655e580773712bb25850b0f7"
+  integrity sha512-qP5Aq3Vjv0b0JVfx7eGcL/OLyPdScL9VSqOexf+Om1CfWA12OetULzkmNkC4m70E3MsexVhgch4h5qIdAQi7Og==
   dependencies:
     htmlparser2 "^3.9.2"
     jed "^1.1.0"
