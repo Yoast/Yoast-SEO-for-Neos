@@ -11,7 +11,8 @@
     "watch-inspector": "neos-react-scripts watch",
     "build-app": "NODE_ENV=production webpack",
     "build-app-dev": "NODE_ENV=development webpack",
-    "watch-app": "NODE_ENV=development webpack --watch"
+    "watch-app": "NODE_ENV=development webpack --watch",
+    "update-translations": "bin/download_translations.js -u http://translate.wordpress.org -t wordpress-seo -d '../../Languages'"
   },
   "devDependencies": {
     "@neos-project/neos-ui-extensibility": "^1.0.0",
@@ -31,7 +32,10 @@
     "style-loader": "^0.19.1",
     "uglifyjs-webpack-plugin": "^1.2.5",
     "webpack": "^3.12.0",
-    "yoastseo": "1.40.0"
+    "yoastseo": "1.40.0",
+    "commander": "^2.19.0",
+    "po2json": "^1.0.0-alpha",
+    "request": "^2.88.0"
   },
   "neos": {
     "buildTargetDirectory": "../../../Public/YoastInfoView"
