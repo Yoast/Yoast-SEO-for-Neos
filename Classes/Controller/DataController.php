@@ -66,9 +66,8 @@ class DataController extends ActionController
             $translationData = $this->translationCache->get($locale);
             if (!$translationData) {
                 try {
-                    $rawTranslationData = file_get_contents('resource://Shel.Neos.YoastSeo/Private/Languages/wordpress-seo-' . $locale . '.json');
-                    $translationData = json_decode(str_replace('wordpress-seo', 'js-text-analysis', $rawTranslationData),
-                        true);
+                    $rawTranslationData = file_get_contents('resource://Shel.Neos.YoastSeo/Private/Languages/' . $locale . '.json');
+                    $translationData = json_decode($rawTranslationData, true);
                     $this->translationCache->set($locale, $translationData);
                 } catch (\Exception $e) {
                     $error = $e->getMessage();
