@@ -6,5 +6,6 @@ prototype(Shel.Neos.YoastSeo:Component.BaseUrl) < prototype(Neos.Fusion:Tag) {
     content = Neos.Neos:NodeUri {
         node = ${q(documentNode == site ? site : q(documentNode).parent().get()).context({workspaceName: 'live'}).get(0)}
         absolute = true
+        @process.removeFormat = ${String.pregReplace(value, '/\.html/', '/')}
     }
 }
