@@ -2,6 +2,7 @@
     --color-bad: #dc3232;
     --color-ok: #ee7c1b;
     --color-good: #7ad03a;
+    --color-average: #a0a5aa;
     --icon-margin: 5px;
     --text-font-size: 13px;
 
@@ -42,7 +43,18 @@
         color: var(--color-bad);
 
         svg& {
+            color: var(--color-bad);
             fill: var(--color-bad);
+            margin-right: var(--icon-margin);
+        }
+    }
+
+    &__rating_average {
+        color: var(--color-average);
+
+        svg& {
+            color: var(--color-average);
+            fill: var(--color-average);
             margin-right: var(--icon-margin);
         }
     }
@@ -51,6 +63,7 @@
         color: var(--color-ok);
 
         svg& {
+            color: var(--color-ok);
             fill: var(--color-ok);
             margin-right: var(--icon-margin);
         }
@@ -60,6 +73,7 @@
         color: var(--color-good);
 
         svg& {
+            color: var(--color-good);
             fill: var(--color-good);
             margin-right: var(--icon-margin);
         }

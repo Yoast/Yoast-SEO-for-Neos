@@ -214,6 +214,7 @@ export default class YoastInfoView extends PureComponent {
 
         this.setState({
             seo: {
+                score: seoAssessor.calculateOverallScore(),
                 results: this.parseResults(seoAssessor.getValidResults()),
                 isAnalyzing: false
             }
@@ -231,6 +232,7 @@ export default class YoastInfoView extends PureComponent {
 
         this.setState({
             content: {
+                score: contentAssessor.calculateOverallScore(),
                 results: this.parseResults(contentAssessor.getValidResults()),
                 isAnalyzing: false
             }
@@ -310,11 +312,26 @@ export default class YoastInfoView extends PureComponent {
         );
     };
 
+    renderOverallScore = (label, rating) => {
+        return (
+            <div className={style.yoastInfoView__title}>
+                <Icon icon={rating < 90 ? 'circle' : 'smile'} padded={'right'} className={style['yoastInfoView__rating_' + (rating < 90 ? 'average' : 'good')]}/> {label}
+            </div>
+        );
+    };
+
     render() {
         let filterFromAllResults = ['titleWidth', 'titleKeyword', 'metaDescriptionKeyword', 'metaDescriptionLength'];
 
         return (
             <ul className={style.yoastInfoView}>
+                {!this.state.content.isAnalyzing && !this.state.seo.isAnalyzing && (
+                    <li className={style.yoastInfoView__item}>
+                        {this.renderOverallScore(this.props.i18nRegistry.translate('inspector.contentScore', 'Content Score', {}, 'Shel.Neos.YoastSeo'), this.state.content.score)}
+                        {this.renderOverallScore(this.props.i18nRegistry.translate('inspector.seoScore', 'SEO Score', {}, 'Shel.Neos.YoastSeo'), this.state.seo.score)}
+                    </li>
+                )}
+
                 {!this.state.seo.isAnalyzing && this.renderTitleRating()}
                 {!this.state.seo.isAnalyzing && this.renderDescriptionRating()}
                 {!this.state.content.isAnalyzing && !this.state.seo.isAnalyzing && this.renderResults(filterFromAllResults)}

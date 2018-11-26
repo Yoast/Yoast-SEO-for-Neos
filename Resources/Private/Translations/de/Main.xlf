@@ -50,12 +50,12 @@
                 <target>Ergebnisse</target>
             </trans-unit>
             <trans-unit id="inspector.seoScore">
-                <source>SEO Score</source>
-                <target>SEO Bewertung</target>
+                <source>SEO analysis</source>
+                <target>SEO Analyse</target>
             </trans-unit>
             <trans-unit id="inspector.contentScore">
-                <source>Content Score</source>
-                <target>Inhaltsbewertung</target>
+                <source>Content analysis</source>
+                <target>Inhaltsanalyse</target>
             </trans-unit>
             <trans-unit id="inspector.showAllResults">
                 <source>Show all results</source>
