@@ -2,7 +2,7 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {$transform, $get} from 'plow-js';
-import {Icon, Button} from '@neos-project/react-ui-components';
+import {Icon, Button, IconButton} from '@neos-project/react-ui-components';
 import {neos} from '@neos-project/neos-ui-decorators';
 import {selectors} from '@neos-project/neos-ui-redux-store';
 import {fetchWithErrorHandling} from '@neos-project/neos-ui-backend-connector';
@@ -54,7 +54,6 @@ export default class YoastInfoView extends PureComponent {
             nodeUri: $get('uri', node),
             focusKeyword: $get('properties.focusKeyword', node),
             isCornerstone: $get('properties.isCornerstone', node),
-            expandGoodResults: false,
             page: {
                 title: '',
                 description: '',
@@ -63,12 +62,14 @@ export default class YoastInfoView extends PureComponent {
             content: {
                 score: 0,
                 results: [],
-                isAnalyzing: false
+                isAnalyzing: false,
+                expanded: false
             },
             seo: {
                 score: 0,
                 results: [],
-                isAnalyzing: false
+                isAnalyzing: false,
+                expanded: false
             },
             i18n: {}
         };
@@ -239,39 +240,47 @@ export default class YoastInfoView extends PureComponent {
         });
     };
 
-    renderResults = (filter) => {
+    renderResults = (results, filter = []) => {
         let groupedResults = {
             'bad': [],
             'ok': [],
             'good': []
         };
 
-        let allResults = Object.assign({}, this.state.content.results, this.state.seo.results);
-
-        Object.values(allResults).forEach(result => {
-            if (filter.indexOf(result.identifier) === -1) {
-                if (result.rating in groupedResults) {
-                    groupedResults[result.rating].push(result);
-                } else {
-                    console.log(result.text);
-                }
+        Object.values(results).forEach(result => {
+            if (filter.indexOf(result.identifier) === -1 && result.rating in groupedResults) {
+                groupedResults[result.rating].push(result);
             }
         });
 
         return (
             <li className={style.yoastInfoView__item}>
                 <div className={style.yoastInfoView__title}>
-                    {this.props.i18nRegistry.translate('inspector.results', 'Results', {}, 'Shel.Neos.YoastSeo')}
+                    {this.props.i18nRegistry.translate('inspector.results', 'Analysis results', {}, 'Shel.Neos.YoastSeo')}
                 </div>
                 {groupedResults.bad.map(result => this.renderRating(result))}
                 {groupedResults.ok.map(result => this.renderRating(result))}
-                {this.state.expandGoodResults && groupedResults.good.map(result => this.renderRating(result))}
+                {groupedResults.good.map(result => this.renderRating(result))}
             </li>
         );
     };
 
-    handleExpandClick = () => {
-        this.setState({expandGoodResults: true});
+    handleExpandContentClick = () => {
+        this.setState({
+            content: {
+                ...this.state.content,
+                expanded: !this.state.content.expanded
+            }
+        });
+    };
+
+    handleExpandSeoClick = () => {
+        this.setState({
+            seo: {
+                ...this.state.seo,
+                expanded: !this.state.seo.expanded
+            }
+        });
     };
 
     renderRating = (result) => {
@@ -290,11 +299,9 @@ export default class YoastInfoView extends PureComponent {
         return (
             <li className={style.yoastInfoView__item}>
                 <div className={style.yoastInfoView__title}>
-                    {this.props.i18nRegistry.translate('inspector.title', 'Title', {}, 'Shel.Neos.YoastSeo')}
+                    {this.props.i18nRegistry.translate('inspector.renderedTitle', 'Rendered title', {}, 'Shel.Neos.YoastSeo')}
                 </div>
                 <div className={style.yoastInfoView__value}>{this.state.page.title}</div>
-                {this.renderRating(this.state.seo.results.titleWidth)}
-                {this.renderRating(this.state.seo.results.titleKeyword)}
             </li>
         );
     };
@@ -303,54 +310,58 @@ export default class YoastInfoView extends PureComponent {
         return (
             <li className={style.yoastInfoView__item}>
                 <div className={style.yoastInfoView__title}>
-                    {this.props.i18nRegistry.translate('inspector.description', 'Description', {}, 'Shel.Neos.YoastSeo')}
+                    {this.props.i18nRegistry.translate('inspector.renderedDescription', 'Rendered description', {}, 'Shel.Neos.YoastSeo')}
                 </div>
                 <div className={style.yoastInfoView__value}>{this.state.page.description}</div>
-                {this.renderRating(this.state.seo.results.metaDescriptionKeyword)}
-                {this.renderRating(this.state.seo.results.metaDescriptionLength)}
             </li>
         );
     };
 
     renderOverallScore = (label, rating) => {
         return (
-            <div className={style.yoastInfoView__title}>
+            <span className={style.yoastInfoView__score}>
                 <Icon icon={rating < 90 ? 'circle' : 'smile'} padded={'right'} className={style['yoastInfoView__rating_' + (rating < 90 ? 'average' : 'good')]}/> {label}
-            </div>
+            </span>
         );
     };
 
     render() {
-        let filterFromAllResults = ['titleWidth', 'titleKeyword', 'metaDescriptionKeyword', 'metaDescriptionLength'];
+        const {i18nRegistry} = this.props;
+        const contentResultsIconState = this.state.content.expanded ? 'chevron-up' : 'chevron-down';
+        const seoResultsIconState = this.state.seo.expanded ? 'chevron-up' : 'chevron-down';
 
         return (
             <ul className={style.yoastInfoView}>
-                {!this.state.content.isAnalyzing && !this.state.seo.isAnalyzing && (
-                    <li className={style.yoastInfoView__item}>
-                        {this.renderOverallScore(this.props.i18nRegistry.translate('inspector.contentScore', 'Content Score', {}, 'Shel.Neos.YoastSeo'), this.state.content.score)}
-                        {this.renderOverallScore(this.props.i18nRegistry.translate('inspector.seoScore', 'SEO Score', {}, 'Shel.Neos.YoastSeo'), this.state.seo.score)}
-                    </li>
-                )}
-
                 {!this.state.seo.isAnalyzing && this.renderTitleRating()}
                 {!this.state.seo.isAnalyzing && this.renderDescriptionRating()}
-                {!this.state.content.isAnalyzing && !this.state.seo.isAnalyzing && this.renderResults(filterFromAllResults)}
 
-                {(this.state.page.isAnalyzing || this.state.content.isAnalyzing || this.state.seo.isAnalyzing) && (
-                    <li className={style.yoastInfoView__item} style={{textAlign: 'center'}}>
-                        <Icon spin={true} icon={'spinner'}/>
-                        &nbsp;{this.props.i18nRegistry.translate('inspector.loading', 'Loading…', {}, 'Shel.Neos.YoastSeo')}
+
+                {!this.state.content.isAnalyzing && (
+                    <li>
+                        <div className={style.yoastInfoView__heading}>
+                            {this.renderOverallScore(i18nRegistry.translate('inspector.contentScore', 'Readability analysis', {}, 'Shel.Neos.YoastSeo'), this.state.content.score)}
+                            <IconButton icon={contentResultsIconState} className={style.rightSideBar__toggleBtn} onClick={this.handleExpandContentClick}/>
+                        </div>
                     </li>
                 )}
+                {!this.state.content.isAnalyzing && this.state.content.expanded && this.renderResults(this.state.content.results)}
 
-                {!this.state.page.isAnalyzing && !this.state.expandGoodResults && (
-                    <li className={style.yoastInfoView__item} style={{textAlign: 'center'}}>
-                        <Button style="clean" hoverStyle="clean" onClick={this.handleExpandClick}>
-                            <span>
-                                <Icon icon={'plus'}/>
-                                &nbsp;{this.props.i18nRegistry.translate('inspector.showAllResults', 'Show all results', {}, 'Shel.Neos.YoastSeo')}
-                            </span>
-                        </Button>
+
+                {!this.state.seo.isAnalyzing && (
+                    <li>
+                        <div className={style.yoastInfoView__heading}>
+                            {this.renderOverallScore(i18nRegistry.translate('inspector.seoScore', 'Focus Keyphrase', {}, 'Shel.Neos.YoastSeo'), this.state.seo.score)}
+                            <IconButton icon={seoResultsIconState} className={style.rightSideBar__toggleBtn} onClick={this.handleExpandSeoClick}/>
+                        </div>
+                    </li>
+                )}
+                {!this.state.seo.isAnalyzing && this.state.seo.expanded && this.renderResults(this.state.seo.results)}
+
+
+                {(this.state.page.isAnalyzing || this.state.content.isAnalyzing || this.state.seo.isAnalyzing) && (
+                    <li style={{textAlign: 'center'}}>
+                        <Icon spin={true} icon={'spinner'}/>
+                        &nbsp;{i18nRegistry.translate('inspector.loading', 'Loading…', {}, 'Shel.Neos.YoastSeo')}
                     </li>
                 )}
             </ul>

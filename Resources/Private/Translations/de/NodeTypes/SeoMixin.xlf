@@ -6,6 +6,10 @@
                 <source>Yoast SEO Analysis</source>
                 <target>Yoast SEO Analyse</target>
             </trans-unit>
+            <trans-unit id="groups.yoastCornerstone">
+                <source>Cornerstone content</source>
+                <source>Cornerstone-Inhalt</source>
+            </trans-unit>
             <trans-unit id="properties.focusKeyword">
                 <source>Focus keyword</source>
                 <target>Fokuswort</target>

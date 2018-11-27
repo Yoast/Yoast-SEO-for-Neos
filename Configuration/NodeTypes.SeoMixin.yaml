@@ -16,12 +16,18 @@
           label: 'Yoast SEO'
           position: 10
           icon: yoast
+        yoastCornerstone:
+          tab: yoast
+          label: i18n
+          position: 20
+          icon: yoast
 
       views:
         yoastInfo:
           label: i18n
           group: 'yoast'
           view: 'Shel.Neos.YoastSeo/Inspector/Views/YoastInfoView'
+          position: 20
 
   properties:
     focusKeyword:
@@ -34,6 +40,7 @@
           placeholder: i18n
         inspector:
           group: yoast
+          position: 10
     isCornerstone:
       type: boolean
       defaultValue: false
@@ -41,7 +48,8 @@
         label: i18n
         reloadIfChanged: true
         inspector:
-          group: yoast
+          group: yoastCornerstone
+          position: 10
     title:
       ui:
         inlineEditable: true

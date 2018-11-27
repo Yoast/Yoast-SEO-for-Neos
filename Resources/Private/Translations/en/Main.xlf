@@ -29,20 +29,20 @@
             <trans-unit id="inspector.loading">
                 <source>Loading…</source>
             </trans-unit>
-            <trans-unit id="inspector.title">
-                <source>Title</source>
+            <trans-unit id="inspector.renderedTitle">
+                <source>Rendered title</source>
             </trans-unit>
-            <trans-unit id="inspector.description">
-                <source>Description</source>
+            <trans-unit id="inspector.renderedDescription">
+                <source>Rendered description</source>
             </trans-unit>
             <trans-unit id="inspector.results">
-                <source>Results</source>
+                <source>Analysis results</source>
             </trans-unit>
             <trans-unit id="inspector.seoScore">
-                <source>SEO analysis</source>
+                <source>Focus Keyphrase</source>
             </trans-unit>
             <trans-unit id="inspector.contentScore">
-                <source>Content analysis</source>
+                <source>Readability analysis</source>
             </trans-unit>
             <trans-unit id="inspector.showAllResults">
                 <source>Show all results</source>

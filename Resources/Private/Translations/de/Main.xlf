@@ -37,25 +37,25 @@
                 <source>Loading…</source>
                 <target>Lädt…</target>
             </trans-unit>
-            <trans-unit id="inspector.title">
-                <source>Title</source>
-                <target>Titel</target>
+            <trans-unit id="inspector.renderedTitle">
+                <source>Rendered title</source>
+                <target>Gerenderter Titel</target>
             </trans-unit>
-            <trans-unit id="inspector.description">
-                <source>Description</source>
-                <target>Beschreibung</target>
+            <trans-unit id="inspector.renderedDescription">
+                <source>Rendered description</source>
+                <target>Gerenderte Beschreibung</target>
             </trans-unit>
             <trans-unit id="inspector.results">
-                <source>Results</source>
-                <target>Ergebnisse</target>
+                <source>Analysis results</source>
+                <target>Analyseergebnisse</target>
             </trans-unit>
             <trans-unit id="inspector.seoScore">
-                <source>SEO analysis</source>
-                <target>SEO Analyse</target>
+                <source>Focus Keyphrase</source>
+                <target>Fokus-Stichwort</target>
             </trans-unit>
             <trans-unit id="inspector.contentScore">
-                <source>Content analysis</source>
-                <target>Inhaltsanalyse</target>
+                <source>Readability analysis</source>
+                <target>Lesbarkeitsanalyse</target>
             </trans-unit>
             <trans-unit id="inspector.showAllResults">
                 <source>Show all results</source>

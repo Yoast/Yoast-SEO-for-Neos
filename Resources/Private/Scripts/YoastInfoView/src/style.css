@@ -6,18 +6,31 @@
     --icon-margin: 5px;
     --text-font-size: 13px;
 
-    background-color: var(--colors-ContrastNeutral);
     margin: 0;
     padding: 0;
     list-style: none;
 
+    &__heading {
+        align-items: center;
+        display: flex;
+        justify-content: space-between;
+        margin: 0 -16px 0 0;
+    }
+
     &__item {
-        padding: .7rem;
-        border-bottom: 1px solid #222;
+        margin: .6rem 0;
+    }
+
+    &__uncollapse {
+        margin-top: 1rem;
     }
 
     &__title {
         font-weight: bold;
+    }
+
+    &__score {
+        font-size: 110%;
     }
 
     &__content {
