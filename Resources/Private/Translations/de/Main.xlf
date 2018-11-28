@@ -61,6 +61,10 @@
                 <source>Show all results</source>
                 <target>Alle Ergebnisse zeigen</target>
             </trans-unit>
+            <trans-unit id="inspector.editSnippetPreview">
+                <source>Toggle Snippet Preview</source>
+                <target>Toggle Snippet Preview</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

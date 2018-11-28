@@ -47,6 +47,9 @@
             <trans-unit id="inspector.showAllResults">
                 <source>Show all results</source>
             </trans-unit>
+            <trans-unit id="inspector.editSnippetPreview">
+                <source>Toggle Snippet Preview</source>
+            </trans-unit>
 
             <trans-unit id="inspector.resultType.titleWidth">
                 <source>Title width</source>
