@@ -39,6 +39,34 @@ This package expects some document node properties to be present like `titleOver
 are provided via the `neos/seo` package. But you can of course provide them yourself if you don't want to use
 the `neos/seo` package.
 
+## Supported languages
+
+There are three different kinds of language support:
+
+### Backend localization for the Neos implementation
+
+These are localizations for all Neos CMS specifics not related to the wordpress version of YoastSEO.
+
+* English ✅             
+* German ✅   
+
+If you can provide the backend localizations for other languages than the ones provided in the 
+table above, please create a PR.                                                                                   
+
+### Supported languages of the analyzer results in the backend 
+
+These are localizations for the recommendations that the analysis provides and will be selected based on 
+the current users backend language.
+
+Please consult [YoastSEO on wordpress](https://translate.wordpress.org/projects/wp-plugins/wordpress-seo).
+
+### Supported content languages for the analyzer                 
+
+These are the content languages that the analyzer supports. If the language of your content is not contained in the
+list the analysis will still work but not give the same quality of recommendations.
+
+Please consult [YoastSEO.js readme](https://github.com/Yoast/YoastSEO.js/blob/develop/README.md).
+
 ## Configuration
 
 In your `Settings.yaml` you can override the following options:
