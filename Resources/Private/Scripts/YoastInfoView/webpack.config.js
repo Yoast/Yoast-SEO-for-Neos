@@ -23,43 +23,55 @@ const uglifyJs = new UglifyJSPlugin({
 
 const browserSync = new BrowserSyncPlugin();
 
-module.exports = {
-    entry: '../App.js',
-    output: {
-        filename: 'Bundle.js',
-        path: path.resolve(__dirname, '../../../Public/Scripts')
-    },
-    devtool: devMode ? "cheap-module-eval-source-map" : '',
-    module: {
-        rules: [
-            {
-                test: /\.scss$/,
-                use: extractSass.extract({
-                    use: [{
-                        loader: "css-loader",
-                        options: {
-                            sourceMap: devMode
-                        }
-                    }, {
-                        loader: "sass-loader",
-                        options: {
-                            sourceMap: devMode,
+module.exports = [
+    {
+        entry: ['../App.js'],
+        output: {
+            filename: 'App.js',
+            path: path.resolve(__dirname, '../../../Public/Scripts')
+        },
+        devtool: devMode ? "cheap-module-eval-source-map" : '',
+        module: {
+            rules: [
+                {
+                    test: /\.scss$/,
+                    use: extractSass.extract({
+                        use: [{
+                            loader: "css-loader",
                             options: {
-                                includePaths: [
-                                    path.resolve('node_modules')
-                                ]
+                                sourceMap: devMode
                             }
-                        }
-                    }],
-                    // use style-loader in development
-                    fallback: "style-loader"
-                })
-            }
+                        }, {
+                            loader: "sass-loader",
+                            options: {
+                                sourceMap: devMode,
+                                options: {
+                                    includePaths: [
+                                        path.resolve('node_modules')
+                                    ]
+                                }
+                            }
+                        }],
+                        // use style-loader in development
+                        fallback: "style-loader"
+                    })
+                }
+            ]
+        },
+        plugins: [
+            extractSass,
+            uglifyJs,
+            browserSync
         ]
     },
-    plugins: [
-        extractSass,
-        uglifyJs,
-        browserSync
-    ]
-};
+    {
+        entry: ['./src/WebWorker.js'],
+        output: {
+            filename: 'WebWorker.js',
+            path: path.resolve(__dirname, '../../../Public/Scripts')
+        },
+        plugins: [
+            uglifyJs
+        ]
+    }
+];

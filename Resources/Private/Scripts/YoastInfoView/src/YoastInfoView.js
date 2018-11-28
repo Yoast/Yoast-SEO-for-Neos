@@ -6,11 +6,8 @@ import {Icon, Button, IconButton} from '@neos-project/react-ui-components';
 import {neos} from '@neos-project/neos-ui-decorators';
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 import {fetchWithErrorHandling} from '@neos-project/neos-ui-backend-connector';
-import {Paper, ContentAssessor} from 'yoastseo';
-import SEOAssessor from 'yoastseo/src/seoAssessor';
+import {Paper, AnalysisWorkerWrapper, createWorker} from 'yoastseo';
 import {scoreToRating} from 'yoastseo/src/interpreters';
-import CornerStoneContentAssessor from 'yoastseo/src/cornerstone/contentAssessor';
-import CornerstoneSEOAssessor from 'yoastseo/src/cornerstone/seoAssessor';
 import Jed from "jed";
 import style from './style.css';
 import PageParser from "./helper/pageParser";
@@ -19,20 +16,22 @@ import {yoastActions} from './actions';
 @connect(state => ({
     focusedNodeContextPath: selectors.CR.Nodes.focusedNodePathSelector(state),
     getNodeByContextPath: selectors.CR.Nodes.nodeByContextPath(state),
+    worker: $get('ui.yoastInfoView.worker', state),
     translations: $get('ui.yoastInfoView.translations', state),
 }), {
-    setTranslations: yoastActions.setTranslations
+    setWorker: yoastActions.setWorker,
+    setTranslations: yoastActions.setTranslations,
 })
 @connect($transform({
     contextPath: $get('ui.contentCanvas.contextPath'),
     canvasSrc: $get('ui.contentCanvas.src'),
-    editPreviewMode: selectors.UI.EditPreviewMode.currentEditPreviewMode
+    editPreviewMode: selectors.UI.EditPreviewMode.currentEditPreviewMode,
 }), {
-    setEditPreviewMode: actions.UI.EditPreviewMode.set
+    setEditPreviewMode: actions.UI.EditPreviewMode.set,
 })
 @neos(globalRegistry => ({
     i18nRegistry: globalRegistry.get('i18n'),
-    serverFeedbackHandlers: globalRegistry.get('serverFeedbackHandlers')
+    serverFeedbackHandlers: globalRegistry.get('serverFeedbackHandlers'),
 }))
 export default class YoastInfoView extends PureComponent {
     static propTypes = {
@@ -41,7 +40,8 @@ export default class YoastInfoView extends PureComponent {
         contextPath: PropTypes.string,
         focusedNodeContextPath: PropTypes.string,
         getNodeByContextPath: PropTypes.func.isRequired,
-        setTranslations: PropTypes.func.isRequired
+        setTranslations: PropTypes.func.isRequired,
+        setWorker: PropTypes.func.isRequired,
     };
 
     constructor(props) {
@@ -53,10 +53,12 @@ export default class YoastInfoView extends PureComponent {
             nodeUri: $get('uri', node),
             focusKeyword: $get('properties.focusKeyword', node),
             isCornerstone: $get('properties.isCornerstone', node),
+            workerUrl: '/_Resources/Static/Packages/Shel.Neos.YoastSeo/Scripts/WebWorker.js', // TODO: Resolve path via Neos api
             page: {
                 title: '',
                 description: '',
-                isAnalyzing: false
+                isAnalyzing: false,
+                locale: 'en_US'
             },
             content: {
                 score: 0,
@@ -169,21 +171,50 @@ export default class YoastInfoView extends PureComponent {
     };
 
     refreshAnalysis = () => {
-        let paper = new Paper(
-            this.state.pageContent,
-            {
-                keyword: this.state.focusKeyword,
-                description: this.state.page.description,
-                title: this.state.page.title,
-                titleWidth: this.getTitleWidth(),
-                url: this.state.slug,
-                locale: this.state.page.locale,
-                permalink: ""
-            }
-        );
-
-        this.refreshContentAnalysis(paper);
-        this.refreshSeoAnalysis(paper);
+        let {worker} = this.props;
+        if (!worker) {
+            worker = new AnalysisWorkerWrapper(createWorker(this.state.workerUrl));
+            this.props.setWorker(worker);
+        }
+        // Initialize the worker when the configuration has changed
+        worker.initialize({
+            useCornerstone: this.state.isCornerstone,
+            locale: this.state.page.locale,
+            contentAnalysisActive: true,
+            keywordAnalysisActive: true,
+            logLevel: "ERROR"
+        }).then(() => {
+            let paper = new Paper(
+                this.state.pageContent,
+                {
+                    keyword: this.state.focusKeyword,
+                    description: this.state.page.description,
+                    title: this.state.page.title,
+                    titleWidth: this.getTitleWidth(),
+                    url: this.state.slug,
+                    locale: this.state.page.locale,
+                    permalink: ""
+                }
+            );
+            this.setState({worker: worker});
+            return worker.analyze(paper);
+        }).then((results) => {
+            this.setState({
+                seo: {
+                    score: results.result.seo[''].score,
+                    results: this.parseResults(results.result.seo[''].results),
+                    isAnalyzing: false
+                },
+                content: {
+                    score: results.result.readability.score,
+                    results: this.parseResults(results.result.readability.results),
+                    isAnalyzing: false
+                }
+            });
+        }).catch((error) => {
+            console.error('An error occured while analyzing the page:');
+            console.error(error);
+        });
     };
 
     getTitleWidth = () => {
@@ -201,42 +232,6 @@ export default class YoastInfoView extends PureComponent {
             };
             return obj;
         }, {});
-    };
-
-    refreshSeoAnalysis = (paper) => {
-        let seoAssessor;
-        if (this.state.isCornerstone) {
-            seoAssessor = new CornerstoneSEOAssessor(this.state.i18n, {locale: this.state.page.locale});
-        } else {
-            seoAssessor = new SEOAssessor(this.state.i18n, {locale: this.state.page.locale});
-        }
-        seoAssessor.assess(paper);
-
-        this.setState({
-            seo: {
-                score: seoAssessor.calculateOverallScore(),
-                results: this.parseResults(seoAssessor.getValidResults()),
-                isAnalyzing: false
-            }
-        });
-    };
-
-    refreshContentAnalysis = (paper) => {
-        let contentAssessor;
-        if (this.state.isCornerstone) {
-            contentAssessor = new CornerStoneContentAssessor(this.state.i18n, {locale: this.state.page.locale});
-        } else {
-            contentAssessor = new ContentAssessor(this.state.i18n, {locale: this.state.page.locale});
-        }
-        contentAssessor.assess(paper);
-
-        this.setState({
-            content: {
-                score: contentAssessor.calculateOverallScore(),
-                results: this.parseResults(contentAssessor.getValidResults()),
-                isAnalyzing: false
-            }
-        });
     };
 
     renderResults = (results, filter = []) => {
@@ -325,14 +320,13 @@ export default class YoastInfoView extends PureComponent {
     renderOverallScore = (label, rating) => {
         return (
             <span className={style.yoastInfoView__score}>
-                <Icon icon={rating < 90 ? 'circle' : 'smile'} padded={'right'} className={style['yoastInfoView__rating_' + (rating < 90 ? 'average' : 'good')]}/> {label}
+                <Icon icon={rating < 90 ? 'circle' : 'smile'} padded={'right'}
+                      className={style['yoastInfoView__rating_' + (rating < 90 ? 'average' : 'good')]}/> {label}
             </span>
         );
     };
 
     renderSnippetPreviewButton = () => {
-        const {editPreviewMode} = this.props;
-
         return (
             <li className={style.yoastInfoView__item} style={{textAlign: 'center'}}>
                 <Button style="lighter" hoverStyle="brand" onClick={this.handleToggleSnippetPreviewClick}>
@@ -361,7 +355,8 @@ export default class YoastInfoView extends PureComponent {
                     <li>
                         <div className={style.yoastInfoView__heading}>
                             {this.renderOverallScore(i18nRegistry.translate('inspector.contentScore', 'Readability analysis', {}, 'Shel.Neos.YoastSeo'), this.state.content.score)}
-                            <IconButton icon={contentResultsIconState} className={style.rightSideBar__toggleBtn} onClick={this.handleExpandContentClick}/>
+                            <IconButton icon={contentResultsIconState} className={style.rightSideBar__toggleBtn}
+                                        onClick={this.handleExpandContentClick}/>
                         </div>
                     </li>
                 )}
@@ -372,7 +367,8 @@ export default class YoastInfoView extends PureComponent {
                     <li>
                         <div className={style.yoastInfoView__heading}>
                             {this.renderOverallScore(i18nRegistry.translate('inspector.seoScore', 'Focus Keyphrase', {}, 'Shel.Neos.YoastSeo'), this.state.seo.score)}
-                            <IconButton icon={seoResultsIconState} className={style.rightSideBar__toggleBtn} onClick={this.handleExpandSeoClick}/>
+                            <IconButton icon={seoResultsIconState} className={style.rightSideBar__toggleBtn}
+                                        onClick={this.handleExpandSeoClick}/>
                         </div>
                     </li>
                 )}
