@@ -60,6 +60,7 @@ export default class YoastInfoView extends PureComponent {
             focusKeyword: $get('properties.focusKeyword', node),
             isCornerstone: $get('properties.isCornerstone', node),
             workerUrl: '/_Resources/Static/Packages/Shel.Neos.YoastSeo/Scripts/WebWorker.js', // TODO: Resolve path via Neos api
+            isAnalyzing: false,
             page: {
                 title: '',
                 description: '',
@@ -69,13 +70,11 @@ export default class YoastInfoView extends PureComponent {
             content: {
                 score: 0,
                 results: [],
-                isAnalyzing: false,
                 expanded: false
             },
             seo: {
                 score: 0,
                 results: [],
-                isAnalyzing: false,
                 expanded: false
             },
             i18n: {}
@@ -130,16 +129,9 @@ export default class YoastInfoView extends PureComponent {
 
     fetchContent = () => {
         this.setState({
+            isAnalyzing: true,
             page: {
                 ...this.state.page,
-                isAnalyzing: true
-            },
-            seo: {
-                ...this.state.seo,
-                isAnalyzing: true
-            },
-            content: {
-                ...this.state.content,
                 isAnalyzing: true
             }
         });
@@ -205,17 +197,15 @@ export default class YoastInfoView extends PureComponent {
             this.setState({worker: worker});
             return worker.analyze(paper);
         }).then((results) => {
-            console.log(results);
             this.setState({
+                isAnalyzing: false,
                 seo: {
                     score: results.result.seo[''].score,
                     results: this.parseResults(results.result.seo[''].results),
-                    isAnalyzing: false
                 },
                 content: {
                     score: results.result.readability.score,
                     results: this.parseResults(results.result.readability.results),
-                    isAnalyzing: false
                 }
             });
         }).catch((error) => {
@@ -322,10 +312,10 @@ export default class YoastInfoView extends PureComponent {
                     <SnippetPreviewButton/>
                 </li>
 
-                {!this.state.seo.isAnalyzing && this.renderTextElement(this.props.i18nRegistry.translate('inspector.renderedTitle', 'Rendered title', {}, 'Shel.Neos.YoastSeo'), this.state.page.title)}
-                {!this.state.seo.isAnalyzing && this.renderTextElement(this.props.i18nRegistry.translate('inspector.renderedDescription', 'Rendered description', {}, 'Shel.Neos.YoastSeo'), this.state.page.description)}
+                {!this.state.page.isAnalyzing && this.renderTextElement(this.props.i18nRegistry.translate('inspector.renderedTitle', 'Rendered title', {}, 'Shel.Neos.YoastSeo'), this.state.page.title)}
+                {!this.state.page.isAnalyzing && this.renderTextElement(this.props.i18nRegistry.translate('inspector.renderedDescription', 'Rendered description', {}, 'Shel.Neos.YoastSeo'), this.state.page.description)}
 
-                {!this.state.content.isAnalyzing && (
+                {!this.state.isAnalyzing && (
                     <li>
                         <div className={style.yoastInfoView__heading}>
                             {this.renderOverallScore(i18nRegistry.translate('inspector.contentScore', 'Readability analysis', {}, 'Shel.Neos.YoastSeo'), this.state.content.score)}
@@ -334,10 +324,10 @@ export default class YoastInfoView extends PureComponent {
                         </div>
                     </li>
                 )}
-                {!this.state.content.isAnalyzing && this.state.content.expanded && this.renderResults(this.state.content.results)}
+                {!this.state.isAnalyzing && this.state.content.expanded && this.renderResults(this.state.content.results)}
 
 
-                {!this.state.seo.isAnalyzing && (
+                {!this.state.isAnalyzing && (
                     <li>
                         <div className={style.yoastInfoView__heading}>
                             {this.renderOverallScore(i18nRegistry.translate('inspector.seoScore', 'Focus Keyphrase', {}, 'Shel.Neos.YoastSeo'), this.state.seo.score)}
@@ -346,10 +336,10 @@ export default class YoastInfoView extends PureComponent {
                         </div>
                     </li>
                 )}
-                {!this.state.seo.isAnalyzing && this.state.seo.expanded && this.renderResults(this.state.seo.results)}
+                {!this.state.isAnalyzing && this.state.seo.expanded && this.renderResults(this.state.seo.results)}
 
 
-                {(this.state.page.isAnalyzing || this.state.content.isAnalyzing || this.state.seo.isAnalyzing) && (
+                {(this.state.isAnalyzing) && (
                     <li style={{textAlign: 'center'}}>
                         <Icon spin={true} icon={'spinner'}/>
                         &nbsp;{i18nRegistry.translate('inspector.loading', 'Loading…', {}, 'Shel.Neos.YoastSeo')}
