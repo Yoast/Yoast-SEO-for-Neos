@@ -50,6 +50,15 @@
             <trans-unit id="inspector.editSnippetPreview">
                 <source>Toggle Snippet Preview</source>
             </trans-unit>
+            <trans-unit id="inspector.problems">
+                <source>Problems</source>
+            </trans-unit>
+            <trans-unit id="inspector.improvements">
+                <source>Improvements</source>
+            </trans-unit>
+            <trans-unit id="inspector.goodResults">
+                <source>Good results</source>
+            </trans-unit>
 
             <trans-unit id="inspector.resultType.titleWidth">
                 <source>Title width</source>

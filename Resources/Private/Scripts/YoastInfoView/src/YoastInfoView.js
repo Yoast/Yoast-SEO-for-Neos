@@ -12,6 +12,7 @@ import Jed from "jed";
 import style from './style.css';
 import PageParser from "./helper/pageParser";
 import {yoastActions} from './actions';
+import ResultGroup from "./components/resultGroup";
 
 const iconRatingMapping = {
     error: 'circle',
@@ -261,9 +262,15 @@ export default class YoastInfoView extends PureComponent {
                 <div className={style.yoastInfoView__title}>
                     {this.props.i18nRegistry.translate('inspector.results', 'Analysis results', {}, 'Shel.Neos.YoastSeo')}
                 </div>
-                {groupedResults.bad.map(result => this.renderRating(result))}
-                {groupedResults.ok.map(result => this.renderRating(result))}
-                {groupedResults.good.map(result => this.renderRating(result))}
+                {groupedResults.bad.length > 0 && (
+                    <ResultGroup heading={this.props.i18nRegistry.translate('inspector.problems', 'Problems', {}, 'Shel.Neos.YoastSeo')} results={groupedResults.bad}/>
+                )}
+                {groupedResults.ok.length > 0 && (
+                    <ResultGroup heading={this.props.i18nRegistry.translate('inspector.improvements', 'Improvements', {}, 'Shel.Neos.YoastSeo')} results={groupedResults.ok}/>
+                )}
+                {groupedResults.good.length > 0 && (
+                    <ResultGroup heading={this.props.i18nRegistry.translate('inspector.goodResults', 'Good results', {}, 'Shel.Neos.YoastSeo')} results={groupedResults.good}/>
+                )}
             </li>
         );
     };
@@ -292,34 +299,11 @@ export default class YoastInfoView extends PureComponent {
         setEditPreviewMode(editPreviewMode === 'shelYoastSeoView' ? 'inPlace' : 'shelYoastSeoView');
     };
 
-    renderRating = (result) => {
-        return result && (
-            <p className={style.yoastInfoView__content}
-               title={this.props.i18nRegistry.translate('inspector.resultType.' + result.identifier, result.identifier, {}, 'Shel.Neos.YoastSeo')}>
-                <i className={style['yoastInfoView__rating_circle'] + ' ' + style['yoastInfoView__rating_' + result.rating]}/>
-                <span dangerouslySetInnerHTML={{__html: result.text}}/>
-            </p>
-        );
-    };
-
-    renderTitleRating = () => {
+    renderTextElement = (heading, text) => {
         return (
             <li className={style.yoastInfoView__item}>
-                <div className={style.yoastInfoView__title}>
-                    {this.props.i18nRegistry.translate('inspector.renderedTitle', 'Rendered title', {}, 'Shel.Neos.YoastSeo')}
-                </div>
-                <div className={style.yoastInfoView__value}>{this.state.page.title}</div>
-            </li>
-        );
-    };
-
-    renderDescriptionRating = () => {
-        return (
-            <li className={style.yoastInfoView__item}>
-                <div className={style.yoastInfoView__title}>
-                    {this.props.i18nRegistry.translate('inspector.renderedDescription', 'Rendered description', {}, 'Shel.Neos.YoastSeo')}
-                </div>
-                <div className={style.yoastInfoView__value}>{this.state.page.description}</div>
+                <strong className={style.yoastInfoView__title}>{heading}</strong>
+                <p className={style.yoastInfoView__value}>{text}</p>
             </li>
         );
     };
@@ -330,7 +314,8 @@ export default class YoastInfoView extends PureComponent {
 
         return (
             <span className={style.yoastInfoView__score}>
-                <Icon icon={iconType} padded={'right'} className={style['yoastInfoView__rating_' + ratingStyle]}/> {label}
+                <Icon icon={iconType} padded={'right'}
+                      className={style['yoastInfoView__rating_' + ratingStyle]}/> {label}
             </span>
         );
     };
@@ -357,8 +342,8 @@ export default class YoastInfoView extends PureComponent {
             <ul className={style.yoastInfoView}>
                 {this.renderSnippetPreviewButton()}
 
-                {!this.state.seo.isAnalyzing && this.renderTitleRating()}
-                {!this.state.seo.isAnalyzing && this.renderDescriptionRating()}
+                {!this.state.seo.isAnalyzing && this.renderTextElement(this.props.i18nRegistry.translate('inspector.renderedTitle', 'Rendered title', {}, 'Shel.Neos.YoastSeo'), this.state.page.title)}
+                {!this.state.seo.isAnalyzing && this.renderTextElement(this.props.i18nRegistry.translate('inspector.renderedDescription', 'Rendered description', {}, 'Shel.Neos.YoastSeo'), this.state.page.description)}
 
                 {!this.state.content.isAnalyzing && (
                     <li>

@@ -53,6 +53,14 @@
         font-size: var(--text-font-size);
     }
 
+    &__result_group {
+        margin-top: .6rem;
+
+        svg {
+            margin-right: 9px;
+        }
+    }
+
     &__rating_circle {
         display: inline-block;
         width: 12px;
