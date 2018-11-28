@@ -296,9 +296,7 @@ export default class YoastInfoView extends PureComponent {
         return result && (
             <p className={style.yoastInfoView__content}
                title={this.props.i18nRegistry.translate('inspector.resultType.' + result.identifier, result.identifier, {}, 'Shel.Neos.YoastSeo')}>
-                <svg height="13" width="6" className={style['yoastInfoView__rating_' + result.rating]}>
-                    <circle cx="3" cy="9" r="3"/>
-                </svg>
+                <i className={style['yoastInfoView__rating_circle'] + ' ' + style['yoastInfoView__rating_' + result.rating]}/>
                 <span dangerouslySetInnerHTML={{__html: result.text}}/>
             </p>
         );
