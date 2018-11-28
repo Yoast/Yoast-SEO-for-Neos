@@ -19,7 +19,7 @@ const setTranslations = createAction(SET_TRANSLATIONS, translations => translati
 //
 // Export the actions
 //
-export const actions = {
+export const yoastActions = {
     setTranslations
 };
 

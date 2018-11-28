@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import {$transform, $get} from 'plow-js';
 import {Icon, Button, IconButton} from '@neos-project/react-ui-components';
 import {neos} from '@neos-project/neos-ui-decorators';
-import {selectors} from '@neos-project/neos-ui-redux-store';
+import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 import {fetchWithErrorHandling} from '@neos-project/neos-ui-backend-connector';
 import {Paper, ContentAssessor} from 'yoastseo';
 import SEOAssessor from 'yoastseo/src/seoAssessor';
@@ -14,23 +14,22 @@ import CornerstoneSEOAssessor from 'yoastseo/src/cornerstone/seoAssessor';
 import Jed from "jed";
 import style from './style.css';
 import PageParser from "./helper/pageParser";
-import {actions} from './actions';
+import {yoastActions} from './actions';
 
 @connect(state => ({
     focusedNodeContextPath: selectors.CR.Nodes.focusedNodePathSelector(state),
-    getNodeByContextPath: selectors.CR.Nodes.nodeByContextPath(state)
-}))
+    getNodeByContextPath: selectors.CR.Nodes.nodeByContextPath(state),
+    translations: $get('ui.yoastInfoView.translations', state),
+}), {
+    setTranslations: yoastActions.setTranslations
+})
 @connect($transform({
     contextPath: $get('ui.contentCanvas.contextPath'),
-    canvasSrc: $get('ui.contentCanvas.src')
-}))
-@connect(state => ({
-        translations: $get('ui.yoastInfoView.translations', state)
-    })
-    , {
-        setTranslations: actions.setTranslations
-    }
-)
+    canvasSrc: $get('ui.contentCanvas.src'),
+    editPreviewMode: selectors.UI.EditPreviewMode.currentEditPreviewMode
+}), {
+    setEditPreviewMode: actions.UI.EditPreviewMode.set
+})
 @neos(globalRegistry => ({
     i18nRegistry: globalRegistry.get('i18n'),
     serverFeedbackHandlers: globalRegistry.get('serverFeedbackHandlers')
@@ -283,6 +282,12 @@ export default class YoastInfoView extends PureComponent {
         });
     };
 
+    handleToggleSnippetPreviewClick = () => {
+        const {setEditPreviewMode, editPreviewMode} = this.props;
+
+        setEditPreviewMode(editPreviewMode === 'shelYoastSeoView' ? 'inPlace' : 'shelYoastSeoView');
+    };
+
     renderRating = (result) => {
         return result && (
             <p className={style.yoastInfoView__content}
@@ -325,6 +330,21 @@ export default class YoastInfoView extends PureComponent {
         );
     };
 
+    renderSnippetPreviewButton = () => {
+        const {editPreviewMode} = this.props;
+
+        return (
+            <li className={style.yoastInfoView__item} style={{textAlign: 'center'}}>
+                <Button style="lighter" hoverStyle="brand" onClick={this.handleToggleSnippetPreviewClick}>
+                    <span>
+                        <Icon icon={'edit'}/>
+                        &nbsp;{this.props.i18nRegistry.translate('inspector.editSnippetPreview', 'Toggle Snippet Preview', {}, 'Shel.Neos.YoastSeo')}
+                    </span>
+                </Button>
+            </li>
+        );
+    };
+
     render() {
         const {i18nRegistry} = this.props;
         const contentResultsIconState = this.state.content.expanded ? 'chevron-up' : 'chevron-down';
@@ -332,9 +352,10 @@ export default class YoastInfoView extends PureComponent {
 
         return (
             <ul className={style.yoastInfoView}>
+                {this.renderSnippetPreviewButton()}
+
                 {!this.state.seo.isAnalyzing && this.renderTitleRating()}
                 {!this.state.seo.isAnalyzing && this.renderDescriptionRating()}
-
 
                 {!this.state.content.isAnalyzing && (
                     <li>
