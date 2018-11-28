@@ -2,7 +2,7 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {$transform, $get} from 'plow-js';
-import {Icon, Button, IconButton} from '@neos-project/react-ui-components';
+import {Icon, IconButton} from '@neos-project/react-ui-components';
 import {neos} from '@neos-project/neos-ui-decorators';
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 import {fetchWithErrorHandling} from '@neos-project/neos-ui-backend-connector';
@@ -12,7 +12,7 @@ import Jed from "jed";
 import style from './style.css';
 import PageParser from "./helper/pageParser";
 import {yoastActions} from './actions';
-import ResultGroup from "./components/resultGroup";
+import {SnippetPreviewButton, ResultGroup} from "./components";
 
 const iconRatingMapping = {
     error: 'circle',
@@ -34,10 +34,7 @@ const iconRatingMapping = {
 @connect($transform({
     contextPath: $get('ui.contentCanvas.contextPath'),
     canvasSrc: $get('ui.contentCanvas.src'),
-    editPreviewMode: selectors.UI.EditPreviewMode.currentEditPreviewMode,
-}), {
-    setEditPreviewMode: actions.UI.EditPreviewMode.set,
-})
+}))
 @neos(globalRegistry => ({
     i18nRegistry: globalRegistry.get('i18n'),
     serverFeedbackHandlers: globalRegistry.get('serverFeedbackHandlers'),
@@ -293,12 +290,6 @@ export default class YoastInfoView extends PureComponent {
         });
     };
 
-    handleToggleSnippetPreviewClick = () => {
-        const {setEditPreviewMode, editPreviewMode} = this.props;
-
-        setEditPreviewMode(editPreviewMode === 'shelYoastSeoView' ? 'inPlace' : 'shelYoastSeoView');
-    };
-
     renderTextElement = (heading, text) => {
         return (
             <li className={style.yoastInfoView__item}>
@@ -320,19 +311,6 @@ export default class YoastInfoView extends PureComponent {
         );
     };
 
-    renderSnippetPreviewButton = () => {
-        return (
-            <li className={style.yoastInfoView__item} style={{textAlign: 'center'}}>
-                <Button style="lighter" hoverStyle="brand" onClick={this.handleToggleSnippetPreviewClick}>
-                    <span>
-                        <Icon icon={'edit'}/>
-                        &nbsp;{this.props.i18nRegistry.translate('inspector.editSnippetPreview', 'Toggle Snippet Preview', {}, 'Shel.Neos.YoastSeo')}
-                    </span>
-                </Button>
-            </li>
-        );
-    };
-
     render() {
         const {i18nRegistry} = this.props;
         const contentResultsIconState = this.state.content.expanded ? 'chevron-up' : 'chevron-down';
@@ -340,7 +318,9 @@ export default class YoastInfoView extends PureComponent {
 
         return (
             <ul className={style.yoastInfoView}>
-                {this.renderSnippetPreviewButton()}
+                <li className={style.yoastInfoView__item} style={{textAlign: 'center'}}>
+                    <SnippetPreviewButton/>
+                </li>
 
                 {!this.state.seo.isAnalyzing && this.renderTextElement(this.props.i18nRegistry.translate('inspector.renderedTitle', 'Rendered title', {}, 'Shel.Neos.YoastSeo'), this.state.page.title)}
                 {!this.state.seo.isAnalyzing && this.renderTextElement(this.props.i18nRegistry.translate('inspector.renderedDescription', 'Rendered description', {}, 'Shel.Neos.YoastSeo'), this.state.page.description)}
