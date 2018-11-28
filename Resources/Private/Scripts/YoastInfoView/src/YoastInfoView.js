@@ -13,6 +13,14 @@ import style from './style.css';
 import PageParser from "./helper/pageParser";
 import {yoastActions} from './actions';
 
+const iconRatingMapping = {
+    error: 'circle',
+    feedback: 'circle',
+    bad: 'frown',
+    ok: 'meh',
+    good: 'smile'
+};
+
 @connect(state => ({
     focusedNodeContextPath: selectors.CR.Nodes.focusedNodePathSelector(state),
     getNodeByContextPath: selectors.CR.Nodes.nodeByContextPath(state),
@@ -199,6 +207,7 @@ export default class YoastInfoView extends PureComponent {
             this.setState({worker: worker});
             return worker.analyze(paper);
         }).then((results) => {
+            console.log(results);
             this.setState({
                 seo: {
                     score: results.result.seo[''].score,
@@ -318,10 +327,12 @@ export default class YoastInfoView extends PureComponent {
     };
 
     renderOverallScore = (label, rating) => {
+        const ratingStyle = scoreToRating(rating / 10);
+        const iconType = iconRatingMapping[ratingStyle];
+
         return (
             <span className={style.yoastInfoView__score}>
-                <Icon icon={rating < 90 ? 'circle' : 'smile'} padded={'right'}
-                      className={style['yoastInfoView__rating_' + (rating < 90 ? 'average' : 'good')]}/> {label}
+                <Icon icon={iconType} padded={'right'} className={style['yoastInfoView__rating_' + ratingStyle]}/> {label}
             </span>
         );
     };
