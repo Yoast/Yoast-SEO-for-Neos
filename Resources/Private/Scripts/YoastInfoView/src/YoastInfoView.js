@@ -174,7 +174,7 @@ export default class YoastInfoView extends PureComponent {
             worker = new AnalysisWorkerWrapper(createWorker(this.state.workerUrl));
             this.props.setWorker(worker);
         }
-        // Initialize the worker when the configuration has changed
+        // TODO: Initialize the worker only when the configuration actually has changed
         worker.initialize({
             useCornerstone: this.state.isCornerstone,
             locale: this.state.page.locale,
@@ -308,7 +308,7 @@ export default class YoastInfoView extends PureComponent {
 
         return (
             <ul className={style.yoastInfoView}>
-                <li className={style.yoastInfoView__item} style={{textAlign: 'center'}}>
+                <li className={style.yoastInfoView__item}>
                     <SnippetPreviewButton/>
                 </li>
 
@@ -316,7 +316,7 @@ export default class YoastInfoView extends PureComponent {
                 {!this.state.page.isAnalyzing && this.renderTextElement(this.props.i18nRegistry.translate('inspector.renderedDescription', 'Rendered description', {}, 'Shel.Neos.YoastSeo'), this.state.page.description)}
 
                 {!this.state.isAnalyzing && (
-                    <li>
+                    <li className={style.yoastInfoView__item}>
                         <div className={style.yoastInfoView__heading}>
                             {this.renderOverallScore(i18nRegistry.translate('inspector.contentScore', 'Readability analysis', {}, 'Shel.Neos.YoastSeo'), this.state.content.score)}
                             <IconButton icon={contentResultsIconState} className={style.rightSideBar__toggleBtn}
@@ -328,7 +328,7 @@ export default class YoastInfoView extends PureComponent {
 
 
                 {!this.state.isAnalyzing && (
-                    <li>
+                    <li className={style.yoastInfoView__item}>
                         <div className={style.yoastInfoView__heading}>
                             {this.renderOverallScore(i18nRegistry.translate('inspector.seoScore', 'Focus Keyphrase', {}, 'Shel.Neos.YoastSeo'), this.state.seo.score)}
                             <IconButton icon={seoResultsIconState} className={style.rightSideBar__toggleBtn}
