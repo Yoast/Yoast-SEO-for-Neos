@@ -1,6 +1,0 @@
-prototype(Shel.Neos.YoastSeo:Component.MetaDescription) < prototype(Shel.Neos.YoastSeo:Component.AbstractEditableField) {
-    @context {
-        fieldName = 'metaDescription'
-        fieldClass = 'meta-description'
-    }
-}

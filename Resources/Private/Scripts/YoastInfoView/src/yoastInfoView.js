@@ -15,6 +15,7 @@ import style from './style.css';
 import PageParser from "./helper/pageParser";
 import {yoastActions} from './actions';
 import {SnippetPreviewButton, ResultGroup} from "./components";
+import {groupResultsByRating, parseResults} from "./helper/resultParser";
 
 const iconRatingMapping = {
     error: 'circle',
@@ -65,7 +66,7 @@ export default class YoastInfoView extends PureComponent {
             nodeUri: $get('uri', node),
             focusKeyword: $get('properties.focusKeyword', node),
             isCornerstone: $get('properties.isCornerstone', node),
-            workerUrl: '/_Resources/Static/Packages/Shel.Neos.YoastSeo/Scripts/WebWorker.js', // TODO: Resolve path via Neos api
+            workerUrl: '/_Resources/Static/Packages/Shel.Neos.YoastSeo/Assets/webWorker.js', // TODO: Resolve path via Neos api
             isAnalyzing: false,
             page: {
                 title: '',
@@ -226,11 +227,11 @@ export default class YoastInfoView extends PureComponent {
                 isAnalyzing: false,
                 seo: {
                     score: results.result.seo[''].score,
-                    results: this.parseResults(results.result.seo[''].results),
+                    results: parseResults(results.result.seo[''].results),
                 },
                 content: {
                     score: results.result.readability.score,
-                    results: this.parseResults(results.result.readability.results),
+                    results: parseResults(results.result.readability.results),
                 }
             });
         }).catch((error) => {
@@ -244,30 +245,8 @@ export default class YoastInfoView extends PureComponent {
         return this.state.page.title.length * 8.5;
     };
 
-    parseResults = (results) => {
-        return results.reduce((obj, result) => {
-            obj[result._identifier] = {
-                identifier: result._identifier,
-                rating: scoreToRating(result.score),
-                score: result.score,
-                text: result.text
-            };
-            return obj;
-        }, {});
-    };
-
     renderResults = (results, filter = []) => {
-        let groupedResults = {
-            'bad': [],
-            'ok': [],
-            'good': []
-        };
-
-        Object.values(results).forEach(result => {
-            if (filter.indexOf(result.identifier) === -1 && result.rating in groupedResults) {
-                groupedResults[result.rating].push(result);
-            }
-        });
+        let groupedResults = groupResultsByRating(results, filter);
 
         return (
             <li className={style.yoastInfoView__item}>

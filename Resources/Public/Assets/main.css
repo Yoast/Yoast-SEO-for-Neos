@@ -1,0 +1,58 @@
+@font-face {
+  font-family: 'Noto Sans';
+  font-weight: normal;
+  font-style: normal;
+  src: url(NotoSans-Regular.ttf) format("ttf"); }
+
+body {
+  --main-bg-color: #fff;
+  --mark-bg-color: rgba(0, 173, 238, .75);
+  --text-color: #222;
+  --text-color-light: #666;
+  background-color: var(--main-bg-color);
+  color: var(--text-color);
+  font-family: 'Noto Sans', sans-serif;
+  -webkit-font-smoothing: antialiased; }
+
+.hidden {
+  display: none; }
+
+.yoast-seo__wrapper {
+  padding: 1rem;
+  max-width: 800px; }
+  .yoast-seo__wrapper h1 {
+    margin-top: 0; }
+
+.yoast-seo__snippet-preview-wrapper {
+  margin: 1rem 0; }
+
+.yoast-seo__content-analysis-wrapper a {
+  text-decoration: none; }
+  .yoast-seo__content-analysis-wrapper a:hover {
+    text-decoration: underline; }
+
+.yoast-seo__content-analysis-wrapper li {
+  margin: .3rem 0; }
+
+.yoast-loader {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  width: 2rem; }
+
+.ReactModal__Content {
+  box-shadow: 0 2px 7px -1px rgba(0, 0, 0, 0.15); }
+  .ReactModal__Content h2 {
+    margin-top: 0; }
+  .ReactModal__Content .yoast-seo__mark {
+    color: var(--text-color-light); }
+  .ReactModal__Content .yoast-text-mark {
+    color: var(--text-color); }
+  .ReactModal__Content .button--close {
+    position: absolute;
+    -webkit-appearance: none;
+    border: 0;
+    padding: .5rem;
+    right: 0;
+    top: 0;
+    cursor: pointer; }

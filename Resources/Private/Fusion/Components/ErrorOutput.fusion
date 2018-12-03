@@ -1,6 +1,0 @@
-prototype(Shel.Neos.YoastSeo:Component.ErrorOutput) < prototype(Neos.Fusion:Tag) {
-    attributes {
-        id = 'errorOutput'
-        class = 'yoast-seo__errorOutput hidden'
-    }
-}

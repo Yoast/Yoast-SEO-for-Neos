@@ -1,5 +1,35 @@
 prototype(Shel.Neos.YoastSeo:Component.SnippetPreview) < prototype(Neos.Fusion:Tag) {
     attributes {
         class = 'yoast-seo__snippet-preview'
+        data-fields = Neos.Fusion:RawArray {
+            focusKeyword = ${q(documentNode).property('focusKeyword')}
+            pageUrl = Neos.Neos:NodeUri {
+                node = ${documentNode}
+                absolute = true
+            }
+            isCornerstone = ${q(documentNode).property('isCornerstone')}
+            previewUrl = Neos.Fusion:UriBuilder {
+                package = 'Shel.Neos.YoastSeo'
+                controller = 'Page'
+                action = 'renderPreviewPage'
+                absolute = true
+                additionalParams = Neos.Fusion:RawArray {
+                    node = ${documentNode.contextPath}
+                }
+            }
+            translationsUrl = '/neosyoastseo/data/fetchtranslations'
+//            translationsUrl = Neos.Fusion:UriBuilder {
+//                package = 'Shel.Neos.YoastSeo'
+//                controller = 'Data'
+//                action = 'fetchTranslations'
+//                absolute = true
+//            }
+            breadcrumbs = Neos.Fusion:RawCollection {
+                collection = ${Array.reverse(q(documentNode).add(q(documentNode).parents('[instanceof Neos.Neos:Document]')).get())}
+                itemRenderer = ${item.label}
+            }
+            isAmp = false
+            @process.toJson = ${Json.stringify(value)}
+        }
     }
 }

@@ -1,77 +1,97 @@
 const path = require('path');
+const webpack = require("webpack");
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
-const BrowserSyncPlugin = require('browser-sync-webpack-plugin');
-
-const devMode = process.env.NODE_ENV === "development";
-
-const extractSass = new ExtractTextPlugin({
-    filename: "../Styles/[name].css",
-    disable: devMode
-});
-
-const uglifyJs = new UglifyJSPlugin({
-    test: /\.js($|\?)/i,
-    cache: true,
-    parallel: true,
-    sourceMap: true,
-    uglifyOptions: {
-        mangle: !devMode,
-        compress: !devMode
-    }
-});
-
-const browserSync = new BrowserSyncPlugin();
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = [
     {
-        entry: ['../App.js'],
+        entry: [
+            '../app.js',
+        ],
         output: {
-            filename: 'App.js',
-            path: path.resolve(__dirname, '../../../Public/Scripts')
+            filename: 'app.js',
+            path: path.resolve(__dirname, '../../../Public/Assets')
         },
-        devtool: devMode ? "cheap-module-eval-source-map" : '',
+        resolve: {
+            extensions: ['.json', '.js', '.jsx']
+        },
         module: {
             rules: [
                 {
-                    test: /\.scss$/,
-                    use: extractSass.extract({
-                        use: [{
+                    test: /\.(eot|svg|ttf|woff|woff2)$/,
+                    loader: 'file-loader?name=[name].[ext]'
+                },
+                {
+                    test: /\.s?css$/,
+                    use: [
+                        ExtractTextPlugin.loader,
+                        {
                             loader: "css-loader",
                             options: {
-                                sourceMap: devMode
+                                importLoaders: 1
                             }
-                        }, {
-                            loader: "sass-loader",
+                        },
+                        {
+                            loader: 'sass-loader',
                             options: {
-                                sourceMap: devMode,
-                                options: {
-                                    includePaths: [
-                                        path.resolve('node_modules')
-                                    ]
-                                }
+                                includePaths: [
+                                    path.resolve('node_modules'),
+                                ]
                             }
-                        }],
-                        // use style-loader in development
-                        fallback: "style-loader"
-                    })
+                        }
+                    ]
+                },
+                {
+                    test: /\.jsx?$/,
+                    loader: 'babel-loader',
+                    exclude: [
+                        /node_modules\/react/,
+                        /node_modules\/react-dom/,
+                    ],
+                    options: {
+                        cacheDirectory: true,
+                    }
+                },
+            ]
+        },
+        plugins: [
+            new webpack.optimize.OccurrenceOrderPlugin(),
+            new ExtractTextPlugin({
+                filename: "[name].css",
+            }),
+            new UglifyJSPlugin({
+                test: /\.js($|\?)/i,
+                cache: true,
+                parallel: true,
+            })
+        ]
+    },
+    {
+        entry: ['./src/webWorker.js'],
+        output: {
+            filename: 'webWorker.js',
+            path: path.resolve(__dirname, '../../../Public/Assets')
+        },
+        module: {
+            rules: [
+                {
+                    test: /\.jsx?$/,
+                    exclude: /node_modules/,
+                    use: [{
+                        loader: 'babel-loader',
+                        options: {
+                            presets: ['@babel/env'],
+                        }
+                    }],
                 }
             ]
         },
         plugins: [
-            extractSass,
-            uglifyJs,
-            browserSync
-        ]
-    },
-    {
-        entry: ['./src/WebWorker.js'],
-        output: {
-            filename: 'WebWorker.js',
-            path: path.resolve(__dirname, '../../../Public/Scripts')
-        },
-        plugins: [
-            uglifyJs
+            new UglifyJSPlugin({
+                test: /\.js($|\?)/i,
+                cache: true,
+                parallel: true,
+            })
         ]
     }
 ];
