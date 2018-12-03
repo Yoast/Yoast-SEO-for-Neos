@@ -3,9 +3,15 @@ prototype(Shel.Neos.YoastSeo:Component.Configuration) < prototype(Neos.Fusion:Ta
         id = 'configuration'
         class = 'yoast-seo__configuration hidden'
         data-configuration = Neos.Fusion:RawArray {
+            focusKeyword = ${q(documentNode).property('focusKeyword')}
+
             isCornerstone = ${q(documentNode).property('isCornerstone')}
 
             translationsUrl = '/neosyoastseo/data/fetchTranslations'
+
+            workerUrl = Neos.Fusion:ResourceUri {
+                path = 'resource://Shel.Neos.YoastSeo/Public/Assets/webWorker.js'
+            }
 
             previewUrl = Neos.Fusion:UriBuilder {
                 package = 'Shel.Neos.YoastSeo'
@@ -22,6 +28,18 @@ prototype(Shel.Neos.YoastSeo:Component.Configuration) < prototype(Neos.Fusion:Ta
                 absolute = true
                 @process.removeFormat = ${String.pregReplace(value, '/\.html/', '/')}
             }
+
+            pageUrl = Neos.Neos:NodeUri {
+                node = ${documentNode}
+                absolute = true
+            }
+
+            breadcrumbs = Neos.Fusion:RawCollection {
+                collection = ${Array.reverse(q(documentNode).add(q(documentNode).parents('[instanceof Neos.Neos:Document]')).get())}
+                itemRenderer = ${item.label}
+            }
+
+            isAmp = false
 
             contentSelector = ${Configuration.setting('Neos.Neos.Ui.frontendConfiguration')['Shel.Neos.YoastSeo']['contentSelector']}
 

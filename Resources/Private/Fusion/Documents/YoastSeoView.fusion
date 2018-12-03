@@ -11,7 +11,7 @@ prototype(Shel.Neos.YoastSeo:Documents.YoastSeoView) < prototype(Neos.Neos:Page)
                     rel = 'stylesheet'
                     type = 'text/css'
                     href = Neos.Fusion:ResourceUri {
-                        path = 'resource://Shel.Neos.YoastSeo/Public/Styles/main.css'
+                        path = 'resource://Shel.Neos.YoastSeo/Public/Assets/main.css'
                     }
                 }
             }
@@ -31,11 +31,6 @@ prototype(Shel.Neos.YoastSeo:Documents.YoastSeoView) < prototype(Neos.Neos:Page)
             content = Neos.Fusion:Array {
                 header = Shel.Neos.YoastSeo:Component.Header
                 snippetPreview = Shel.Neos.YoastSeo:Component.SnippetPreview
-                focusKeyword = Shel.Neos.YoastSeo:Component.FocusKeyword
-                snippetFields = Shel.Neos.YoastSeo:Component.SnippetFields
-                output = Shel.Neos.YoastSeo:Component.Output
-                errorOutput = Shel.Neos.YoastSeo:Component.ErrorOutput
-
                 configuration = Shel.Neos.YoastSeo:Component.Configuration
             }
         }
@@ -46,15 +41,9 @@ prototype(Shel.Neos.YoastSeo:Documents.YoastSeoView) < prototype(Neos.Neos:Page)
                 attributes {
                     async = 'async'
                     src = Neos.Fusion:ResourceUri {
-                        path = 'resource://Shel.Neos.YoastSeo/Public/Scripts/App.js'
+                        path = 'resource://Shel.Neos.YoastSeo/Public/Assets/app.js'
                     }
                 }
-            }
-
-            browserSync = Neos.Fusion:Template {
-                templatePath = 'resource://Shel.Neos.YoastSeo/Private/Templates/YoastSeoView.html'
-                sectionName = 'browserSync'
-                @if.inDevMode = ${Configuration.setting('Shel.Neos.YoastSeo.devMode')}
             }
         }
     }

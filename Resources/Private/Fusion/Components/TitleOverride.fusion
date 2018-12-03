@@ -1,6 +1,0 @@
-prototype(Shel.Neos.YoastSeo:Component.TitleOverride) < prototype(Shel.Neos.YoastSeo:Component.AbstractEditableField) {
-    @context {
-        fieldName = 'titleOverride'
-        fieldClass = 'title-override'
-    }
-}

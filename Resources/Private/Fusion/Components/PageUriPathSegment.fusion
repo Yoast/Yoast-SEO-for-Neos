@@ -1,6 +1,0 @@
-prototype(Shel.Neos.YoastSeo:Component.UriPathSegment) < prototype(Shel.Neos.YoastSeo:Component.AbstractEditableField) {
-    @context {
-        fieldName = 'uriPathSegment'
-        fieldClass = 'uri-path-segment'
-    }
-}
