@@ -14,7 +14,7 @@ This view will show you a preview snippet how the selected page will look in the
 and will give you insights and helpers to further improve the page for search engines.
 
 These insights are generated via the official Open Source **Yoast SEO** javascript plugin by [Yoast](https://yoast.com).
-But this package is in no other way supported or affiliated with *Yoast BV*,
+This package is being developed in partnership with *Yoast BV* and will be moved in the Yoast namespace starting version 1.0.
 
 We try to keep this package up-to-date with releases by Yoast but depending on the compatibility and available time 
 this might take up to a few weeks after Yoast releases a new version of their library.
