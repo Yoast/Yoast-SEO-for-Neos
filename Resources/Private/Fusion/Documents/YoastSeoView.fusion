@@ -47,7 +47,7 @@ prototype(Shel.Neos.YoastSeo:Documents.YoastSeoView) < prototype(Neos.Neos:Page)
                 attributes {
                     async = 'async'
                     src = Neos.Fusion:ResourceUri {
-                        path = 'resource://Shel.Neos.YoastSeo/Public/Scripts/Bundle.js'
+                        path = 'resource://Shel.Neos.YoastSeo/Public/Scripts/App.js'
                     }
                 }
             }

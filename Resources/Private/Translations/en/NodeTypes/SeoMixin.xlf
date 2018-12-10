@@ -5,6 +5,9 @@
             <trans-unit id="views.yoastInfo">
                 <source>Yoast SEO Analysis</source>
             </trans-unit>
+            <trans-unit id="groups.yoastCornerstone">
+                <source>Cornerstone content</source>
+            </trans-unit>
             <trans-unit id="properties.focusKeyword">
                 <source>Focus Keyword</source>
             </trans-unit>

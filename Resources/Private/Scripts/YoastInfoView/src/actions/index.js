@@ -6,21 +6,25 @@ import {handleActions} from '@neos-project/utils-redux';
 import {actionTypes as system} from '@neos-project/neos-ui-redux-store';
 
 const SET_TRANSLATIONS = 'SET_TRANSLATIONS';
+const SET_WORKER = 'SET_WORKER';
 
 //
 // Export the action types
 //
 export const actionTypes = {
-    SET_TRANSLATIONS
+    SET_TRANSLATIONS,
+    SET_WORKER,
 };
 
 const setTranslations = createAction(SET_TRANSLATIONS, translations => translations);
+const setWorker = createAction(SET_WORKER, worker => worker);
 
 //
 // Export the actions
 //
-export const actions = {
-    setTranslations
+export const yoastActions = {
+    setTranslations,
+    setWorker,
 };
 
 //
@@ -28,9 +32,9 @@ export const actions = {
 //
 export const reducer = handleActions({
     [system.INIT]: () => $set('ui.yoastInfoView', new Map({
-        translations: {}
+        translations: {},
+        worker: null,
     })),
-    [SET_TRANSLATIONS]: translations => $set('ui.yoastInfoView', new Map({
-        translations: translations
-    }))
+    [SET_TRANSLATIONS]: translations => $set('ui.yoastInfoView.translations', translations),
+    [SET_WORKER]: worker=> $set('ui.yoastInfoView.worker', worker),
 });

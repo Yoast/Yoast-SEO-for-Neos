@@ -1,6 +1,7 @@
 import '../Styles/Main.scss';
 import PageParser from "./YoastInfoView/src/helper/pageParser";
-import {App, SnippetPreview} from './YoastInfoView/node_modules/yoastseo';
+import App from './YoastInfoView/node_modules/yoastseo/src/app';
+import SnippetPreview from './YoastInfoView/node_modules/yoastseo/src/snippetPreview';
 import Jed from './YoastInfoView/node_modules/jed/jed';
 
 ((document, window) => {
