@@ -59,6 +59,8 @@ import Jed from './YoastInfoView/node_modules/jed/jed';
         const baseUrl = document.getElementById('baseUrl').textContent;
         const cornerstone = document.getElementById('cornerstone').textContent;
 
+        let refreshTimeout = undefined;
+
         // Retrieve translations
         let translations = {
             domain: "js-text-analysis",
@@ -153,9 +155,17 @@ import Jed from './YoastInfoView/node_modules/jed/jed';
                         snippetFieldsObserver.observe(uriPathSegmentField, {characterData: true, subtree: true});
                         snippetFieldsObserver.observe(metaDescriptionField, {characterData: true, subtree: true});
 
-                        // Update analysis when focus keyword changes
-                        const focusKeywordObserver = new MutationObserver(app.refresh);
-                        focusKeywordObserver.observe(focusKeywordField, {characterData: true, subtree: true});
+                        // Update analysis when focus keyword changes after some time
+                        const focusKeywordChanged = (e) => {
+                            clearTimeout(refreshTimeout);
+                            refreshTimeout = setTimeout(() => {
+                                spinner.classList.remove('yoast-seo__spinner--hidden');
+                                setTimeout(() => app.refresh(), 1);
+                            }, 2000);
+                        };
+
+                        focusKeywordField.addEventListener('input', focusKeywordChanged);
+                        focusKeywordField.addEventListener('keyup', focusKeywordChanged);
                     })
                     .catch((err) => {
                         errorOutput.textContent = err;
