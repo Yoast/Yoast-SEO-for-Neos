@@ -31,13 +31,12 @@ prototype(Shel.Neos.YoastSeo:Documents.YoastSeoView) < prototype(Neos.Neos:Page)
             content = Neos.Fusion:Array {
                 header = Shel.Neos.YoastSeo:Component.Header
                 snippetPreview = Shel.Neos.YoastSeo:Component.SnippetPreview
-                previewUrl = Shel.Neos.YoastSeo:Component.PreviewUrl
-                baseUrl = Shel.Neos.YoastSeo:Component.BaseUrl
-                cornerstone = Shel.Neos.YoastSeo:Component.IsCornerstone
                 focusKeyword = Shel.Neos.YoastSeo:Component.FocusKeyword
                 snippetFields = Shel.Neos.YoastSeo:Component.SnippetFields
                 output = Shel.Neos.YoastSeo:Component.Output
                 errorOutput = Shel.Neos.YoastSeo:Component.ErrorOutput
+
+                configuration = Shel.Neos.YoastSeo:Component.Configuration
             }
         }
 

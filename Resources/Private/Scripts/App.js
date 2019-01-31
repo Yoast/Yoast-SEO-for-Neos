@@ -54,10 +54,8 @@ import Jed from './YoastInfoView/node_modules/jed/jed';
         const snippet = document.querySelector('.yoast-seo__snippet-preview');
 
         // Constants
-        const previewUrl = document.getElementById('previewUrl').textContent;
-        const translationsUrl = '/neosyoastseo/data/fetchTranslations';
-        const baseUrl = document.getElementById('baseUrl').textContent;
-        const cornerstone = document.getElementById('cornerstone').textContent;
+        const configuration = JSON.parse(document.getElementById('configuration').dataset.configuration);
+        const {previewUrl, translationsUrl, baseUrl, cornerstone, contentSelector} = configuration;
 
         let refreshTimeout = undefined;
 
@@ -83,7 +81,7 @@ import Jed from './YoastInfoView/node_modules/jed/jed';
                 // Generate preview then initialize plugin
                 get(previewUrl)
                     .then((documentContent) => {
-                        let pageParser = new PageParser(documentContent);
+                        let pageParser = new PageParser(documentContent, contentSelector);
                         let jed = new Jed(translations);
 
                         const snippetPreview = new SnippetPreview({

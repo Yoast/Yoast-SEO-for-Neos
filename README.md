@@ -77,6 +77,15 @@ In your `Settings.yaml` you can override the following options:
           defaultContentLocale: en-US
           languageToLocaleMapping: [...]
           
+and
+
+    Neos:
+      Neos:
+        UI:    
+          frontendConfiguration:
+            'Shel.Neos.YoastSeo':
+               contentSelector: 'body'
+          
 ### defaultContentLocale 
 
 The analyzer will use the `lang` attribute rendered by the `Neos.Seo` package of your website to detect the 
@@ -104,6 +113,21 @@ For example the default mapping for `de` is `de_DE` but can be changed to Swiss 
         YoastSeo:
           languageToLocaleMapping: 
             de: 'de_CH'
+            
+### contentSelector
+
+This setting allows you to specify a different element in your rendered page where the analysis should retrieve it's
+content from. This can be used for example to select your content wrap to exclude hidden content for modals and other
+elements.
+
+Example:
+
+    Neos:
+      Neos:
+        UI:    
+          frontendConfiguration:
+            'Shel.Neos.YoastSeo':
+               contentSelector: '.my-content'
 
 ## Usage 
 

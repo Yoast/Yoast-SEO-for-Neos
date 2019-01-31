@@ -23,3 +23,7 @@ Neos:
         javascript:
           Shel.Neos.YoastSeo:YoastInfoView:
             resource: resource://Shel.Neos.YoastSeo/Public/YoastInfoView/Plugin.js
+
+      frontendConfiguration:
+        'Shel.Neos.YoastSeo':
+           contentSelector: 'body'

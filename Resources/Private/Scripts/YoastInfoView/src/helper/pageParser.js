@@ -1,5 +1,9 @@
 export default class PageParser {
-    constructor(documentContent) {
+    constructor(documentContent, contentSelector) {
+        if (!contentSelector) {
+            contentSelector = 'body';
+        }
+
         this.parser = new DOMParser();
         const parsedPreviewDocument = this.parser.parseFromString(documentContent, "text/html");
 
@@ -13,7 +17,7 @@ export default class PageParser {
 
         this.locale = (parsedPreviewDocument.querySelector('html').getAttribute('lang') || 'en_US').replace('-', '_');
 
-        this.pageContent = parsedPreviewDocument.querySelector('body').innerHTML;
+        this.pageContent = parsedPreviewDocument.querySelector(contentSelector).innerHTML;
         // Remove problematic data attributes for the Yoast plugin from preview document
         const re = /data-.*?=".*?"/gim;
         this.pageContent = this.pageContent.replace(re, '');

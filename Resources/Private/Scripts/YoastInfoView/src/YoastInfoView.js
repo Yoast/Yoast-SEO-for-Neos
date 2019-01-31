@@ -34,13 +34,14 @@ const iconRatingMapping = {
     setTranslations: yoastActions.setTranslations,
 })
 @connect($transform({
-    contextPath: $get('ui.contentCanvas.contextPath'), // Only works in Neos 4+
-    documentNodePath: $get('cr.nodes.documentNode'), // Only works in Neos 3.3
+    contextPath: $get('ui.contentCanvas.contextPath'), // Only works with Neos UI 1.x
+    documentNodePath: $get('cr.nodes.documentNode'), // Only works with Neos UI 3.x
     canvasSrc: $get('ui.contentCanvas.src'),
 }))
 @neos(globalRegistry => ({
     i18nRegistry: globalRegistry.get('i18n'),
     serverFeedbackHandlers: globalRegistry.get('serverFeedbackHandlers'),
+    contentSelector: globalRegistry.get('frontendConfiguration').get('Shel.Neos.YoastSeo').contentSelector,
 }))
 export default class YoastInfoView extends PureComponent {
     static propTypes = {
@@ -48,6 +49,7 @@ export default class YoastInfoView extends PureComponent {
         canvasSrc: PropTypes.string,
         contextPath: PropTypes.string,
         documentNodePath: PropTypes.string,
+        contentSelector: PropTypes.string,
         focusedNodeContextPath: PropTypes.string,
         getNodeByContextPath: PropTypes.func.isRequired,
         setTranslations: PropTypes.func.isRequired,
@@ -140,11 +142,14 @@ export default class YoastInfoView extends PureComponent {
             }
         });
 
-        // Depending on the Neos version only one of these variables is set
-        const contextPath = this.props.contextPath || this.props.documentNodePath;
+        const {contentSelector, contextPath, documentNodePath} = this.props;
 
-        if (contextPath === undefined) {
-            console.error('Error loading page preview, context path is missing', contextPath, 1548861908);
+        // Depending on the Neos version only one of these variables is set
+        const previewPageNodePath = contextPath || documentNodePath;
+
+
+        if (previewPageNodePath === undefined) {
+            console.error('Error loading page preview, context path is missing', previewPageNodePath, 1548861908);
             this.setState({
                 isAnalyzing: false,
                 page: {
@@ -156,7 +161,7 @@ export default class YoastInfoView extends PureComponent {
         }
 
         fetchWithErrorHandling.withCsrfToken(csrfToken => ({
-            url: `/neosyoastseo/page/renderPreviewPage?node=${contextPath}`,
+            url: `/neosyoastseo/page/renderPreviewPage?node=${previewPageNodePath}`,
             method: 'GET',
             credentials: 'include',
             headers: {
@@ -172,7 +177,7 @@ export default class YoastInfoView extends PureComponent {
                 return response.text();
             })
             .then(documentContent => {
-                const pageParser = new PageParser(documentContent);
+                const pageParser = new PageParser(documentContent, contentSelector);
 
                 this.setState({
                     pageContent: pageParser.pageContent,
