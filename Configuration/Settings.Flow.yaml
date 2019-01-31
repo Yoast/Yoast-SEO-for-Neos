@@ -1,0 +1,15 @@
+Neos:
+  Flow:
+    security:
+      authentication:
+        providers:
+          'Neos.Neos:Backend':
+            requestPatterns:
+              'Shel.Neos.YoastSeo:DataSources':
+                pattern: ControllerObjectName
+                patternOptions:
+                  controllerObjectNamePattern: 'Shel\Neos\YoastSeo\Controller\.*'
+    mvc:
+      routes:
+        'Shel.Neos.YoastSeo':
+          position: 'before Neos.Neos'

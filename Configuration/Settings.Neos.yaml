@@ -1,0 +1,25 @@
+Neos:
+  Neos:
+    userInterface:
+      editPreviewModes:
+        shelYoastSeoView:
+          isEditingMode: true
+          isPreviewMode: false
+          fusionRenderingPath: shelYoastSeoView
+          title: 'Shel.Neos.YoastSeo:Main:editPreviewModes.yoastSeoView'
+
+      translation:
+        autoInclude:
+          Shel.Neos.YoastSeo:
+            - Main
+            - 'NodeTypes/*'
+
+    fusion:
+      autoInclude:
+        Shel.Neos.YoastSeo: true
+
+    Ui:
+      resources:
+        javascript:
+          Shel.Neos.YoastSeo:YoastInfoView:
+            resource: resource://Shel.Neos.YoastSeo/Public/YoastInfoView/Plugin.js
