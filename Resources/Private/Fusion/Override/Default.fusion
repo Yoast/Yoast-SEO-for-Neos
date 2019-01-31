@@ -1,0 +1,6 @@
+shelYoastSeoView = Shel.Neos.YoastSeo:Documents.YoastSeoView
+
+// Disable edit preview mode when we render the yoast seo preview
+root.editPreviewMode {
+    condition.@process.disableInShelYoastSeoPreview = ${request.arguments.shelYoastSeoPreviewMode ? false : value}
+}

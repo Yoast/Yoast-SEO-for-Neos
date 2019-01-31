@@ -1,0 +1,3 @@
+prototype(Neos.Fusion:GlobalCacheIdentifiers) {
+    shelYoastSeoPreviewMode = ${request.arguments.shelYoastSeoPreviewMode ? true : false}
+}
