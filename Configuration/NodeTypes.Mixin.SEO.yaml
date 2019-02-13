@@ -1,29 +1,7 @@
-'Shel.Neos.YoastSeo:SeoMixin':
+'Shel.Neos.YoastSeo:Mixin.SEO':
   abstract: true
-
-  ui:
-    inlineEditable: true
-    inspector:
-      tabs:
-        yoast:
-          label: 'Yoast SEO'
-          position: 'after seo'
-          icon: yoast
-
-      groups:
-        yoast:
-          tab: yoast
-          label: 'Yoast SEO'
-          position: 10
-          icon: yoast
-
-      views:
-        yoastInfo:
-          label: i18n
-          group: 'yoast'
-          view: 'Shel.Neos.YoastSeo/Inspector/Views/YoastInfoView'
-          position: 20
-
+  superTypes:
+    'Shel.Neos.YoastSeo:Mixin.Analysis': true
   properties:
     focusKeyword:
       type: string

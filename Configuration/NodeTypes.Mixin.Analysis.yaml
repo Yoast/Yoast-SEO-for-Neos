@@ -1,0 +1,25 @@
+'Shel.Neos.YoastSeo:Mixin.Analysis':
+  abstract: true
+
+  ui:
+    inlineEditable: true
+    inspector:
+      tabs:
+        yoast:
+          label: i18n
+          position: 'after seo'
+          icon: yoast
+
+      groups:
+        yoast:
+          tab: yoast
+          label: i18n
+          position: 10
+          icon: yoast
+
+      views:
+        yoastInfo:
+          label: i18n
+          group: 'yoast'
+          view: 'Shel.Neos.YoastSeo/Inspector/Views/YoastInfoView'
+          position: 20

@@ -1,7 +1,11 @@
 'Neos.Neos:Document':
   superTypes:
-    'Shel.Neos.YoastSeo:SeoMixin': true
+    'Shel.Neos.YoastSeo:Mixin.SEO': true
 
 'Neos.Neos:Shortcut':
   superTypes:
-    'Shel.Neos.YoastSeo:SeoMixin': false
+    'Shel.Neos.YoastSeo:Mixin.SEO': false
+
+'Neos.Neos:Content':
+  superTypes:
+    'Shel.Neos.YoastSeo:Mixin.Analysis': true
