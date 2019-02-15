@@ -30,7 +30,11 @@ problems as it just provides a additionals views in Neos.
 
 ## Installation
 
-    composer require shel/neos-yoast-seo
+Add the dependency to your site package like this
+
+    `composer require --no-update shel/neos-yoast-seo`
+    
+And then run `composer update` in your projects root folder.
     
 ## Dependencies
 
