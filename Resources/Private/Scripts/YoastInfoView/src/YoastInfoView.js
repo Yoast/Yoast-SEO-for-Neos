@@ -339,17 +339,6 @@ export default class YoastInfoView extends PureComponent {
                 {!this.state.page.isAnalyzing && this.renderTextElement(this.props.i18nRegistry.translate('inspector.renderedTitle', 'Rendered title', {}, 'Shel.Neos.YoastSeo'), this.state.page.title)}
                 {!this.state.page.isAnalyzing && this.renderTextElement(this.props.i18nRegistry.translate('inspector.renderedDescription', 'Rendered description', {}, 'Shel.Neos.YoastSeo'), this.state.page.description)}
 
-                {!this.state.isAnalyzing && (
-                    <li className={style.yoastInfoView__item}>
-                        <div className={style.yoastInfoView__heading}>
-                            {this.renderOverallScore(i18nRegistry.translate('inspector.contentScore', 'Readability analysis', {}, 'Shel.Neos.YoastSeo'), this.state.content.score)}
-                            <IconButton icon={contentResultsIconState} className={style.rightSideBar__toggleBtn}
-                                        onClick={this.handleExpandContentClick}/>
-                        </div>
-                    </li>
-                )}
-                {!this.state.isAnalyzing && this.state.content.expanded && this.renderResults(this.state.content.results)}
-
 
                 {!this.state.isAnalyzing && (
                     <li className={style.yoastInfoView__item}>
@@ -361,6 +350,17 @@ export default class YoastInfoView extends PureComponent {
                     </li>
                 )}
                 {!this.state.isAnalyzing && this.state.seo.expanded && this.renderResults(this.state.seo.results)}
+
+                {!this.state.isAnalyzing && (
+                    <li className={style.yoastInfoView__item}>
+                        <div className={style.yoastInfoView__heading}>
+                            {this.renderOverallScore(i18nRegistry.translate('inspector.contentScore', 'Readability analysis', {}, 'Shel.Neos.YoastSeo'), this.state.content.score)}
+                            <IconButton icon={contentResultsIconState} className={style.rightSideBar__toggleBtn}
+                                        onClick={this.handleExpandContentClick}/>
+                        </div>
+                    </li>
+                )}
+                {!this.state.isAnalyzing && this.state.content.expanded && this.renderResults(this.state.content.results)}
 
 
                 {(this.state.isAnalyzing) && (
