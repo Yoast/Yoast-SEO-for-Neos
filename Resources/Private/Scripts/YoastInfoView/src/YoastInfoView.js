@@ -327,8 +327,8 @@ export default class YoastInfoView extends PureComponent {
 
     render() {
         const {i18nRegistry} = this.props;
-        const contentResultsIconState = this.state.content.expanded ? 'chevron-up' : 'chevron-down';
-        const seoResultsIconState = this.state.seo.expanded ? 'chevron-up' : 'chevron-down';
+        const contentResultsIconState = this.state.content.expanded ? 'chevron-circle-up' : 'chevron-circle-down';
+        const seoResultsIconState = this.state.seo.expanded ? 'chevron-circle-up' : 'chevron-circle-down';
 
         return (
             <ul className={style.yoastInfoView}>
