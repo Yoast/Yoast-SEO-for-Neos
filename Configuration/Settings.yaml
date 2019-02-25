@@ -1,0 +1,66 @@
+Shel:
+  Neos:
+    YoastSeo:
+      devMode: false
+      defaultContentLocale: en-US
+      languageToLocaleMapping:
+        da: 'da_DK'
+        de: 'de_DE'
+        en: ''
+        es: 'es_ES'
+        fi: 'fi'
+        fr: 'fr_FR'
+        km: ''
+        lv: ''
+        nl: 'nl_NL'
+        no: 'nb_NO'
+        pl: 'pl_PL'
+        pt-BR: 'pt_BR'
+        ru: 'ru_RU'
+        zh-CN: 'zh_CN'
+
+Neos:
+  Neos:
+    userInterface:
+      editPreviewModes:
+        shelYoastSeoView:
+          isEditingMode: true
+          isPreviewMode: false
+          fusionRenderingPath: shelYoastSeoView
+          title: 'Shel.Neos.YoastSeo:Main:editPreviewModes.yoastSeoView'
+
+      translation:
+        autoInclude:
+          Shel.Neos.YoastSeo:
+            - 'Main'
+            - 'NodeTypes/*'
+            - 'NodeTypes/Mixin/*'
+
+    fusion:
+      autoInclude:
+        Shel.Neos.YoastSeo: true
+
+    Ui:
+      resources:
+        javascript:
+          Shel.Neos.YoastSeo:YoastInfoView:
+            resource: resource://Shel.Neos.YoastSeo/Public/YoastInfoView/Plugin.js
+
+      frontendConfiguration:
+        'Shel.Neos.YoastSeo':
+          contentSelector: 'body'
+
+  Flow:
+    security:
+      authentication:
+        providers:
+          'Neos.Neos:Backend':
+            requestPatterns:
+              'Shel.Neos.YoastSeo:DataSources':
+                pattern: ControllerObjectName
+                patternOptions:
+                  controllerObjectNamePattern: 'Shel\Neos\YoastSeo\Controller\.*'
+    mvc:
+      routes:
+        'Shel.Neos.YoastSeo':
+          position: 'before Neos.Neos'
