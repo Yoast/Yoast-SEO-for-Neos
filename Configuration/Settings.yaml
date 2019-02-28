@@ -5,14 +5,14 @@ Shel:
       defaultContentLocale: en-US
       languageToLocaleMapping:
         da: 'da_DK'
-        de: 'de_DE'
+        de: 'de_DE-formal'
         en: ''
         es: 'es_ES'
         fi: 'fi'
         fr: 'fr_FR'
         km: ''
         lv: ''
-        nl: 'nl_NL'
+        nl: 'nl_NL-formal'
         no: 'nb_NO'
         pl: 'pl_PL'
         pt-BR: 'pt_BR'

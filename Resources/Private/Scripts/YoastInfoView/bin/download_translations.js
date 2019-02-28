@@ -17,7 +17,7 @@ if (!(program.url && program.textdomain && program.domainPath)) {
 let options = {
     url: program.url,
     domainPath: program.domainPath,
-    file_format: "%domainPath%/%textdomain%-%wp_locale%.%format%",
+    file_format: "%domainPath%/%textdomain%-%wp_locale%%slugSuffix%.%format%",
     slug: "wp-plugins/" + program.textdomain + "/dev/",
     textdomain: program.textdomain,
     formats: ["po"],
