@@ -12,11 +12,13 @@ body {
   --mark-bg-color: rgba(0, 173, 238, .75);
   --text-color: #222;
   --text-color-light: #666;
+  --border-light: 1px solid rgb(226, 228, 231);
 
   background-color: var(--main-bg-color);
   color: var(--text-color);
   font-family: 'Noto Sans', sans-serif;
   -webkit-font-smoothing: antialiased;
+  padding: 1rem;
 }
 
 .hidden {
@@ -24,7 +26,7 @@ body {
 }
 
 .yoast-seo {
-  &__wrapper {
+  &__container {
     padding: 1rem;
     max-width: 800px;
 
@@ -34,7 +36,7 @@ body {
   }
 
   &__snippet-preview-wrapper {
-    margin: 1rem 0;
+    margin: 1rem 1rem;
   }
 
   &__content-analysis-wrapper {
@@ -48,6 +50,10 @@ body {
 
     li {
       margin: .3rem 0;
+    }
+
+    > * {
+      border-top: var(--border-light);
     }
   }
 }

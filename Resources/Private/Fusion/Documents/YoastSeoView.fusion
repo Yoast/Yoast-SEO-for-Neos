@@ -26,11 +26,11 @@ prototype(Shel.Neos.YoastSeo:Documents.YoastSeoView) < prototype(Neos.Neos:Page)
 
         previewWrapper = Neos.Fusion:Tag {
             tagName = 'main'
-            attributes.class = 'yoast-seo__wrapper'
+            attributes.class = 'yoast-seo__container'
 
             content = Neos.Fusion:Array {
                 header = Shel.Neos.YoastSeo:Component.Header
-                snippetPreview = Shel.Neos.YoastSeo:Component.SnippetPreview
+                application = Shel.Neos.YoastSeo:Component.Application
                 configuration = Shel.Neos.YoastSeo:Component.Configuration
             }
         }

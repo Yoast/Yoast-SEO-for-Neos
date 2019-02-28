@@ -1,6 +1,7 @@
-prototype(Shel.Neos.YoastSeo:Component.SnippetPreview) < prototype(Neos.Fusion:Tag) {
+prototype(Shel.Neos.YoastSeo:Component.Application) < prototype(Neos.Fusion:Tag) {
     attributes {
-        class = 'yoast-seo__snippet-preview'
+        class = 'yoast-seo__application'
+        id = 'yoast-app'
         data-fields = Neos.Fusion:RawArray {
             focusKeyword = ${q(documentNode).property('focusKeyword')}
             pageUrl = Neos.Neos:NodeUri {

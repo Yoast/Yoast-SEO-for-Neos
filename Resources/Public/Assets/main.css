@@ -9,22 +9,24 @@ body {
   --mark-bg-color: rgba(0, 173, 238, .75);
   --text-color: #222;
   --text-color-light: #666;
+  --border-light: 1px solid rgb(226, 228, 231);
   background-color: var(--main-bg-color);
   color: var(--text-color);
   font-family: 'Noto Sans', sans-serif;
-  -webkit-font-smoothing: antialiased; }
+  -webkit-font-smoothing: antialiased;
+  padding: 1rem; }
 
 .hidden {
   display: none; }
 
-.yoast-seo__wrapper {
+.yoast-seo__container {
   padding: 1rem;
   max-width: 800px; }
-  .yoast-seo__wrapper h1 {
+  .yoast-seo__container h1 {
     margin-top: 0; }
 
 .yoast-seo__snippet-preview-wrapper {
-  margin: 1rem 0; }
+  margin: 1rem 1rem; }
 
 .yoast-seo__content-analysis-wrapper a {
   text-decoration: none; }
@@ -33,6 +35,9 @@ body {
 
 .yoast-seo__content-analysis-wrapper li {
   margin: .3rem 0; }
+
+.yoast-seo__content-analysis-wrapper > * {
+  border-top: var(--border-light); }
 
 .yoast-loader {
   position: fixed;
@@ -56,3 +61,28 @@ body {
     right: 0;
     top: 0;
     cursor: pointer; }
+.yoast-svg-icon-loading-spinner {
+  animation: rotator 1.4s linear infinite; }
+
+@keyframes rotator {
+  0% {
+    transform: rotate(0deg); }
+  100% {
+    transform: rotate(270deg); } }
+
+.path {
+  stroke: #64a60a;
+  stroke-dasharray: 187;
+  stroke-dashoffset: 0;
+  transform-origin: center;
+  animation: dash 1.4s ease-in-out infinite; }
+
+@keyframes dash {
+  0% {
+    stroke-dashoffset: 187; }
+  50% {
+    stroke-dashoffset: 46.75;
+    transform: rotate(135deg); }
+  100% {
+    stroke-dashoffset: 187;
+    transform: rotate(450deg); } }
