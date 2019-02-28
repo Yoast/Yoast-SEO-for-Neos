@@ -9,6 +9,7 @@ import {IntlProvider} from './YoastInfoView/node_modules/react-intl';
 import {SnippetPreview} from './YoastInfoView/node_modules/yoast-components/composites/Plugin/SnippetPreview';
 import Loader from "./YoastInfoView/node_modules/yoast-components/composites/basic/Loader";
 import {setTranslations} from './YoastInfoView/node_modules/yoast-components/utils/i18n';
+import './YoastInfoView/node_modules/yoast-components/css/loadingSpinner.scss';
 
 import AnalysisWorkerWrapper from './YoastInfoView/node_modules/yoastseo/src/worker/AnalysisWorkerWrapper';
 import createWorker from './YoastInfoView/node_modules/yoastseo/src/worker/createWorker';
@@ -39,7 +40,7 @@ import Paper from './YoastInfoView/node_modules/yoastseo/src/values/Paper';
     }
 
     window.onload = () => {
-        const snippetPreview = document.querySelector('.yoast-seo__snippet-preview');
+        const applicationContainer = document.querySelector('#yoast-app');
 
         // Constants
         const configuration = JSON.parse(document.getElementById('configuration').dataset.configuration);
@@ -130,7 +131,7 @@ import Paper from './YoastInfoView/node_modules/yoastseo/src/values/Paper';
                                     <ContentAnalysisWrapper refreshAnalysisCallback={refreshAnalysisCallback}/>
                                 </div>
                             </IntlProvider>
-                        ), snippetPreview);
+                        ), applicationContainer);
                     });
             });
     }
