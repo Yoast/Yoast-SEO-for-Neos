@@ -1,0 +1,15 @@
+{namespace neos=Neos\Neos\ViewHelpers}
+
+<f:layout name="BackendSubModule" />
+
+<f:section name="content">
+    <style>
+        <f:comment>Hotfix for broken font awesome brand styling in Neos 4.x https://github.com/neos/neos-development-collection/pull/2388</f:comment>
+        .neos .fab:after,
+        .neos .fab:before {
+            font-family: 'FontAwesome Brand';
+        }
+    </style>
+
+    Hallo Seb
+</f:section>

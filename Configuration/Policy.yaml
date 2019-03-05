@@ -4,13 +4,15 @@ privilegeTargets:
       matcher: 'method(Yoast\YoastSeoForNeos\Controller\DataController->(.*)Action())'
     'Yoast.YoastSeoForNeos:PreviewRenderer':
       matcher: 'method(Yoast\YoastSeoForNeos\Controller\PageController->(.*)Action())'
+    'Yoast.YoastSeoForNeos:BackendModuleSearchConsole':
+      matcher: 'method(Yoast\YoastSeoForNeos\Controller\SearchConsoleController->(.*)Action())'
 
 roles:
   'Neos.Neos:Editor':
     privileges:
-      -
-        privilegeTarget: 'Yoast.YoastSeoForNeos:DataSources'
+      - privilegeTarget: 'Yoast.YoastSeoForNeos:DataSources'
         permission: GRANT
-      -
-        privilegeTarget: 'Yoast.YoastSeoForNeos:PreviewRenderer'
+      - privilegeTarget: 'Yoast.YoastSeoForNeos:PreviewRenderer'
+        permission: GRANT
+      - privilegeTarget: 'Yoast.YoastSeoForNeos:BackendModuleSearchConsole'
         permission: GRANT

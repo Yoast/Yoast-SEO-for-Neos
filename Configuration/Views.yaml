@@ -1,0 +1,6 @@
+# use Neos.Neos layouts and partials when dispatching controllers inside the Neos modules
+-
+  requestFilter: 'mainRequest.isPackage("Neos.Neos") && isFormat("html") && isPackage("Shel.Neos.YoastSeo") && isController("SearchConsole")'
+  options:
+    'layoutRootPaths': ['resource://Neos.Neos/Private/Layouts']
+    'partialRootPaths': ['resource://Shel.Neos.YoastSeo/Private/Partials', 'resource://Neos.Neos/Private/Partials']

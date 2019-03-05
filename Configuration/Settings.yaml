@@ -50,6 +50,21 @@ Neos:
         'Yoast.YoastSeoForNeos':
           contentSelector: 'body'
 
+    modules:
+      yoastSeo:
+        label: 'Yoast SEO'
+        icon: 'fab fa-yoast'
+        submodules:
+          searchConsole:
+            label: 'Search Console'
+            controller: \Shel\Neos\YoastSeo\Controller\SearchConsoleController
+            description: 'Manage integration with Google Search Console'
+            icon: 'fab fa-google'
+            additionalResources:
+              styleSheets:
+                - 'resource://Shel.Neos.YoastSeo/Public/Styles/Module.css'
+            privilegeTarget: 'Shel.Neos.YoastSeo:BackendModuleSearchConsole'
+
   Flow:
     security:
       authentication:
