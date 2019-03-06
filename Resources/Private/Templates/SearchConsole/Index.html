@@ -1,6 +1,6 @@
 {namespace neos=Neos\Neos\ViewHelpers}
 
-<f:layout name="BackendSubModule" />
+<f:layout name="BackendSubModule"/>
 
 <f:section name="content">
     <style>
@@ -9,7 +9,135 @@
         .neos .fab:before {
             font-family: 'FontAwesome Brand';
         }
+
+        .neos-content h1 {
+            font-size: 1.4em;
+        }
+
+        .neos-content h2 {
+            font-size: 1.2em;
+        }
+
+        .neos-content h3 {
+            font-size: 1.1em;
+        }
+
+        .neos-content th {
+            font-weight: bold;
+            height: auto;
+        }
+
+        .neos .crawl-errors th,
+        .neos .crawl-errors td {
+            vertical-align: top;
+            line-height: 2;
+        }
+
+        .neos .crawl-errors tr:nth-child(2n) {
+            background: #282828;
+        }
+
+        .neos .crawl-errors li {
+            line-height: 2;
+        }
+
+        .neos .crawl-errors a {
+            color: #00b5ff;
+            transition: color .1s ease-in;
+        }
+
+        .neos .crawl-errors a i {
+            margin-right: 5px;
+        }
+
+        .neos .crawl-domain-selection label {
+            line-height: 40px;
+        }
     </style>
 
-    Hallo Seb
+    <div class="select-domain-form">
+        <f:form action="index" class="crawl-domain-selection">
+            <fieldset>
+                <div class="neos-row">
+                    <f:if condition="{availableDomains -> f:count()} > 1">
+                        <div class="neos-span1">
+                                <label for="selectedDomain">Domain</label>
+                        </div>
+                        <div class="neos-span3">
+                            <f:form.select name="selectedDomain" id="selectedDomain" value="{selectedDomain}"
+                                           options="{availableDomains}" class="neos-span3" />
+                        </div>
+                        <div class="neos-span3">
+                            <f:form.submit class="neos-button neos-button-primary" value="Select" />
+                        </div>
+                    </f:if>
+                </div>
+            </fieldset>
+        </f:form>
+    </div>
+
+    <f:if condition="{selectedDomain}">
+        <f:then>
+            <h2>Crawl errors for domain {selectedDomain}</h2>
+
+            <table class="crawl-errors">
+                <tr>
+                    <th>Url</th>
+                    <th>Last crawled</th>
+                    <th>First detected</th>
+                    <th>Response code</th>
+                    <th>Category</th>
+                    <th>Platform</th>
+                    <th>Linked from</th>
+                    <th>Actions</th>
+                </tr>
+                <f:for each="{crawlErrorData}" as="error">
+                    <tr>
+                        <td>
+                            <f:if condition="{error.matchedNode}">
+                                <f:then>
+                                    <neos:link.node node="{error.matchedNode}" target="_blank" title="Preview internal page">
+                                        <i class="fa fa-external-link-alt"></i> {error.normalizedPageUrl}
+                                    </neos:link.node>
+                                </f:then>
+                                <f:else>
+                                    {error.normalizedPageUrl}
+                                </f:else>
+                            </f:if>
+                        </td>
+                        <td><f:format.date format="F d, Y">{error.lastCrawled}</f:format.date></td>
+                        <td><f:format.date format="F d, Y">{error.firstDetected}</f:format.date></td>
+                        <td>{error.responseCode}</td>
+                        <td>{error.category}</td>
+                        <td>{error.platform}</td>
+                        <td>
+                            <f:if condition="{error.linkedFromUrls}">
+                                <ul>
+                                    <f:for each="{error.linkedFromUrls}" as="link">
+                                        <li>
+                                            <a href="{link}" target="_blank" title="Checkout external link">
+                                                <i class="fa fa-external-link-alt"></i> {link}
+                                            </a>
+                                        </li>
+                                    </f:for>
+                                </ul>
+                            </f:if>
+                        </td>
+                        <td>
+                            <f:form action="markCrawlErrorAsResolved" class="crawl-domain-selection">
+                                <f:form.hidden name="selectedDomain" value="{selectedDomain}"/>
+                                <f:form.hidden name="url" value="{error.pageUrl}"/>
+                                <f:form.hidden name="category" value="{error.category}"/>
+                                <f:form.hidden name="platform" value="{error.platform}"/>
+                                <f:form.submit class="neos-button neos-button-success" value="Mark resolved"/>
+                            </f:form>
+                        </td>
+                    </tr>
+                </f:for>
+            </table>
+        </f:then>
+        <f:else>
+            <h2>Please select a domain in the dropdown</h2>
+        </f:else>
+    </f:if>
 </f:section>

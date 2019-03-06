@@ -18,6 +18,16 @@ Yoast:
       ru: 'ru_RU'
       zh-CN: 'zh_CN'
 
+      authentication:
+        # Application name for the Google Search Console consent screen
+        applicationName: 'Neos CMS'
+        # "Client ID" of the OAuth 2.0 "Client ID for web application"
+        clientId: ~
+        # "Client Secret" of the OAuth 2.0 "Client ID for web application"
+        clientSecret: ~
+        # "API Key" of the Public API access credential "Key for server applications"
+        developerKey: ~
+
 Neos:
   Neos:
     userInterface:
