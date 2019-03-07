@@ -28,6 +28,7 @@ Neos:
           isPreviewMode: false
           fusionRenderingPath: shelYoastSeoView
           title: 'Shel.Neos.YoastSeo:Main:editPreviewModes.yoastSeoView'
+          position: 'after inPlace'
 
       translation:
         autoInclude:
