@@ -204,7 +204,8 @@ export default class YoastInfoView extends PureComponent {
             locale: this.state.page.locale,
             contentAnalysisActive: true,
             keywordAnalysisActive: true,
-            logLevel: "ERROR"
+            logLevel: 'ERROR',
+            translations: this.props.translations,
         }).then(() => {
             let paper = new Paper(
                 this.state.pageContent,
