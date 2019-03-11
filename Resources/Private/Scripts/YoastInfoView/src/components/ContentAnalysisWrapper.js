@@ -4,10 +4,10 @@ import PropTypes from "prop-types";
 import {parseResults, groupResultsByRating} from "../helper/resultParser";
 
 import ContentAnalysis from "yoast-components/composites/Plugin/ContentAnalysis/components/ContentAnalysis";
-
 import YoastModal from "yoast-components/composites/Plugin/Shared/components/YoastModal";
 import {Collapsible} from "yoast-components/composites/Plugin/Shared/components/Collapsible";
 import colors from "yoast-components/style-guide/colors";
+
 import {scoreToRating} from "yoastseo/src/interpreters";
 
 const errorResult = {

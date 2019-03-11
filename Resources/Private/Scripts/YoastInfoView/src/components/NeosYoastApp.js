@@ -10,7 +10,8 @@ import Loader from "yoast-components/composites/basic/Loader";
 import SnippetEditor from "yoast-components/composites/Plugin/SnippetEditor/components/SnippetEditor";
 import {MODES} from "yoast-components/composites/Plugin/SnippetPreview/constants";
 
-import {AnalysisWorkerWrapper, createWorker} from "yoastseo/src/worker";
+import AnalysisWorkerWrapper from 'yoastseo/src/worker/AnalysisWorkerWrapper';
+import createWorker from 'yoastseo/src/worker/createWorker';
 import Paper from "yoastseo/src/values/Paper";
 
 export default class NeosYoastApp extends PureComponent {

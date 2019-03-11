@@ -12,9 +12,10 @@ import createWorker from 'yoastseo/src/worker/createWorker';
 import {scoreToRating} from 'yoastseo/src/interpreters';
 import Jed from "jed";
 import style from './style.css';
-import PageParser from "./helper/pageParser";
+import PageParser from "./helper/PageParser";
 import {yoastActions} from './actions';
-import {SnippetPreviewButton, ResultGroup} from "./components";
+import SnippetPreviewButton from "./components/SnippetPreviewButton";
+import ResultGroup from "./components/ResultGroup";
 import {groupResultsByRating, parseResults} from "./helper/resultParser";
 
 const iconRatingMapping = {
