@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 import {parseResults, groupResultsByRating} from "../helper/resultParser";
 
 import ContentAnalysis from "yoast-components/composites/Plugin/ContentAnalysis/components/ContentAnalysis";
-import {Collapsible, StyledIconsButton} from "yoast-components/composites/Plugin/Shared/components/Collapsible";
+import {Collapsible} from "yoast-components/composites/Plugin/Shared/components/Collapsible";
 import colors from "yoast-components/style-guide/colors";
 import {scoreToRating} from "yoastseo/src/interpreters";
 
@@ -92,11 +92,11 @@ export default class ContentAnalysisWrapper extends PureComponent {
 
                 this.setState({
                     seoResults: {
-                        ...this.seoResults.results,
+                        ...this.state.seoResults,
                         errorResults: [errorResult]
                     },
                     readabilityResults: {
-                        ...this.readabilityResults.results,
+                        ...this.state.readabilityResults,
                         errorResults: [errorResult]
                     },
                     isAnalyzing: false,
