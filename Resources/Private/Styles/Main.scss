@@ -34,8 +34,13 @@ body {
     }
   }
 
-  &__snippet-preview-wrapper {
+  &__snippet-editor-wrapper {
     margin: 1rem 1rem;
+
+    // Hotfix to hide `Insert snippet variable` button
+    section button {
+      display: none;
+    }
   }
 
   &__content-analysis-wrapper {
@@ -62,6 +67,10 @@ body {
   top: 1rem;
   right: 1rem;
   width: 2rem;
+}
+
+.snippet-editor {
+  display: none;
 }
 
 .ReactModal__Content {

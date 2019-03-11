@@ -3,11 +3,15 @@ const webpack = require("webpack");
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
-module.exports = [
+const webpackConfig = [
     {
         entry: [
             '../app.js',
         ],
+        watchOptions: {
+            aggregateTimeout: 300,
+            ignored: /node_modules/
+        },
         output: {
             filename: 'app.js',
             path: path.resolve(__dirname, '../../../Public/Assets')
@@ -59,11 +63,6 @@ module.exports = [
             new ExtractTextPlugin({
                 filename: "[name].css",
             }),
-            new UglifyJSPlugin({
-                test: /\.js($|\?)/i,
-                cache: true,
-                parallel: true,
-            })
         ]
     },
     {
@@ -95,3 +94,13 @@ module.exports = [
         ]
     }
 ];
+
+if (process.env.NODE_ENV !== 'development') {
+    webpackConfig.plugins.push(new UglifyJSPlugin({
+        test: /\.js($|\?)/i,
+        cache: true,
+        parallel: true,
+    }));
+}
+
+module.exports = webpackConfig;

@@ -22,7 +22,6 @@ prototype(Shel.Neos.YoastSeo:Documents.YoastSeoView) < prototype(Neos.Neos:Page)
 
     body {
         templatePath = 'resource://Shel.Neos.YoastSeo/Private/Templates/YoastSeoView.html'
-        sectionName = 'body'
 
         previewWrapper = Neos.Fusion:Tag {
             tagName = 'main'
@@ -31,7 +30,7 @@ prototype(Shel.Neos.YoastSeo:Documents.YoastSeoView) < prototype(Neos.Neos:Page)
             content = Neos.Fusion:Array {
                 header = Shel.Neos.YoastSeo:Component.Header
                 application = Shel.Neos.YoastSeo:Component.Application
-                configuration = Shel.Neos.YoastSeo:Component.Configuration
+                snippetEditor = Shel.Neos.YoastSeo:Component.SnippetEditor
             }
         }
 

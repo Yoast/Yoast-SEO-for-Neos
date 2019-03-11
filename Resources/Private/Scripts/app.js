@@ -1,23 +1,26 @@
 import '../Styles/Main.scss';
-import PageParser from "./YoastInfoView/src/helper/pageParser";
-import ContentAnalysisWrapper from "./YoastInfoView/src/components/contentAnalysisWrapper";
 
 import React from './YoastInfoView/node_modules/react';
 import ReactDOM from './YoastInfoView/node_modules/react-dom';
-import {IntlProvider} from './YoastInfoView/node_modules/react-intl';
-
-import {SnippetPreview} from './YoastInfoView/node_modules/yoast-components/composites/Plugin/SnippetPreview';
-import Loader from "./YoastInfoView/node_modules/yoast-components/composites/basic/Loader";
-import {setTranslations} from './YoastInfoView/node_modules/yoast-components/utils/i18n';
 import './YoastInfoView/node_modules/yoast-components/css/loadingSpinner.scss';
 
-import AnalysisWorkerWrapper from './YoastInfoView/node_modules/yoastseo/src/worker/AnalysisWorkerWrapper';
-import createWorker from './YoastInfoView/node_modules/yoastseo/src/worker/createWorker';
-import Paper from './YoastInfoView/node_modules/yoastseo/src/values/Paper';
+import {setTranslations} from './YoastInfoView/node_modules/yoast-components/utils/i18n';
+import NeosSnippetEditor from './YoastInfoView/src/components/NeosSnippetEditor.js';
 
 ((document, window) => {
+    const applicationContainer = document.querySelector('#yoast-app');
+    const snippetEditorContainer = document.querySelector('.snippet-editor');
+    const titleField = snippetEditorContainer.querySelector('.snippet-editor__title');
+    const titleOverrideField = snippetEditorContainer.querySelector('.snippet-editor__title-override');
+    const descriptionField = snippetEditorContainer.querySelector('.snippet-editor__description');
+    const uriPathSegmentField = snippetEditorContainer.querySelector('.snippet-editor__uri-path-segment');
 
-    let worker = null;
+    const editorFieldMapping = {
+        title: titleField,
+        titleOverride: titleOverrideField,
+        description: descriptionField,
+        slug: uriPathSegmentField,
+    };
 
     /**
      * Request an url and get a Promise in return.
@@ -35,104 +38,26 @@ import Paper from './YoastInfoView/node_modules/yoastseo/src/values/Paper';
         });
     }
 
-    function handleSnippetPreviewMouseUp() {
-        console.log('Snippet preview mouse up');
-    }
-
     window.onload = () => {
-        const applicationContainer = document.querySelector('#yoast-app');
+        const configuration = JSON.parse(applicationContainer.dataset.configuration);
 
-        // Constants
-        const configuration = JSON.parse(document.getElementById('configuration').dataset.configuration);
-        const {pageUrl, previewUrl, translationsUrl, focusKeyword, baseUrl, isCornerstone, contentSelector, isAmp, breadcrumbs, workerUrl} = configuration;
+        get(configuration.previewUrl)
+            .then((documentContent) => {
+                // FIXME: Load actual translations for these components
+                let translation = {
+                    "domain": "yoast-components",
+                    "locale_data": {
+                        "yoast-components": {
+                            "Next": ["Volgende"],
+                            "Previous": ["Vorige"],
+                            "Close": ["Sluiten"]
+                        }
+                    }
+                };
+                setTranslations(translation);
 
-        // Retrieve translations
-        let translations = {
-            domain: "js-text-analysis",
-            // eslint-disable-next-line camelcase
-            locale_data: {
-                "js-text-analysis": {
-                    "": {}
-                }
-            }
-        };
-        console.log('previewdata', configuration);
-        get(translationsUrl)
-            .then(response => response && JSON.parse(response))
-            .then(newTranslations => {
-                if (newTranslations && !newTranslations.error) {
-                    translations = newTranslations;
-                }
-            })
-            .then(() => {
-                // Generate preview then initialize plugin
-                get(previewUrl)
-                    .then((documentContent) => {
-                        let pageParser = new PageParser(documentContent, contentSelector);
-
-                        // FIXME: Load actual translations for these components
-                        let translation = {
-                            "domain": "yoast-components",
-                            "locale_data": {
-                                "yoast-components": {
-                                    "Next": ["Volgende"],
-                                    "Previous": ["Vorige"],
-                                    "Close": ["Sluiten"]
-                                }
-                            }
-                        };
-                        setTranslations(translation);
-
-                        // Define callback to allow content analysis to get results
-                        const refreshAnalysisCallback = () => {
-                            if (!worker) {
-                                worker = new AnalysisWorkerWrapper(createWorker(workerUrl));
-                            }
-                            return worker.initialize({
-                                useCornerstone: isCornerstone,
-                                locale: pageParser.locale,
-                                contentAnalysisActive: true,
-                                keywordAnalysisActive: true,
-                                logLevel: "ERROR"
-                            }).then(() => {
-                                let paper = new Paper(
-                                    pageParser.pageContent,
-                                    {
-                                        keyword: focusKeyword,
-                                        description: pageParser.description,
-                                        title: pageParser.title,
-                                        titleWidth: 100, // Retrieve via helper
-                                        url: new URL(pageUrl).pathname,
-                                        locale: pageParser.locale,
-                                        permalink: ""
-                                    }
-                                );
-                                return worker.analyze(paper);
-                            });
-                        };
-
-                        let snippetPreviewProps = {
-                            title: pageParser.title,
-                            description: pageParser.description,
-                            locale: pageParser.locale,
-                            url: pageUrl,
-                            keyword: focusKeyword,
-                            breadcrumbs: breadcrumbs,
-                            isAmp: isAmp,
-                            onMouseUp: handleSnippetPreviewMouseUp,
-                        };
-                        ReactDOM.render((
-                            <IntlProvider locale={pageParser.locale}>
-                                <div>
-                                    <Loader className=""/>
-                                    <div className="yoast-seo__snippet-preview-wrapper">
-                                        <SnippetPreview {...snippetPreviewProps}/>
-                                    </div>
-                                    <ContentAnalysisWrapper refreshAnalysisCallback={refreshAnalysisCallback}/>
-                                </div>
-                            </IntlProvider>
-                        ), applicationContainer);
-                    });
+                ReactDOM.render((
+                    <NeosSnippetEditor documentContent={documentContent} editorFieldMapping={editorFieldMapping} {...configuration}/>), applicationContainer);
             });
     }
 })(document, window);
