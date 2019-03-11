@@ -25,18 +25,15 @@ prototype(Shel.Neos.YoastSeo:Component.Application) < prototype(Neos.Fusion:Tag)
                     node = ${documentNode.contextPath}
                 }
             }
-            baseUrl = Neos.Neos:NodeUri {
-                node = ${q(documentNode == site ? site : q(documentNode).parent().get()).context({workspaceName: 'live'}).get(0)}
-                absolute = true
-                @process.removeFormat = ${String.pregReplace(value, '/\.html/', '/')}
-            }
+            baseUrl = Shel.Neos.YoastSeo:BaseUri
             pageUrl = Neos.Neos:NodeUri {
                 node = ${documentNode}
                 absolute = true
+                @process.stripWorkspace = ${String.split(value, '@')[0]}
             }
 
             breadcrumbs = Neos.Fusion:RawCollection {
-                collection = ${Array.reverse(q(documentNode).add(q(documentNode).parents('[instanceof Neos.Neos:Document]')).get())}
+                collection = ${Array.reverse(q(documentNode).parents('[instanceof Neos.Neos:Document]').get())}
                 itemRenderer = ${q(item).property('uriPathSegment')}
             }
 
