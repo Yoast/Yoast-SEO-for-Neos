@@ -6,16 +6,18 @@ import debounce from "lodash.debounce";
 import ContentAnalysisWrapper from "./ContentAnalysisWrapper";
 import PageParser from "../helper/PageParser";
 
-import {Loader, SnippetEditor} from "yoast-components";
+import Loader from "yoast-components/composites/basic/Loader";
+import SnippetEditor from "yoast-components/composites/Plugin/SnippetEditor/components/SnippetEditor";
 import {MODES} from "yoast-components/composites/Plugin/SnippetPreview/constants";
 
-import {AnalysisWorkerWrapper, createWorker} from "yoastseo";
+import {AnalysisWorkerWrapper, createWorker} from "yoastseo/src/worker";
 import Paper from "yoastseo/src/values/Paper";
 
 export default class NeosYoastApp extends PureComponent {
     static propTypes = {
         documentContent: PropTypes.string.isRequired,
         contentSelector: PropTypes.string.isRequired,
+        modalContainer: PropTypes.object.isRequired,
         editorFieldMapping: PropTypes.shape({
             title: PropTypes.object.isRequired,
             titleOverride: PropTypes.object.isRequired,
@@ -172,7 +174,8 @@ export default class NeosYoastApp extends PureComponent {
                     <div className="yoast-seo__snippet-editor-wrapper">
                         <SnippetEditor {...editorProps} mode={this.state.mode}/>
                     </div>
-                    <ContentAnalysisWrapper refreshAnalysisCallback={this.refreshAnalysisCallback}/>
+                    <ContentAnalysisWrapper modalContainer={this.props.modalContainer}
+                                            refreshAnalysisCallback={this.refreshAnalysisCallback}/>
                 </div>
             </ThemeProvider>
         )

@@ -30,6 +30,11 @@ prototype(Shel.Neos.YoastSeo:Documents.YoastSeoView) < prototype(Neos.Neos:Page)
             content = Neos.Fusion:Array {
                 header = Shel.Neos.YoastSeo:Component.Header
                 application = Shel.Neos.YoastSeo:Component.Application
+                modal = Neos.Fusion:Component {
+                    renderer = afx`
+                        <div id="yoast-modal"></div>
+                    `
+                }
                 snippetEditor = Shel.Neos.YoastSeo:Component.SnippetEditor
             }
         }

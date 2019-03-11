@@ -1,11 +1,11 @@
 import React, {PureComponent} from 'react';
-import Modal from 'react-modal';
 import styled from "styled-components";
 import PropTypes from "prop-types";
-
 import {parseResults, groupResultsByRating} from "../helper/resultParser";
 
 import ContentAnalysis from "yoast-components/composites/Plugin/ContentAnalysis/components/ContentAnalysis";
+
+import YoastModal from "yoast-components/composites/Plugin/Shared/components/YoastModal";
 import {Collapsible} from "yoast-components/composites/Plugin/Shared/components/Collapsible";
 import colors from "yoast-components/style-guide/colors";
 import {scoreToRating} from "yoastseo/src/interpreters";
@@ -30,6 +30,7 @@ const StyledContentAnalysisWrapper = styled.div`
 export default class ContentAnalysisWrapper extends PureComponent {
     static propTypes = {
         refreshAnalysisCallback: PropTypes.func.isRequired,
+        modalContainer: PropTypes.object.isRequired,
     };
 
     constructor(props) {
@@ -124,24 +125,18 @@ export default class ContentAnalysisWrapper extends PureComponent {
         return (
             <div className="yoast-seo__content-analysis-wrapper">
                 {this.state.currentMarkerId && (
-                    <Modal isOpen={this.state.modalIsOpen} onRequestClose={this.closeModal} ariaHideApp={false}
-                           style={modalStyles}>
-                        <h2 dangerouslySetInnerHTML={{__html: this.state.allResults[this.state.currentMarkerId]['text']}}/>
+                    <YoastModal isOpen={this.state.modalIsOpen} onClose={this.closeModal}
+                                modalAriaLabel={this.state.allResults[this.state.currentMarkerId]['text']}
+                                appElement={this.props.modalContainer}  style={modalStyles}
+                                closeIconButton="Close" heading="Analysis details">
+                        <strong dangerouslySetInnerHTML={{__html: this.state.allResults[this.state.currentMarkerId]['text']}}/>
                         <ul>
-                            {this.state.currentMarker.map(mark => (
-                                <li className="yoast-seo__mark"
+                            {this.state.currentMarker.map((mark) => (
+                                <li key={mark._properties.original} className="yoast-seo__mark"
                                     dangerouslySetInnerHTML={{__html: mark._properties.marked}}/>
                             ))}
                         </ul>
-                        <button className="button--close" onClick={this.closeModal}>
-                            <svg aria-hidden="true" focusable="false" data-prefix="far" data-icon="times"
-                                 className="svg-inline--fa fa-times fa-w-10 fa-lg" role="img"
-                                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
-                                <path fill="currentColor"
-                                      d="M207.6 256l107.72-107.72c6.23-6.23 6.23-16.34 0-22.58l-25.03-25.03c-6.23-6.23-16.34-6.23-22.58 0L160 208.4 52.28 100.68c-6.23-6.23-16.34-6.23-22.58 0L4.68 125.7c-6.23 6.23-6.23 16.34 0 22.58L112.4 256 4.68 363.72c-6.23 6.23-6.23 16.34 0 22.58l25.03 25.03c6.23 6.23 16.34 6.23 22.58 0L160 303.6l107.72 107.72c6.23 6.23 16.34 6.23 22.58 0l25.03-25.03c6.23-6.23 6.23-16.34 0-22.58L207.6 256z"></path>
-                            </svg>
-                        </button>
-                    </Modal>
+                    </YoastModal>
                 )}
 
                 <Collapsible
@@ -167,8 +162,16 @@ export default class ContentAnalysisWrapper extends PureComponent {
 
                 <Collapsible
                     title="Focus keyphrase"
-                    prefixIcon={{icon: readabilityRatingIcon, color: colors['$color_' + readabilityRatingColor], size: "18px"}}
-                    prefixIconCollapsed={{icon: readabilityRatingIcon, color: colors['$color_' + readabilityRatingColor], size: "18px"}}
+                    prefixIcon={{
+                        icon: readabilityRatingIcon,
+                        color: colors['$color_' + readabilityRatingColor],
+                        size: "18px"
+                    }}
+                    prefixIconCollapsed={{
+                        icon: readabilityRatingIcon,
+                        color: colors['$color_' + readabilityRatingColor],
+                        size: "18px"
+                    }}
                     headingProps={{level: 2, fontSize: "18px"}}
                 >
                     <StyledContentAnalysisWrapper>

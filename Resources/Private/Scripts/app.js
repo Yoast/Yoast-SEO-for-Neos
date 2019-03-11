@@ -9,6 +9,7 @@ import NeosYoastApp from './YoastInfoView/src/components/NeosYoastApp';
 
 ((document, window) => {
     const applicationContainer = document.querySelector('#yoast-app');
+    const modalContainer = document.querySelector('#yoast-modal');
     const snippetEditorContainer = document.querySelector('.snippet-editor');
     const titleField = snippetEditorContainer.querySelector('.snippet-editor__title');
     const titleOverrideField = snippetEditorContainer.querySelector('.snippet-editor__title-override');
@@ -64,8 +65,8 @@ import NeosYoastApp from './YoastInfoView/src/components/NeosYoastApp';
             .then(fetch(configuration.previewUrl)
                 .then((documentContent) => {
                     ReactDOM.render((
-                        <NeosYoastApp documentContent={documentContent}
-                                           editorFieldMapping={editorFieldMapping} {...configuration}/>), applicationContainer);
+                        <NeosYoastApp documentContent={documentContent} modalContainer={modalContainer}
+                                      editorFieldMapping={editorFieldMapping} {...configuration}/>), applicationContainer);
                 })
             );
     }

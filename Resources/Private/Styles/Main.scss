@@ -76,10 +76,6 @@ body {
 .ReactModal__Content {
   box-shadow: 0 2px 7px -1px rgba(0, 0, 0, .15);
 
-  h2 {
-    margin-top: 0;
-  }
-
   .yoast-seo__mark {
     color: var(--text-color-light);
   }
@@ -87,16 +83,4 @@ body {
   .yoast-text-mark {
     color: var(--text-color);
   }
-
-  .button--close {
-    position: absolute;
-    -webkit-appearance: none;
-    border: 0;
-    padding: .5rem;
-    right: 0;
-    top: 0;
-    cursor: pointer;
-  }
 }
-
-

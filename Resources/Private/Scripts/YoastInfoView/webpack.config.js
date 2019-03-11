@@ -96,7 +96,7 @@ const webpackConfig = [
 ];
 
 if (process.env.NODE_ENV !== 'development') {
-    webpackConfig.plugins.push(new UglifyJSPlugin({
+    webpackConfig[0].plugins.push(new UglifyJSPlugin({
         test: /\.js($|\?)/i,
         cache: true,
         parallel: true,
