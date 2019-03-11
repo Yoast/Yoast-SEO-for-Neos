@@ -43,7 +43,6 @@
     "prop-types": "^15.6.0",
     "react-dom": "^16.6.3",
     "react-intl": "^2.7.2",
-    "react-modal": "^3.8.1",
     "recompose": "^0.25.1",
     "request": "^2.88.0",
     "sass-loader": "^6.0.7",
