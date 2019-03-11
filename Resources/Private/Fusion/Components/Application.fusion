@@ -2,13 +2,19 @@ prototype(Shel.Neos.YoastSeo:Component.Application) < prototype(Neos.Fusion:Tag)
     attributes {
         class = 'yoast-seo__application'
         id = 'yoast-app'
-        data-fields = Neos.Fusion:RawArray {
+        data-configuration = Neos.Fusion:RawArray {
+            title = ${q(documentNode).property('title')}
+            titleOverride = ${q(documentNode).property('titleOverride')}
             focusKeyword = ${q(documentNode).property('focusKeyword')}
-            pageUrl = Neos.Neos:NodeUri {
-                node = ${documentNode}
-                absolute = true
-            }
             isCornerstone = ${q(documentNode).property('isCornerstone')}
+            uriPathSegment = ${q(documentNode).property('uriPathSegment')}
+            isAmp = false
+            uiLocale = Shel.Neos.YoastSeo:InterfaceLanguage
+
+            translationsUrl = '/neosyoastseo/data/fetchTranslations'
+            workerUrl = Neos.Fusion:ResourceUri {
+                path = 'resource://Shel.Neos.YoastSeo/Public/Assets/webWorker.js'
+            }
             previewUrl = Neos.Fusion:UriBuilder {
                 package = 'Shel.Neos.YoastSeo'
                 controller = 'Page'
@@ -18,19 +24,24 @@ prototype(Shel.Neos.YoastSeo:Component.Application) < prototype(Neos.Fusion:Tag)
                     node = ${documentNode.contextPath}
                 }
             }
-            translationsUrl = '/neosyoastseo/data/fetchtranslations'
-//            translationsUrl = Neos.Fusion:UriBuilder {
-//                package = 'Shel.Neos.YoastSeo'
-//                controller = 'Data'
-//                action = 'fetchTranslations'
-//                absolute = true
-//            }
+            baseUrl = Neos.Neos:NodeUri {
+                node = ${q(documentNode == site ? site : q(documentNode).parent().get()).context({workspaceName: 'live'}).get(0)}
+                absolute = true
+                @process.removeFormat = ${String.pregReplace(value, '/\.html/', '/')}
+            }
+            pageUrl = Neos.Neos:NodeUri {
+                node = ${documentNode}
+                absolute = true
+            }
+
             breadcrumbs = Neos.Fusion:RawCollection {
                 collection = ${Array.reverse(q(documentNode).add(q(documentNode).parents('[instanceof Neos.Neos:Document]')).get())}
-                itemRenderer = ${item.label}
+                itemRenderer = ${q(item).property('uriPathSegment')}
             }
-            isAmp = false
-            @process.toJson = ${Json.stringify(value)}
+
+            contentSelector = ${Configuration.setting('Neos.Neos.Ui.frontendConfiguration')['Shel.Neos.YoastSeo']['contentSelector']}
+
+            @process.encode = ${Json.stringify(value)}
         }
     }
 }

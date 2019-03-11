@@ -1,0 +1,18 @@
+prototype(Shel.Neos.YoastSeo:Component.SnippetEditor) < prototype(Neos.Neos:ContentComponent) {
+    renderer = afx`
+        <div class="snippet-editor">
+            <div class="snippet-editor__title">
+                <Neos.Neos:Editable property="title"/>
+            </div>
+            <div class="snippet-editor__title-override">
+                <Neos.Neos:Editable property="titleOverride"/>
+            </div>
+            <div class="snippet-editor__description">
+                <Neos.Neos:Editable property="metaDescription"/>
+            </div>
+            <div class="snippet-editor__uri-path-segment">
+                <Neos.Neos:Editable property="uriPathSegment"/>
+            </div>
+        </div>
+    `
+}
