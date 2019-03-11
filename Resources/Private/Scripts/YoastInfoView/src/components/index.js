@@ -1,7 +1,11 @@
-import SnippetPreviewButton from "./snippetPreviewButton";
-import ResultGroup from "./resultGroup";
+import ContentAnalysisWrapper from "./ContentAnalysisWrapper";
+import NeosYoastApp from "./NeosYoastApp";
+import ResultGroup from "./ResultGroup";
+import SnippetPreviewButton from "./SnippetPreviewButton";
 
 export {
-    SnippetPreviewButton,
+    ContentAnalysisWrapper,
+    NeosYoastApp,
     ResultGroup,
+    SnippetPreviewButton,
 }
