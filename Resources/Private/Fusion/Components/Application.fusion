@@ -5,6 +5,7 @@ prototype(Shel.Neos.YoastSeo:Component.Application) < prototype(Neos.Fusion:Tag)
         data-configuration = Neos.Fusion:RawArray {
             title = ${q(documentNode).property('title')}
             titleOverride = ${q(documentNode).property('titleOverride')}
+            description = ${q(documentNode).property('metaDescription')}
             focusKeyword = ${q(documentNode).property('focusKeyword')}
             isCornerstone = ${q(documentNode).property('isCornerstone')}
             uriPathSegment = ${q(documentNode).property('uriPathSegment')}

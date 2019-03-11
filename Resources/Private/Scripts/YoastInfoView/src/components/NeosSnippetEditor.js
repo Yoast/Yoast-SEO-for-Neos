@@ -25,6 +25,7 @@ export default class NeosSnippetEditor extends PureComponent {
         }).isRequired,
         title: PropTypes.string.isRequired,
         titleOverride: PropTypes.string,
+        description: PropTypes.string,
         focusKeyword: PropTypes.string,
         isCornerstone: PropTypes.bool,
         isAmp: PropTypes.bool,
