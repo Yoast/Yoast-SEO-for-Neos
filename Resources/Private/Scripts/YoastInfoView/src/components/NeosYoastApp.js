@@ -1,5 +1,4 @@
-import React, {PureComponent} from 'react';
-import {IntlProvider} from "react-intl";
+import React, {PureComponent} from "react";
 import PropTypes from "prop-types";
 import {ThemeProvider} from "styled-components";
 import debounce from "lodash.debounce";
@@ -13,15 +12,15 @@ import {MODES} from "yoast-components/composites/Plugin/SnippetPreview/constants
 import {AnalysisWorkerWrapper, createWorker} from "yoastseo";
 import Paper from "yoastseo/src/values/Paper";
 
-export default class NeosSnippetEditor extends PureComponent {
+export default class NeosYoastApp extends PureComponent {
     static propTypes = {
         documentContent: PropTypes.string.isRequired,
         contentSelector: PropTypes.string.isRequired,
         editorFieldMapping: PropTypes.shape({
-            title: PropTypes.string.isRequired,
-            titleOverride: PropTypes.string.isRequired,
-            description: PropTypes.string.isRequired,
-            slug: PropTypes.string.isRequired,
+            title: PropTypes.object.isRequired,
+            titleOverride: PropTypes.object.isRequired,
+            description: PropTypes.object.isRequired,
+            slug: PropTypes.object.isRequired,
         }).isRequired,
         title: PropTypes.string.isRequired,
         titleOverride: PropTypes.string,
@@ -50,7 +49,7 @@ export default class NeosSnippetEditor extends PureComponent {
             pageParser: pageParser,
             mode: MODES.MODE_DESKTOP,
             activeTitleField: activeTitleField,
-            titleTemplate: NeosSnippetEditor.buildTitleTemplate(this.props[activeTitleField], pageParser.title),
+            titleTemplate: NeosYoastApp.buildTitleTemplate(this.props[activeTitleField], pageParser.title),
             editorData: {
                 title: this.props[activeTitleField],
                 description: this.props.description || '',
@@ -59,7 +58,7 @@ export default class NeosSnippetEditor extends PureComponent {
             },
         };
 
-        this.onSnippetEditorChange = debounce(this.onSnippetEditorChange.bind(this), 300);
+        this.updateNeosFields = debounce(this.updateNeosFields.bind(this), 300);
     };
 
     /**
@@ -83,21 +82,27 @@ export default class NeosSnippetEditor extends PureComponent {
      * @param data
      */
     onSnippetEditorChange = (key, data) => {
-        console.debug(data, 'Changing ' + key + ' in editor');
-
         if (this.props.editorFieldMapping[key]) {
             this.setState({
                 editorData: {...this.state.editorData, [key]: data}
             });
-
-            if (key === 'title') {
-                key = this.state.activeTitleField;
-            }
-            this.props.editorFieldMapping[key].querySelector('.neos-inline-editable > *').innerHTML = data;
-
+            this.updateNeosFields(key, data);
         } else if (key === 'mode') {
             this.setState({mode: data});
         }
+    };
+
+    /**
+     * Update hidden Neos editable fields to forward changes to the backend
+     *
+     * @param key
+     * @param data
+     */
+    updateNeosFields = (key, data) => {
+        if (key === 'title') {
+            key = this.state.activeTitleField;
+        }
+        this.props.editorFieldMapping[key].querySelector('.neos-inline-editable > *').innerHTML = data;
     };
 
     /**
@@ -108,8 +113,6 @@ export default class NeosSnippetEditor extends PureComponent {
      * @param context
      */
     mapEditorDataToPreview = (mappedData, context) => {
-        console.debug(mappedData, 'Mapped data');
-        console.debug(this.state.titleTemplate, 'Title template');
         return {
             title: this.state.titleTemplate.replace('{title}', mappedData.title),
             url: mappedData.url,
@@ -163,17 +166,15 @@ export default class NeosSnippetEditor extends PureComponent {
         };
 
         return (
-            <IntlProvider locale={this.props.locale}>
-                <ThemeProvider theme={{isRtl: false}}>
-                    <div>
-                        <Loader className=""/>
-                        <div className="yoast-seo__snippet-editor-wrapper">
-                            <SnippetEditor {...editorProps} mode={this.state.mode}/>
-                        </div>
-                        <ContentAnalysisWrapper refreshAnalysisCallback={this.refreshAnalysisCallback}/>
+            <ThemeProvider theme={{isRtl: false}}>
+                <div>
+                    <Loader className=""/>
+                    <div className="yoast-seo__snippet-editor-wrapper">
+                        <SnippetEditor {...editorProps} mode={this.state.mode}/>
                     </div>
-                </ThemeProvider>
-            </IntlProvider>
+                    <ContentAnalysisWrapper refreshAnalysisCallback={this.refreshAnalysisCallback}/>
+                </div>
+            </ThemeProvider>
         )
     }
 }

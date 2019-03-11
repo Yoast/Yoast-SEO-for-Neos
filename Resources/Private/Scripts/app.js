@@ -1,11 +1,11 @@
 import '../Styles/Main.scss';
+import './YoastInfoView/node_modules/yoast-components/css/loadingSpinner.scss';
 
 import React from './YoastInfoView/node_modules/react';
 import ReactDOM from './YoastInfoView/node_modules/react-dom';
-import './YoastInfoView/node_modules/yoast-components/css/loadingSpinner.scss';
+import {setLocaleData} from "./YoastInfoView/node_modules/@wordpress/i18n";
 
-import {setTranslations} from './YoastInfoView/node_modules/yoast-components/utils/i18n';
-import NeosSnippetEditor from './YoastInfoView/src/components/NeosSnippetEditor.js';
+import NeosYoastApp from './YoastInfoView/src/components/NeosYoastApp';
 
 ((document, window) => {
     const applicationContainer = document.querySelector('#yoast-app');
@@ -28,7 +28,7 @@ import NeosSnippetEditor from './YoastInfoView/src/components/NeosSnippetEditor.
      * @param {string} url
      * @returns {Promise}
      */
-    function get(url) {
+    function fetch(url) {
         return new Promise((resolve, reject) => {
             const req = new XMLHttpRequest();
             req.open('GET', url);
@@ -38,26 +38,35 @@ import NeosSnippetEditor from './YoastInfoView/src/components/NeosSnippetEditor.
         });
     }
 
+    /**
+     * Fetch translations and set them globally
+     */
+    function fetchTranslations(translationsUrl) {
+        return self.fetch(translationsUrl)
+            .then(response => {
+                if (!response) {
+                    return;
+                }
+                return response.text();
+            })
+            .then(translations => {
+                translations = JSON.parse(translations);
+                if (translations && !translations.error) {
+                    setLocaleData(translations['locale_data']['js-text-analysis'], 'yoast-components');
+                }
+            });
+    }
+
     window.onload = () => {
         const configuration = JSON.parse(applicationContainer.dataset.configuration);
 
-        get(configuration.previewUrl)
-            .then((documentContent) => {
-                // FIXME: Load actual translations for these components
-                let translation = {
-                    "domain": "yoast-components",
-                    "locale_data": {
-                        "yoast-components": {
-                            "Next": ["Volgende"],
-                            "Previous": ["Vorige"],
-                            "Close": ["Sluiten"]
-                        }
-                    }
-                };
-                setTranslations(translation);
-
-                ReactDOM.render((
-                    <NeosSnippetEditor documentContent={documentContent} editorFieldMapping={editorFieldMapping} {...configuration}/>), applicationContainer);
-            });
+        fetchTranslations(configuration.translationsUrl)
+            .then(fetch(configuration.previewUrl)
+                .then((documentContent) => {
+                    ReactDOM.render((
+                        <NeosYoastApp documentContent={documentContent}
+                                           editorFieldMapping={editorFieldMapping} {...configuration}/>), applicationContainer);
+                })
+            );
     }
 })(document, window);

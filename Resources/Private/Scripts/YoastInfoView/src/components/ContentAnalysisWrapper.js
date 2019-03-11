@@ -62,7 +62,6 @@ export default class ContentAnalysisWrapper extends PureComponent {
     componentDidMount() {
         this.props.refreshAnalysisCallback()
             .then((results) => {
-                console.log(results, 'All results');
                 let seoResults = parseResults(results.result.seo[''].results);
                 let readabilityResults = parseResults(results.result.readability.results);
 
