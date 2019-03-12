@@ -10,6 +10,8 @@
 This package provides a new backend preview and inspector integration for [Neos CMS](https://neos.io) to look at 
 your page with the help of the [Yoast SEO](https://github.com/Yoast/YoastSEO.js) plugin.
 
+It's currently compatible with Neos 3.3 (old UI and new UI) and 4.x.
+
 This view will show you a preview snippet how the selected page will look in the Google search results
 and will give you insights and helpers to further improve the page for search engines.
 
@@ -42,6 +44,17 @@ This package currently only requires Neos >= 3.0 but it's suggested to also have
 This package expects some document node properties to be present like `titleOverride` and `metaDescription` which
 are provided via the `neos/seo` package. But you can of course provide them yourself if you don't want to use
 the `neos/seo` package.
+
+## Using this package with Neos CMS 3.3 and the old UI
+
+Many features of this package will also work in the old UI out of the box.
+
+To remove a javascript error and to make the Yoast tab work correctly you should override 
+the provided SEO mixin in your site package:
+
+    'Shel.Neos.YoastSeo:Mixin.SEO':
+      superTypes:
+        'Shel.Neos.YoastSeo:Mixin.Analysis.OldUi': true
 
 ## Supported languages
 
