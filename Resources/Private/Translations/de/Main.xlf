@@ -12,38 +12,17 @@
                 <target>Yoast SEO Analyse</target>
             </trans-unit>
 
-            <trans-unit id="field.title">
-                <source>Title</source>
-                <target>Titel</target>
-            </trans-unit>
-            <trans-unit id="field.titleOverride">
-                <source>Title override</source>
-                <target>Titel überschreiben</target>
-            </trans-unit>
-            <trans-unit id="field.metaDescription">
-                <source>Meta Description</source>
-                <target>Meta Beschreibung</target>
-            </trans-unit>
-            <trans-unit id="field.uriPathSegment">
-                <source>Uri Path Segment</source>
-                <target>Uri Pfadsegment</target>
-            </trans-unit>
-            <trans-unit id="field.focusKeyword">
-                <source>Focus Keyword</source>
-                <target>Fokus Schlüsselwort</target>
-            </trans-unit>
-
             <trans-unit id="inspector.loading">
                 <source>Loading…</source>
                 <target>Lädt…</target>
             </trans-unit>
             <trans-unit id="inspector.renderedTitle">
                 <source>Rendered title</source>
-                <target>Gerenderter Titel</target>
+                <target>Dargestellter Titel</target>
             </trans-unit>
             <trans-unit id="inspector.renderedDescription">
                 <source>Rendered description</source>
-                <target>Gerenderte Beschreibung</target>
+                <target>Dargestellte Beschreibung</target>
             </trans-unit>
             <trans-unit id="inspector.results">
                 <source>Analysis results</source>
@@ -51,11 +30,11 @@
             </trans-unit>
             <trans-unit id="inspector.seoScore">
                 <source>Focus Keyphrase</source>
-                <target>Fokus-Stichwort</target>
+                <target>Fokus-Schlüsselphrase</target>
             </trans-unit>
             <trans-unit id="inspector.contentScore">
                 <source>Readability analysis</source>
-                <target>Lesbarkeitsanalyse</target>
+                <target>Lesbarkeits-Analyse</target>
             </trans-unit>
             <trans-unit id="inspector.showAllResults">
                 <source>Show all results</source>
@@ -63,7 +42,7 @@
             </trans-unit>
             <trans-unit id="inspector.editSnippetPreview">
                 <source>Toggle Snippet Preview</source>
-                <target>Toggle Snippet Preview</target>
+                <target>Vorschauschnipsel Ein-/Ausschalten</target>
             </trans-unit>
             <trans-unit id="inspector.problems">
                 <source>Problems</source>

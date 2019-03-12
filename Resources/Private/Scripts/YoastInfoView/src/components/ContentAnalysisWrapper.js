@@ -7,6 +7,7 @@ import ContentAnalysis from "yoast-components/dist/composites/Plugin/ContentAnal
 import YoastModal from "yoast-components/dist/composites/Plugin/Shared/components/YoastModal";
 import {Collapsible} from "yoast-components/dist/composites/Plugin/Shared/components/Collapsible";
 import colors from "yoast-components/dist/style-guide/colors";
+import { __ } from "@wordpress/i18n";
 
 import scoreToRating from "yoastseo/dist/src/interpreters/scoreToRating";
 
@@ -27,10 +28,11 @@ const StyledContentAnalysisWrapper = styled.div`
     margin: .2rem 1rem;
 `;
 
-export default class ContentAnalysisWrapper extends PureComponent {
+class ContentAnalysisWrapper extends PureComponent {
     static propTypes = {
         refreshAnalysisCallback: PropTypes.func.isRequired,
         modalContainer: PropTypes.object.isRequired,
+        translate: PropTypes.any,
     };
 
     constructor(props) {
@@ -127,9 +129,10 @@ export default class ContentAnalysisWrapper extends PureComponent {
                 {this.state.currentMarkerId && (
                     <YoastModal isOpen={this.state.modalIsOpen} onClose={this.closeModal}
                                 modalAriaLabel={this.state.allResults[this.state.currentMarkerId]['text']}
-                                appElement={this.props.modalContainer}  style={modalStyles}
-                                closeIconButton="Close" heading="Analysis details">
-                        <strong dangerouslySetInnerHTML={{__html: this.state.allResults[this.state.currentMarkerId]['text']}}/>
+                                appElement={this.props.modalContainer} style={modalStyles}
+                                closeIconButton="Close" heading={__('Analysis results', 'yoast-components')}>
+                        <strong
+                            dangerouslySetInnerHTML={{__html: this.state.allResults[this.state.currentMarkerId]['text']}}/>
                         <ul>
                             {this.state.currentMarker.map((mark) => (
                                 <li key={mark._properties.original} className="yoast-seo__mark"
@@ -140,7 +143,7 @@ export default class ContentAnalysisWrapper extends PureComponent {
                 )}
 
                 <Collapsible
-                    title="Readability analysis"
+                    title={__('Readability analysis', 'yoast-components')}
                     prefixIcon={{icon: seoRatingIcon, color: colors['$color_' + seoRatingColor], size: "18px"}}
                     prefixIconCollapsed={{icon: seoRatingIcon, color: colors['$color_' + seoRatingColor], size: "18px"}}
                     headingProps={{level: 2, fontSize: "18px"}}
@@ -161,7 +164,7 @@ export default class ContentAnalysisWrapper extends PureComponent {
                 </Collapsible>
 
                 <Collapsible
-                    title="Focus keyphrase"
+                    title={__('Focus keyphrase', 'yoast-components')}
                     prefixIcon={{
                         icon: readabilityRatingIcon,
                         color: colors['$color_' + readabilityRatingColor],
@@ -192,3 +195,5 @@ export default class ContentAnalysisWrapper extends PureComponent {
         );
     }
 }
+
+export default ContentAnalysisWrapper;
