@@ -19,6 +19,7 @@ export default class NeosYoastApp extends PureComponent {
         documentContent: PropTypes.string.isRequired,
         contentSelector: PropTypes.string.isRequired,
         modalContainer: PropTypes.object.isRequired,
+        translations: PropTypes.object.isRequired,
         editorFieldMapping: PropTypes.shape({
             title: PropTypes.object.isRequired,
             titleOverride: PropTypes.object.isRequired,
@@ -137,7 +138,8 @@ export default class NeosYoastApp extends PureComponent {
             locale: this.state.pageParser.locale,
             contentAnalysisActive: true,
             keywordAnalysisActive: true,
-            logLevel: "ERROR"
+            logLevel: "ERROR",
+            translations: this.props.translations,
         }).then(() => {
             const paper = new Paper(
                 this.state.pageParser.pageContent,

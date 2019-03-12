@@ -15,6 +15,7 @@ import NeosYoastApp from './YoastInfoView/src/components/NeosYoastApp';
     const titleOverrideField = snippetEditorContainer.querySelector('.snippet-editor__title-override');
     const descriptionField = snippetEditorContainer.querySelector('.snippet-editor__description');
     const uriPathSegmentField = snippetEditorContainer.querySelector('.snippet-editor__uri-path-segment');
+    let translations = {};
 
     const editorFieldMapping = {
         title: titleField,
@@ -50,9 +51,10 @@ import NeosYoastApp from './YoastInfoView/src/components/NeosYoastApp';
                 }
                 return response.text();
             })
-            .then(translations => {
-                translations = JSON.parse(translations);
-                if (translations && !translations.error) {
+            .then(newTranslations => {
+                newTranslations = JSON.parse(newTranslations);
+                if (newTranslations && !newTranslations.error) {
+                    translations = newTranslations;
                     setLocaleData(translations['locale_data']['js-text-analysis'], 'yoast-components');
                 }
             });
@@ -66,6 +68,7 @@ import NeosYoastApp from './YoastInfoView/src/components/NeosYoastApp';
                 .then((documentContent) => {
                     ReactDOM.render((
                         <NeosYoastApp documentContent={documentContent} modalContainer={modalContainer}
+                                      translations={translations}
                                       editorFieldMapping={editorFieldMapping} {...configuration}/>), applicationContainer);
                 })
             );
