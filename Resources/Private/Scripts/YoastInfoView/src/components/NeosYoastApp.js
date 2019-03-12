@@ -106,7 +106,14 @@ export default class NeosYoastApp extends PureComponent {
         if (key === 'title') {
             key = this.state.activeTitleField;
         }
-        this.props.editorFieldMapping[key].querySelector('.neos-inline-editable > *').innerHTML = data;
+        let field = this.props.editorFieldMapping[key].querySelector('.neos-inline-editable');
+
+        console.log();
+        if (field.hasChildNodes() && field.childNodes.length === 1) {
+            field.childNodes[0].innerHTML = data;
+        } else {
+            field.innerHTML = data;
+        }
     };
 
     /**
