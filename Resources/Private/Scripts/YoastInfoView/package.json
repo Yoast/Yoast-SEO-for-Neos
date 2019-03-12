@@ -10,8 +10,8 @@
     "build-all": "yarn build-inspector && yarn build-app",
     "build-inspector": "neos-react-scripts build && uglifyjs --compress --mangle -o ../../../Public/YoastInfoView/Plugin.js -- ../../../Public/YoastInfoView/Plugin.js",
     "watch-inspector": "neos-react-scripts watch",
-    "build-app": "webpack -p",
-    "build-app-dev": "webpack -d",
+    "build-app": "webpack -p --progress --colors",
+    "build-app-dev": "webpack -d --progress --colors",
     "watch-app": "NODE_ENV=development webpack --watch --progress --colors",
     "update-translations": "bin/download_translations.js -u http://translate.wordpress.org -t wordpress-seo -d '../../Languages'"
   },
@@ -25,8 +25,8 @@
     "@babel/preset-env": "^7.1.6",
     "@babel/preset-react": "^7.0.0",
     "@babel/runtime": "^7.1.5",
-    "@neos-project/neos-ui-extensibility": "^1.0.0",
-    "@neos-project/react-ui-components": "^1.0.0",
+    "@neos-project/neos-ui-extensibility": "^3.1.0",
+    "@neos-project/react-ui-components": "^3.1.0",
     "babel-loader": "8",
     "babel-polyfill": "^6.26.0",
     "browser-sync": "^2.24.4",
@@ -41,20 +41,25 @@
     "node-sass": "^4.9.0",
     "po2json": "^1.0.0-alpha",
     "prop-types": "^15.6.0",
+    "react": "^16.8.4",
     "react-dom": "^16.6.3",
     "react-intl": "^2.7.2",
     "recompose": "^0.25.1",
     "request": "^2.88.0",
-    "sass-loader": "^6.0.7",
+    "sass-loader": "^7.1.0",
     "sassdash": "^0.9.0",
     "style-loader": "^0.19.1",
     "styled-components": "^2.1.2",
-    "uglifyjs-webpack-plugin": "^1.2.5",
+    "uglifyjs-webpack-plugin": "^2.1",
     "webpack": "^3.12.0",
-    "yoast-components": "^4.20.0",
-    "yoastseo": "1.48.0"
+    "yoast-components": "^4.22.0",
+    "yoastseo": "1.49.0"
   },
   "neos": {
     "buildTargetDirectory": "../../../Public/YoastInfoView"
-  }
+  },
+  "browserslist": [
+    "last 2 version",
+    "> 2%"
+  ]
 }
