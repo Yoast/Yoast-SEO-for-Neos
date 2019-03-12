@@ -1,5 +1,5 @@
 import '../Styles/Main.scss';
-import './YoastInfoView/node_modules/yoast-components/dist/css/loadingSpinner.scss';
+import './YoastInfoView/node_modules/yoast-components/css/loadingSpinner.scss';
 
 import React from './YoastInfoView/node_modules/react';
 import ReactDOM from './YoastInfoView/node_modules/react-dom';

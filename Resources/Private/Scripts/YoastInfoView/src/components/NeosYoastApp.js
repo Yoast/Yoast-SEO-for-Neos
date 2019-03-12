@@ -6,13 +6,13 @@ import debounce from "lodash.debounce";
 import ContentAnalysisWrapper from "./ContentAnalysisWrapper";
 import PageParser from "../helper/PageParser";
 
-import Loader from "yoast-components/dist/composites/basic/Loader";
-import SnippetEditor from "yoast-components/dist/composites/Plugin/SnippetEditor/components/SnippetEditor";
-import {MODES} from "yoast-components/dist/composites/Plugin/SnippetPreview/constants";
+import Loader from "yoast-components/composites/basic/Loader";
+import SnippetEditor from "yoast-components/composites/Plugin/SnippetEditor/components/SnippetEditor";
+import {MODES} from "yoast-components/composites/Plugin/SnippetPreview/constants";
 
-import AnalysisWorkerWrapper from 'yoastseo/dist/src/worker/AnalysisWorkerWrapper';
-import createWorker from 'yoastseo/dist/src/worker/createWorker';
-import Paper from "yoastseo/dist/src/values/Paper";
+import AnalysisWorkerWrapper from 'yoastseo/src/worker/AnalysisWorkerWrapper';
+import createWorker from 'yoastseo/src/worker/createWorker';
+import Paper from "yoastseo/src/values/Paper";
 
 export default class NeosYoastApp extends PureComponent {
     static propTypes = {
