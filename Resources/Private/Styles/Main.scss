@@ -31,6 +31,7 @@ body {
 
     h1 {
       margin: 0 1rem 1rem;
+      font-size: 20px;
     }
   }
 
@@ -56,6 +57,11 @@ body {
       margin: .3rem 0;
     }
 
+    p {
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
     > * {
       border-top: var(--border-light);
     }
@@ -76,11 +82,17 @@ body {
 .ReactModal__Content {
   box-shadow: 0 2px 7px -1px rgba(0, 0, 0, .15);
 
+  strong {
+    font-size: 14px;
+  }
+
   .yoast-seo__mark {
     color: var(--text-color-light);
   }
 
   .yoast-text-mark {
     color: var(--text-color);
+    font-size: 13px;
+    line-height: 1.5;
   }
 }
