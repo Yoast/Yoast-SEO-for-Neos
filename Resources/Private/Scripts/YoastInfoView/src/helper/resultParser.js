@@ -9,11 +9,18 @@ function parseResults(results) {
                 score: result.score,
                 text: result.text,
                 hasMarks: result._hasMarks,
-                marker: result.marks,
+                marker: result.marks.map((mark) => {
+                    mark._properties.marked = addBlankTargets(mark._properties.marked);
+                    return mark;
+                }),
             };
         }
         return obj;
     }, {});
+}
+
+function addBlankTargets(link) {
+    return (""+link).replace(/<a\s+href=/gi, '<a target="_blank" href=');
 }
 
 function groupResultsByRating(results, filter = []) {
