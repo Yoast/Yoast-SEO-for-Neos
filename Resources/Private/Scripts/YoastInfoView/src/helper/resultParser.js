@@ -1,4 +1,4 @@
-import scoreToRating from "yoastseo/dist/src/interpreters/scoreToRating";
+import scoreToRating from "yoastseo/src/interpreters/scoreToRating";
 
 function parseResults(results) {
     return results.reduce((obj, result) => {
