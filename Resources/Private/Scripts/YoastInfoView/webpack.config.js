@@ -1,6 +1,5 @@
 const path = require('path');
 const webpack = require("webpack");
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const webpackConfig = [
@@ -49,13 +48,12 @@ const webpackConfig = [
                     test: /\.jsx?$/,
                     loader: 'babel-loader',
                     exclude: [
-                        /node_modules\/react/,
-                        /node_modules\/react-dom/,
+                        /node_modules\/(?!yoast-components)(?!yoastseo).*$/
                     ],
                     options: {
                         cacheDirectory: true,
                     }
-                },
+                }
             ]
         },
         plugins: [
@@ -75,32 +73,16 @@ const webpackConfig = [
             rules: [
                 {
                     test: /\.jsx?$/,
-                    exclude: /node_modules/,
                     use: [{
                         loader: 'babel-loader',
                         options: {
                             presets: ['@babel/env'],
                         }
-                    }],
+                    }]
                 }
             ]
-        },
-        plugins: [
-            new UglifyJSPlugin({
-                test: /\.js($|\?)/i,
-                cache: true,
-                parallel: true,
-            })
-        ]
+        }
     }
 ];
-
-if (process.env.NODE_ENV !== 'development') {
-    webpackConfig[0].plugins.push(new UglifyJSPlugin({
-        test: /\.js($|\?)/i,
-        cache: true,
-        parallel: true,
-    }));
-}
 
 module.exports = webpackConfig;
