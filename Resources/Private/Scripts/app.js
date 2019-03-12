@@ -15,7 +15,14 @@ import NeosYoastApp from './YoastInfoView/src/components/NeosYoastApp';
     const titleOverrideField = snippetEditorContainer.querySelector('.snippet-editor__title-override');
     const descriptionField = snippetEditorContainer.querySelector('.snippet-editor__description');
     const uriPathSegmentField = snippetEditorContainer.querySelector('.snippet-editor__uri-path-segment');
-    let translations = {};
+    let translations = {
+        domain: "js-text-analysis",
+        locale_data: {
+            "js-text-analysis": {
+                "": {}
+            }
+        }
+    };
 
     const editorFieldMapping = {
         title: titleField,
@@ -55,8 +62,8 @@ import NeosYoastApp from './YoastInfoView/src/components/NeosYoastApp';
                 newTranslations = JSON.parse(newTranslations);
                 if (newTranslations && !newTranslations.error) {
                     translations = newTranslations;
-                    setLocaleData(translations['locale_data']['js-text-analysis'], 'yoast-components');
                 }
+                setLocaleData(translations['locale_data']['js-text-analysis'], 'yoast-components');
             });
     }
 
