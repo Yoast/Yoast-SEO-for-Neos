@@ -3,12 +3,12 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 import {parseResults, groupResultsByRating} from "../helper/resultParser";
 
-import ContentAnalysis from "yoast-components/composites/Plugin/ContentAnalysis/components/ContentAnalysis";
-import YoastModal from "yoast-components/composites/Plugin/Shared/components/YoastModal";
-import {Collapsible} from "yoast-components/composites/Plugin/Shared/components/Collapsible";
-import colors from "yoast-components/style-guide/colors";
+import ContentAnalysis from "yoast-components/dist/composites/Plugin/ContentAnalysis/components/ContentAnalysis";
+import YoastModal from "yoast-components/dist/composites/Plugin/Shared/components/YoastModal";
+import {Collapsible} from "yoast-components/dist/composites/Plugin/Shared/components/Collapsible";
+import colors from "yoast-components/dist/style-guide/colors";
 
-import {scoreToRating} from "yoastseo/src/interpreters";
+import scoreToRating from "yoastseo/dist/src/interpreters/scoreToRating";
 
 const errorResult = {
     text: 'An error occured while analyzing the page!',
