@@ -40,6 +40,15 @@ prototype(Shel.Neos.YoastSeo:Documents.YoastSeoView) < prototype(Neos.Neos:Page)
         }
 
         javascripts {
+            yoastseo = Neos.Fusion:Tag {
+                tagName = 'script'
+                attributes {
+                    async = 'async'
+                    src = Neos.Fusion:ResourceUri {
+                        path = 'resource://Shel.Neos.YoastSeo/Public/Assets/yoastseo.js'
+                    }
+                }
+            }
             app = Neos.Fusion:Tag {
                 tagName = 'script'
                 attributes {
