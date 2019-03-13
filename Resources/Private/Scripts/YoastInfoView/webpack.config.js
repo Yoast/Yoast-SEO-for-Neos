@@ -18,6 +18,9 @@ const webpackConfig = [
         resolve: {
             extensions: ['.json', '.js', '.jsx']
         },
+        externals: {
+            yoastseo: 'yoastseo'
+        },
         module: {
             rules: [
                 {
@@ -67,6 +70,26 @@ const webpackConfig = [
         entry: ['./src/webWorker.js'],
         output: {
             filename: 'webWorker.js',
+            path: path.resolve(__dirname, '../../../Public/Assets')
+        },
+        module: {
+            rules: [
+                {
+                    test: /\.jsx?$/,
+                    use: [{
+                        loader: 'babel-loader',
+                        options: {
+                            presets: ['@babel/env'],
+                        }
+                    }]
+                }
+            ]
+        }
+    },
+    {
+        entry: ['./src/yoastseo.js'],
+        output: {
+            filename: 'yoastseo.js',
             path: path.resolve(__dirname, '../../../Public/Assets')
         },
         module: {
