@@ -31,6 +31,7 @@ export default class NeosYoastApp extends PureComponent {
         description: PropTypes.string,
         focusKeyword: PropTypes.string,
         isCornerstone: PropTypes.bool,
+        isHomepage: PropTypes.bool,
         isAmp: PropTypes.bool,
         uiLocale: PropTypes.string.isRequired,
         uriPathSegment: PropTypes.string.isRequired,
@@ -108,7 +109,6 @@ export default class NeosYoastApp extends PureComponent {
         }
         let field = this.props.editorFieldMapping[key].querySelector('.neos-inline-editable');
 
-        console.log();
         if (field.hasChildNodes() && field.childNodes.length === 1) {
             field.childNodes[0].innerHTML = data;
         } else {
@@ -126,7 +126,7 @@ export default class NeosYoastApp extends PureComponent {
     mapEditorDataToPreview = (mappedData, context) => {
         return {
             title: this.state.titleTemplate.replace('{title}', mappedData.title),
-            url: mappedData.url,
+            url: this.props.isHomepage ? this.props.baseUrl : mappedData.url,
             description: mappedData.description,
         };
     };

@@ -9,6 +9,7 @@ prototype(Shel.Neos.YoastSeo:Component.Application) < prototype(Neos.Fusion:Tag)
             focusKeyword = ${q(documentNode).property('focusKeyword')}
             isCornerstone = ${q(documentNode).property('isCornerstone')}
             uriPathSegment = ${q(documentNode).property('uriPathSegment')}
+            isHomepage = ${site == documentNode}
             isAmp = false
             uiLocale = Shel.Neos.YoastSeo:InterfaceLanguage
 
