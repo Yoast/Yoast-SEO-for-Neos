@@ -109,10 +109,21 @@ export default class NeosYoastApp extends PureComponent {
         }
         let field = this.props.editorFieldMapping[key].querySelector('.neos-inline-editable');
 
-        if (field.hasChildNodes() && field.childNodes.length === 1) {
-            field.childNodes[0].innerHTML = data;
+        // Try to update the hidden fields data via the CKEDITOR api
+        // The api might not be initialized yet
+        if (window.CKEDITOR && window.CKEDITOR.instances) {
+            for (let [key, editor] of Object.entries(window.CKEDITOR.instances)) {
+                if (editor.element.$ === field) {
+                    editor.setData(data);
+                }
+            }
         } else {
-            field.innerHTML = data;
+            // Update the hidden field without the api. This works fine with CKEditor 5
+            if (field.hasChildNodes() && field.childNodes.length === 1 && field.childNodes[0].nodeType === 1) {
+                field.childNodes[0].innerHTML = data;
+            } else {
+                field.innerHTML = data;
+            }
         }
     };
 
