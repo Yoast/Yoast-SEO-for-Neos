@@ -61,5 +61,9 @@
   "browserslist": [
     "last 2 version",
     "> 2%"
-  ]
+  ],
+  "dependencies": {
+    "plow-js": "^2.2.0",
+    "redux-actions": "^2.6.5"
+  }
 }

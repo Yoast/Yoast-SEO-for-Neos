@@ -16,10 +16,13 @@ const webpackConfig = [
             path: path.resolve(__dirname, '../../../Public/Assets')
         },
         resolve: {
-            extensions: ['.json', '.js', '.jsx']
+            extensions: ['.json', '.js', '.jsx'],
+            alias: {
+                '@neos-project': path.resolve(__dirname, '../../../../../../Application/Neos.Neos.Ui/packages'),
+            }
         },
         externals: {
-            yoastseo: 'yoastseo'
+            yoastseo: 'yoastseo',
         },
         module: {
             rules: [

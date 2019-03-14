@@ -1,10 +1,13 @@
 import React, {PureComponent} from "react";
+import {connect} from 'react-redux';
 import PropTypes from "prop-types";
 import {ThemeProvider} from "styled-components";
 import debounce from "lodash.debounce";
+import {$get} from "plow-js";
 
 import ContentAnalysisWrapper from "./ContentAnalysisWrapper";
 import PageParser from "../helper/PageParser";
+import {yoastActions} from "../actions";
 
 import Loader from "yoast-components/composites/basic/Loader";
 import SnippetEditor from "yoast-components/composites/Plugin/SnippetEditor/components/SnippetEditor";
@@ -14,6 +17,11 @@ import AnalysisWorkerWrapper from 'yoastseo/src/worker/AnalysisWorkerWrapper';
 import createWorker from 'yoastseo/src/worker/createWorker';
 import Paper from "yoastseo/src/values/Paper";
 
+@connect(state => ({
+    worker: $get('ui.yoastInfoView.worker', state),
+}), {
+    setWorker: yoastActions.setWorker,
+})
 export default class NeosYoastApp extends PureComponent {
     static propTypes = {
         documentContent: PropTypes.string.isRequired,
