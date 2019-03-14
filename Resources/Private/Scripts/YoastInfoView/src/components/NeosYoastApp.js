@@ -111,7 +111,7 @@ export default class NeosYoastApp extends PureComponent {
 
         // Try to update the hidden fields data via the CKEDITOR api
         // The api might not be initialized yet
-        if (window.CKEDITOR && window.CKEDITOR.instances) {
+        if (window.CKEDITOR && window.CKEDITOR.instances && Object.keys(window.CKEDITOR.instances).length > 0) {
             for (let [key, editor] of Object.entries(window.CKEDITOR.instances)) {
                 if (editor.element.$ === field) {
                     editor.setData(data);
