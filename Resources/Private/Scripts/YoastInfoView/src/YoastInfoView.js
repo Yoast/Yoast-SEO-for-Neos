@@ -243,11 +243,6 @@ export default class YoastInfoView extends PureComponent {
         });
     };
 
-    getTitleWidth = () => {
-        // TODO: This is just a basic approximation and should be calculated in the future based on the actual text.
-        return this.state.page.title.length * 8.5;
-    };
-
     renderResults = (results, filter = []) => {
         let groupedResults = groupResultsByRating(results, filter);
 
