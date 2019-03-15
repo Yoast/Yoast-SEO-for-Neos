@@ -17,15 +17,7 @@ prototype(Shel.Neos.YoastSeo:Component.Application) < prototype(Neos.Fusion:Tag)
             workerUrl = Neos.Fusion:ResourceUri {
                 path = 'resource://Shel.Neos.YoastSeo/Public/Assets/webWorker.js'
             }
-            previewUrl = Neos.Fusion:UriBuilder {
-                package = 'Shel.Neos.YoastSeo'
-                controller = 'Page'
-                action = 'renderPreviewPage'
-                absolute = true
-                additionalParams = Neos.Fusion:RawArray {
-                    node = ${documentNode.contextPath}
-                }
-            }
+            previewUrl = ${'/neosyoastseo/page/renderPreviewPage?node=' + documentNode.contextPath}
             baseUrl = Shel.Neos.YoastSeo:BaseUri
             pageUrl = Neos.Neos:NodeUri {
                 node = ${documentNode}
