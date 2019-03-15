@@ -1,4 +1,4 @@
-import YoastInfoView from './yoastInfoView';
+import YoastInfoView from './YoastInfoView';
 
 import manifest from '@neos-project/neos-ui-extensibility';
 import {reducer} from './actions';
