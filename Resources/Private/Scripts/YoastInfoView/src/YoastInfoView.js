@@ -60,8 +60,8 @@ export default class YoastInfoView extends PureComponent {
 
     constructor(props) {
         super(props);
-        const {focusedNodeContextPath, getNodeByContextPath} = this.props;
-        const node = getNodeByContextPath(focusedNodeContextPath);
+        const {documentNodePath, getNodeByContextPath} = this.props;
+        const node = getNodeByContextPath(documentNodePath);
 
         this.state = {
             nodeUri: $get('uri', node),
@@ -236,8 +236,7 @@ export default class YoastInfoView extends PureComponent {
                 }
             });
         }).catch((error) => {
-            console.error('An error occured while analyzing the page:');
-            console.error(error);
+            console.error(error, 'An error occurred while analyzing the page');
         });
     };
 
