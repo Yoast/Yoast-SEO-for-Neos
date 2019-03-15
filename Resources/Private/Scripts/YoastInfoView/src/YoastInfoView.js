@@ -1,16 +1,20 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
+import Jed from "jed";
 import {$transform, $get} from 'plow-js';
+
 import {Icon, IconButton} from '@neos-project/react-ui-components';
 import {neos} from '@neos-project/neos-ui-decorators';
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 import {fetchWithErrorHandling} from '@neos-project/neos-ui-backend-connector';
+
 import Paper from 'yoastseo/src/values/Paper';
 import AnalysisWorkerWrapper from 'yoastseo/src/worker/AnalysisWorkerWrapper';
 import createWorker from 'yoastseo/src/worker/createWorker';
 import scoreToRating from 'yoastseo/src/interpreters/scoreToRating';
-import Jed from "jed";
+import {measureTextWidth} from 'yoastseo/src/helpers';
+
 import style from './style.css';
 import PageParser from "./helper/PageParser";
 import {yoastActions} from './actions';
@@ -200,7 +204,6 @@ export default class YoastInfoView extends PureComponent {
             worker = new AnalysisWorkerWrapper(createWorker(this.state.workerUrl));
             this.props.setWorker(worker);
         }
-        // TODO: Initialize the worker only when the configuration actually has changed
         worker.initialize({
             useCornerstone: this.state.isCornerstone,
             locale: this.state.page.locale,
@@ -215,7 +218,7 @@ export default class YoastInfoView extends PureComponent {
                     keyword: this.state.focusKeyword,
                     description: this.state.page.description,
                     title: this.state.page.title,
-                    titleWidth: this.getTitleWidth(),
+                    titleWidth: measureTextWidth(this.state.page.title),
                     url: this.state.slug,
                     locale: this.state.page.locale,
                     permalink: ""
