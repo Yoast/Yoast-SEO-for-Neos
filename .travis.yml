@@ -12,7 +12,7 @@ install:
 
 jobs:
   include:
-    - stage: inspector
+    - stage: inspector view
       script: yarn build-inspector
-    - stage: edit mode app
+    - stage: preview mode
       script: yarn build-app

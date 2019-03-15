@@ -7,7 +7,8 @@
     "node": ">=8"
   },
   "scripts": {
-    "build-all": "yarn build-inspector && yarn build-app",
+    "build": "yarn build-inspector && yarn build-app",
+    "watch": "concurrently -k -p \"[{name}]\" -n \"APP,INSPECTOR\" -c \"bgBlue.bold,bgMagenta.bold\" \"yarn watch-app\" \"yarn watch-inspector\"",
     "build-inspector": "neos-react-scripts build && uglifyjs --compress --mangle -o ../../../Public/YoastInfoView/Plugin.js -- ../../../Public/YoastInfoView/Plugin.js",
     "watch-inspector": "neos-react-scripts watch",
     "build-app": "webpack -p --progress --colors",
@@ -32,6 +33,7 @@
     "browser-sync": "^2.24.4",
     "browser-sync-webpack-plugin": "^1.2.0",
     "commander": "^2.19.0",
+    "concurrently": "^4.1.0",
     "css-loader": "^0.28.11",
     "extract-text-webpack-plugin": "^3.0.2",
     "jed": "^1.1.1",
