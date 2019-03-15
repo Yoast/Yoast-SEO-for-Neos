@@ -3,6 +3,11 @@ import PageTitleWidthAssessment from 'yoastseo/src/assessments/seo/PageTitleWidt
 import {measureTextWidth} from 'yoastseo/src/helpers';
 import wordBoundaries from 'yoastseo/src/config/wordBoundaries';
 
+/**
+ * Store yoast seo libraries in global scope to make the available to NeosYoastApp.
+ * These libraries are excluded in webpack as the treeshaking is not working for these and
+ * would lead to a huge bundle.
+ */
 window.yoastseo = {
     seo: {
         MetaDescriptionLengthAssessment: MetaDescriptionLengthAssessment,

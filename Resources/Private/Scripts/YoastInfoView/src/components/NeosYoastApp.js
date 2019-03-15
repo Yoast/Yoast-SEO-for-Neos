@@ -5,6 +5,7 @@ import debounce from "lodash.debounce";
 
 import ContentAnalysisWrapper from "./ContentAnalysisWrapper";
 import PageParser from "../helper/PageParser";
+import {groupResultsByRating, parseResults} from "../helper/resultParser";
 
 import Loader from "yoast-components/composites/basic/Loader";
 import SnippetEditor from "yoast-components/composites/Plugin/SnippetEditor/components/SnippetEditor";
@@ -12,12 +13,18 @@ import {MODES} from "yoast-components/composites/Plugin/SnippetPreview/constants
 
 import AnalysisWorkerWrapper from 'yoastseo/src/worker/AnalysisWorkerWrapper';
 import createWorker from 'yoastseo/src/worker/createWorker';
-import Paper from "yoastseo/src/values/Paper";
+import Paper from 'yoastseo/src/values/Paper';
+import {measureTextWidth} from 'yoastseo/src/helpers';
+
+const errorResult = {
+    text: 'An error occured while analyzing the page!',
+    id: '1',
+    rating: 'feedback',
+    hasMarks: false,
+};
 
 export default class NeosYoastApp extends PureComponent {
     static propTypes = {
-        documentContent: PropTypes.string.isRequired,
-        contentSelector: PropTypes.string.isRequired,
         modalContainer: PropTypes.object.isRequired,
         translations: PropTypes.object.isRequired,
         editorFieldMapping: PropTypes.shape({
@@ -40,30 +47,108 @@ export default class NeosYoastApp extends PureComponent {
         previewUrl: PropTypes.string.isRequired,
         baseUrl: PropTypes.string.isRequired,
         pageUrl: PropTypes.string.isRequired,
+        contentSelector: PropTypes.string.isRequired,
         breadcrumbs: PropTypes.array,
     };
 
     constructor(props) {
         super(props);
 
-        const pageParser = new PageParser(props.documentContent, props.contentSelector);
         const activeTitleField = this.props.titleOverride ? 'titleOverride' : 'title';
 
         this.state = {
             worker: null,
-            pageParser: pageParser,
             mode: MODES.MODE_DESKTOP,
             activeTitleField: activeTitleField,
-            titleTemplate: NeosYoastApp.buildTitleTemplate(this.props[activeTitleField], pageParser.title),
             editorData: {
                 title: this.props[activeTitleField],
                 description: this.props.description || '',
                 slug: this.props.uriPathSegment,
                 url: this.props.pageUrl,
             },
+            page: {
+                titleTemplate: '{title}',
+                title: '',
+                description: '',
+                content: '',
+                locale: '',
+                isLoading: true,
+            },
+            isAnalyzing: true,
+            allResults: {},
+            seoResults: {
+                score: null,
+                problemsResults: [],
+                improvementsResults: [],
+                goodResults: [],
+                considerationsResults: [],
+                errorsResults: [],
+            },
+            readabilityResults: {
+                score: null,
+                problemsResults: [],
+                improvementsResults: [],
+                goodResults: [],
+                considerationsResults: [],
+                errorsResults: [],
+            }
         };
 
-        this.updateNeosFields = debounce(this.updateNeosFields.bind(this), 300);
+        this.updateNeosFields = debounce(this.updateNeosFields.bind(this), 500);
+        this.requestNewPageContent = debounce(this.requestNewPageContent.bind(this), 1500);
+    };
+
+    /**
+     * Load content for the first time when component is ready.
+     */
+    componentDidMount() {
+        this.fetchContent();
+    }
+
+    /**
+     * Debounced wrapper for fetching new page content
+     */
+    requestNewPageContent = () => {
+        this.fetchContent();
+    };
+
+    /**
+     * Fetch new content from page preview and trigger analysis at the end.
+     */
+    fetchContent = () => {
+        this.setState({
+            page: {
+                ...this.state.page,
+                isLoading: true,
+            },
+            isAnalyzing: true,
+        });
+
+        fetch(this.props.previewUrl)
+            .then(response => {
+                if (!response) {
+                    return;
+                }
+                return response.text();
+            })
+            .then(documentContent => {
+                const pageParser = new PageParser(documentContent, this.props.contentSelector);
+
+                this.setState({
+                    page: {
+                        titleTemplate: NeosYoastApp.buildTitleTemplate(this.props[this.state.activeTitleField], pageParser.title),
+                        title: pageParser.title,
+                        description: pageParser.description,
+                        locale: pageParser.locale,
+                        content: pageParser.pageContent,
+                        isLoading: false,
+                    },
+                    results: {}
+                }, this.refreshAnalysis);
+            })
+            .catch((error) => {
+                console.error(error, 'An error occurred while loading the preview');
+            });
     };
 
     /**
@@ -78,6 +163,86 @@ export default class NeosYoastApp extends PureComponent {
         }
         return '{title}';
     }
+
+    /**
+     * Create and initialize worker and return a promise for it to finish.
+     * @returns {Promise}
+     */
+    initializeWorker = () => {
+        let {worker} = this.state;
+        if (!worker) {
+            worker = new AnalysisWorkerWrapper(createWorker(this.props.workerUrl));
+            this.setState({worker: worker});
+        }
+        return worker.initialize({
+            useCornerstone: this.props.isCornerstone,
+            locale: this.state.page.locale,
+            contentAnalysisActive: true,
+            keywordAnalysisActive: true,
+            logLevel: "ERROR",
+            translations: this.props.translations,
+        });
+    };
+
+    /**
+     * Send page content to worker and retrieve analysis results when it's done.
+     */
+    refreshAnalysis = () => {
+        this.initializeWorker().then(() => {
+            const paper = new Paper(
+                this.state.page.content,
+                {
+                    keyword: this.props.focusKeyword || '',
+                    description: this.state.page.description || '',
+                    title: this.state.page.title,
+                    titleWidth: measureTextWidth(this.state.page.title),
+                    url: new URL(this.props.pageUrl).pathname,
+                    locale: this.state.page.locale,
+                    permalink: ""
+                }
+            );
+            return this.state.worker.analyze(paper);
+        }).then((results) => {
+            let seoResults = parseResults(results.result.seo[''].results);
+            let readabilityResults = parseResults(results.result.readability.results);
+
+            let groupedSeoResults = groupResultsByRating(seoResults);
+            let groupedReadabilityResults = groupResultsByRating(readabilityResults);
+
+            this.setState({
+                allResults: {...seoResults, ...readabilityResults},
+                seoResults: {
+                    score: results.result.seo[''].score,
+                    problemsResults: groupedSeoResults.bad,
+                    improvementsResults: groupedSeoResults.ok,
+                    goodResults: groupedSeoResults.good,
+                    considerationsResults: groupedSeoResults.feedback,
+                },
+                readabilityResults: {
+                    score: results.result.readability.score,
+                    problemsResults: groupedReadabilityResults.bad,
+                    improvementsResults: groupedReadabilityResults.ok,
+                    goodResults: groupedReadabilityResults.good,
+                    considerationsResults: groupedReadabilityResults.feedback,
+                },
+                isAnalyzing: false,
+            });
+        }).catch((error) => {
+            console.error(error, 'An error occurred while analyzing the page');
+
+            this.setState({
+                seoResults: {
+                    ...this.state.seoResults,
+                    errorResults: [errorResult]
+                },
+                readabilityResults: {
+                    ...this.state.readabilityResults,
+                    errorResults: [errorResult]
+                },
+                isAnalyzing: false,
+            })
+        });
+    };
 
     /**
      * Update hidden Neos fields from the changed values of the editor fields.
@@ -125,56 +290,29 @@ export default class NeosYoastApp extends PureComponent {
                 field.innerHTML = data;
             }
         }
+
+        // Request new page content and analysis after changes were applied
+        this.requestNewPageContent();
     };
 
     /**
      * Process field values before giving them to the preview.
      * We modify the title in the preview according to the template we generated in the constructor.
      *
-     * @param mappedData
+     * @param mappedData contains title, description and url
      * @param context
      */
     mapEditorDataToPreview = (mappedData, context) => {
         return {
-            title: this.state.titleTemplate.replace('{title}', mappedData.title),
+            title: this.state.page.titleTemplate.replace('{title}', mappedData.title),
             url: this.props.isHomepage ? this.props.baseUrl : mappedData.url,
             description: mappedData.description,
         };
     };
 
     /**
-     * Callback for the analysis to retrieve new data
+     * Renders the snippet editor and analysis component
      */
-    refreshAnalysisCallback = () => {
-        let worker = this.state.worker;
-        if (!worker) {
-            worker = new AnalysisWorkerWrapper(createWorker(this.props.workerUrl));
-            this.setState({worker: worker});
-        }
-        return worker.initialize({
-            useCornerstone: this.props.isCornerstone,
-            locale: this.state.pageParser.locale,
-            contentAnalysisActive: true,
-            keywordAnalysisActive: true,
-            logLevel: "ERROR",
-            translations: this.props.translations,
-        }).then(() => {
-            const paper = new Paper(
-                this.state.pageParser.pageContent,
-                {
-                    keyword: this.props.focusKeyword || '',
-                    description: this.state.pageParser.description || '',
-                    title: this.state.pageParser.title,
-                    titleWidth: 100, // TODO: Retrieve via helper
-                    url: new URL(this.props.pageUrl).pathname,
-                    locale: this.state.pageParser.locale,
-                    permalink: ""
-                }
-            );
-            return worker.analyze(paper);
-        });
-    };
-
     render() {
         const editorProps = {
             data: this.state.editorData,
@@ -196,7 +334,10 @@ export default class NeosYoastApp extends PureComponent {
                         <SnippetEditor {...editorProps} mode={this.state.mode}/>
                     </div>
                     <ContentAnalysisWrapper modalContainer={this.props.modalContainer}
-                                            refreshAnalysisCallback={this.refreshAnalysisCallback}/>
+                                            allResults={this.state.allResults}
+                                            readabilityResults={this.state.readabilityResults}
+                                            seoResults={this.state.seoResults}
+                                            isAnalyzing={this.state.isAnalyzing}/>
                 </div>
             </ThemeProvider>
         )

@@ -6,6 +6,7 @@ import ReactDOM from './YoastInfoView/node_modules/react-dom';
 import {setLocaleData} from "./YoastInfoView/node_modules/@wordpress/i18n";
 
 import NeosYoastApp from './YoastInfoView/src/components/NeosYoastApp';
+import fetch from './YoastInfoView/src/helper/fetch';
 
 ((document, window) => {
     const applicationContainer = document.querySelector('#yoast-app');
@@ -32,31 +33,15 @@ import NeosYoastApp from './YoastInfoView/src/components/NeosYoastApp';
     };
 
     /**
-     * Request an url and get a Promise in return.
-     *
-     * @param {string} url
-     * @returns {Promise}
-     */
-    function fetch(url) {
-        return new Promise((resolve, reject) => {
-            const req = new XMLHttpRequest();
-            req.open('GET', url);
-            req.onload = () => req.status === 200 ? resolve(req.response) : reject(Error(req.statusText));
-            req.onerror = (e) => reject(Error(`Network Error: ${e}`));
-            req.send();
-        });
-    }
-
-    /**
      * Fetch translations and set them globally
      */
     function fetchTranslations(translationsUrl) {
-        return self.fetch(translationsUrl)
+        return fetch(translationsUrl)
             .then(response => {
                 if (!response) {
                     return;
                 }
-                return response.text();
+                return response.text ? response.text() : response;
             })
             .then(newTranslations => {
                 newTranslations = JSON.parse(newTranslations);
@@ -64,6 +49,8 @@ import NeosYoastApp from './YoastInfoView/src/components/NeosYoastApp';
                     translations = newTranslations;
                 }
                 setLocaleData(translations['locale_data']['js-text-analysis'], 'yoast-components');
+            }).catch((error) => {
+                console.error(error, 'An error occurred while loading translations');
             });
     }
 
@@ -113,13 +100,10 @@ import NeosYoastApp from './YoastInfoView/src/components/NeosYoastApp';
         }
 
         fetchTranslations(configuration.translationsUrl)
-            .then(fetch(configuration.previewUrl)
-                .then((documentContent) => {
-                    ReactDOM.render((
-                        <NeosYoastApp documentContent={documentContent} modalContainer={modalContainer}
-                                      translations={translations}
-                                      editorFieldMapping={editorFieldMapping} {...configuration}/>), applicationContainer);
-                })
-            );
+            .then(() => {
+                ReactDOM.render((
+                    <NeosYoastApp modalContainer={modalContainer} translations={translations}
+                                  editorFieldMapping={editorFieldMapping} {...configuration}/>), applicationContainer);
+            });
     }
 })(document, window);
