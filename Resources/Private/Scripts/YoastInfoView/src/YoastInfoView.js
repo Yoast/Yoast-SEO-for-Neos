@@ -17,7 +17,7 @@ import {measureTextWidth} from 'yoastseo/src/helpers';
 
 import style from './style.css';
 import PageParser from "./helper/PageParser";
-import {yoastActions} from './actions';
+import {actions as yoastActions, selectors as yoastSelectors} from './actions';
 import SnippetPreviewButton from "./components/SnippetPreviewButton";
 import ResultGroup from "./components/ResultGroup";
 import {groupResultsByRating, parseResults} from "./helper/resultParser";
@@ -33,15 +33,17 @@ const iconRatingMapping = {
 @connect(state => ({
     focusedNodeContextPath: selectors.CR.Nodes.focusedNodePathSelector(state),
     getNodeByContextPath: selectors.CR.Nodes.nodeByContextPath(state),
-    worker: $get('ui.yoastInfoView.worker', state),
-    translations: $get('ui.yoastInfoView.translations', state),
+    worker: yoastSelectors.worker(state),
+    translations: yoastSelectors.translations(state),
+    analysis: yoastSelectors.analysis(state),
 }), {
     setWorker: yoastActions.setWorker,
     setTranslations: yoastActions.setTranslations,
+    setAnalysis: yoastActions.setAnalysis,
 })
 @connect($transform({
     contextPath: $get('ui.contentCanvas.contextPath'), // Only works with Neos UI 1.x
-    documentNodePath: $get('cr.nodes.documentNode'), // Only works with Neos UI 3.x
+    documentNodePath: $get('cr.nodes.documentNode'), // Only works with Neos UI 2+
     canvasSrc: $get('ui.contentCanvas.src'),
 }))
 @neos(globalRegistry => ({
@@ -51,7 +53,9 @@ const iconRatingMapping = {
 }))
 export default class YoastInfoView extends PureComponent {
     static propTypes = {
-        translations: PropTypes.array,
+        worker: PropTypes.func,
+        translations: PropTypes.object,
+        analysis: PropTypes.object,
         canvasSrc: PropTypes.string,
         contextPath: PropTypes.string,
         documentNodePath: PropTypes.string,
@@ -60,18 +64,23 @@ export default class YoastInfoView extends PureComponent {
         getNodeByContextPath: PropTypes.func.isRequired,
         setTranslations: PropTypes.func.isRequired,
         setWorker: PropTypes.func.isRequired,
+        setAnalysis: PropTypes.func.isRequired,
+        workerUrl: PropTypes.string,
+    };
+
+    static defaultProps = {
+        workerUrl: '/_Resources/Static/Packages/Shel.Neos.YoastSeo/Assets/webWorker.js', // TODO: Resolve path via Neos api
     };
 
     constructor(props) {
         super(props);
         const {documentNodePath, getNodeByContextPath} = this.props;
-        const node = getNodeByContextPath(documentNodePath);
+        const documentNode = getNodeByContextPath(documentNodePath);
 
         this.state = {
-            nodeUri: $get('uri', node),
-            focusKeyword: $get('properties.focusKeyword', node),
-            isCornerstone: $get('properties.isCornerstone', node),
-            workerUrl: '/_Resources/Static/Packages/Shel.Neos.YoastSeo/Assets/webWorker.js', // TODO: Resolve path via Neos api
+            nodeUri: $get('uri', documentNode),
+            focusKeyword: $get('properties.focusKeyword', documentNode),
+            isCornerstone: $get('properties.isCornerstone', documentNode),
             isAnalyzing: false,
             page: {
                 title: '',
@@ -79,28 +88,27 @@ export default class YoastInfoView extends PureComponent {
                 isAnalyzing: false,
                 locale: 'en_US'
             },
-            content: {
-                score: 0,
-                results: [],
-                expanded: false
-            },
-            seo: {
-                score: 0,
-                results: [],
-                expanded: false
-            },
             i18n: {}
         };
     }
 
     componentDidMount() {
         this.fetchTranslations();
-        this.fetchContent();
+
+        // Check if we can reuse that last analysis that ran if we are on the same page
+        const {analysis} = this.props;
+        if (!analysis || analysis.analyzedNodePath !== this.props.documentNodePath) {
+            this.fetchContent();
+        }
+
         this.props.serverFeedbackHandlers.set('Neos.Neos.Ui:ReloadDocument/DocumentUpdated', () => {
             this.fetchContent();
         }, 'after Neos.Neos.Ui:ReloadDocument/Main');
     }
 
+    /**
+     * Fetch new translations from the backend.
+     */
     fetchTranslations = () => {
         if (this.props.translations) {
             this.setState({
@@ -139,6 +147,9 @@ export default class YoastInfoView extends PureComponent {
             });
     };
 
+    /**
+     * Fetch the page preview to extract the content for analysis.
+     */
     fetchContent = () => {
         this.setState({
             isAnalyzing: true,
@@ -192,26 +203,37 @@ export default class YoastInfoView extends PureComponent {
                         title: pageParser.title,
                         description: pageParser.description,
                         isAnalyzing: false
-                    },
-                    results: {}
+                    }
                 }, this.refreshAnalysis);
             });
     };
 
-    refreshAnalysis = () => {
+    /**
+     * Create and initialize worker and return a promise for it to finish.
+     * @returns {Promise}
+     */
+    initializeWorker = () => {
         let {worker} = this.props;
         if (!worker) {
-            worker = new AnalysisWorkerWrapper(createWorker(this.state.workerUrl));
+            worker = new AnalysisWorkerWrapper(createWorker(this.props.workerUrl));
             this.props.setWorker(worker);
         }
-        worker.initialize({
+        return worker.initialize({
             useCornerstone: this.state.isCornerstone,
             locale: this.state.page.locale,
             contentAnalysisActive: true,
             keywordAnalysisActive: true,
             logLevel: 'ERROR',
             translations: this.props.translations,
-        }).then(() => {
+        });
+    };
+
+    /**
+     * Passes the preview pages content and other attributes to the worker
+     * for analysis and updates the state on success.
+     */
+    refreshAnalysis = () => {
+        this.initializeWorker().then(() => {
             let paper = new Paper(
                 this.state.pageContent,
                 {
@@ -224,16 +246,21 @@ export default class YoastInfoView extends PureComponent {
                     permalink: ""
                 }
             );
-            this.setState({worker: worker});
-            return worker.analyze(paper);
+            return this.props.worker.analyze(paper);
         }).then((results) => {
             this.setState({
-                isAnalyzing: false,
+                isAnalyzing: false
+            });
+            this.props.setAnalysis({
+                analyzedNodePath: this.props.documentNodePath,
+                page: this.state.page,
                 seo: {
+                    ...this.props.analysis.seo,
                     score: results.result.seo[''].score,
                     results: parseResults(results.result.seo[''].results),
                 },
-                content: {
+                readability: {
+                    ...this.props.analysis.readability,
                     score: results.result.readability.score,
                     results: parseResults(results.result.readability.results),
                 }
@@ -243,6 +270,12 @@ export default class YoastInfoView extends PureComponent {
         });
     };
 
+    /**
+     * Renders a group of results
+     *
+     * @param results
+     * @param filter
+     */
     renderResults = (results, filter = []) => {
         let groupedResults = groupResultsByRating(results, filter);
 
@@ -265,19 +298,21 @@ export default class YoastInfoView extends PureComponent {
     };
 
     handleExpandContentClick = () => {
-        this.setState({
-            content: {
-                ...this.state.content,
-                expanded: !this.state.content.expanded
+        this.props.setAnalysis({
+            ...this.props.analysis,
+            readability: {
+                ...this.props.analysis.readability,
+                expanded: !this.props.analysis.readability.expanded
             }
         });
     };
 
     handleExpandSeoClick = () => {
-        this.setState({
+        this.props.setAnalysis({
+            ...this.props.analysis,
             seo: {
-                ...this.state.seo,
-                expanded: !this.state.seo.expanded
+                ...this.props.analysis.seo,
+                expanded: !this.props.analysis.seo.expanded
             }
         });
     };
@@ -304,9 +339,10 @@ export default class YoastInfoView extends PureComponent {
     };
 
     render() {
-        const {i18nRegistry} = this.props;
-        const contentResultsIconState = this.state.content.expanded ? 'chevron-circle-up' : 'chevron-circle-down';
-        const seoResultsIconState = this.state.seo.expanded ? 'chevron-circle-up' : 'chevron-circle-down';
+        const {i18nRegistry, analysis} = this.props;
+        const {isAnalyzing, page} = this.state;
+        const contentResultsIconState = analysis.readability.expanded ? 'chevron-circle-up' : 'chevron-circle-down';
+        const seoResultsIconState = analysis.seo.expanded ? 'chevron-circle-up' : 'chevron-circle-down';
 
         return (
             <ul className={style.yoastInfoView}>
@@ -314,34 +350,34 @@ export default class YoastInfoView extends PureComponent {
                     <SnippetPreviewButton/>
                 </li>
 
-                {!this.state.page.isAnalyzing && this.renderTextElement(this.props.i18nRegistry.translate('inspector.renderedTitle', 'Rendered title', {}, 'Shel.Neos.YoastSeo'), this.state.page.title)}
-                {!this.state.page.isAnalyzing && this.renderTextElement(this.props.i18nRegistry.translate('inspector.renderedDescription', 'Rendered description', {}, 'Shel.Neos.YoastSeo'), this.state.page.description)}
+                {!page.isAnalyzing && this.renderTextElement(i18nRegistry.translate('inspector.renderedTitle', 'Rendered title', {}, 'Shel.Neos.YoastSeo'), page.title)}
+                {!page.isAnalyzing && this.renderTextElement(i18nRegistry.translate('inspector.renderedDescription', 'Rendered description', {}, 'Shel.Neos.YoastSeo'), page.description)}
 
 
-                {!this.state.isAnalyzing && (
+                {!isAnalyzing && (
                     <li className={style.yoastInfoView__item}>
                         <div className={style.yoastInfoView__heading}>
-                            {this.renderOverallScore(i18nRegistry.translate('inspector.seoScore', 'Focus Keyphrase', {}, 'Shel.Neos.YoastSeo'), this.state.seo.score)}
+                            {this.renderOverallScore(i18nRegistry.translate('inspector.seoScore', 'Focus Keyphrase', {}, 'Shel.Neos.YoastSeo'), analysis.seo.score)}
                             <IconButton icon={seoResultsIconState} className={style.rightSideBar__toggleBtn}
                                         onClick={this.handleExpandSeoClick}/>
                         </div>
                     </li>
                 )}
-                {!this.state.isAnalyzing && this.state.seo.expanded && this.renderResults(this.state.seo.results)}
+                {!isAnalyzing && analysis.seo.expanded && this.renderResults(analysis.seo.results)}
 
-                {!this.state.isAnalyzing && (
+                {!isAnalyzing && (
                     <li className={style.yoastInfoView__item}>
                         <div className={style.yoastInfoView__heading}>
-                            {this.renderOverallScore(i18nRegistry.translate('inspector.contentScore', 'Readability analysis', {}, 'Shel.Neos.YoastSeo'), this.state.content.score)}
+                            {this.renderOverallScore(i18nRegistry.translate('inspector.contentScore', 'Readability analysis', {}, 'Shel.Neos.YoastSeo'), analysis.readability.score)}
                             <IconButton icon={contentResultsIconState} className={style.rightSideBar__toggleBtn}
                                         onClick={this.handleExpandContentClick}/>
                         </div>
                     </li>
                 )}
-                {!this.state.isAnalyzing && this.state.content.expanded && this.renderResults(this.state.content.results)}
+                {!isAnalyzing && analysis.readability.expanded && this.renderResults(analysis.readability.results)}
 
 
-                {(this.state.isAnalyzing) && (
+                {(isAnalyzing) && (
                     <li style={{textAlign: 'center'}}>
                         <Icon spin={true} icon={'spinner'}/>
                         &nbsp;{i18nRegistry.translate('inspector.loading', 'Loading…', {}, 'Shel.Neos.YoastSeo')}
