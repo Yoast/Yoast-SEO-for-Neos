@@ -185,7 +185,7 @@ This view is helpful when optimizing a single page while working on it's content
 You can generate the `js` and `css` files by running the following commands in the package folder:
 
     yarn install
-    yarn run build-all
+    yarn run build
     
 #### Building and watchting the app for the edit mode
     
