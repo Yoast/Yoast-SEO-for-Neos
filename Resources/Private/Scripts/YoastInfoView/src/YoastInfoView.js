@@ -53,7 +53,7 @@ const iconRatingMapping = {
 }))
 export default class YoastInfoView extends PureComponent {
     static propTypes = {
-        worker: PropTypes.func,
+        worker: PropTypes.object,
         translations: PropTypes.object,
         analysis: PropTypes.object,
         canvasSrc: PropTypes.string,
