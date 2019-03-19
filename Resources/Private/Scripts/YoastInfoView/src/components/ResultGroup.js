@@ -13,9 +13,9 @@ export default class ResultGroup extends PureComponent {
         results: PropTypes.array,
     };
 
-    renderRating = (result) => {
+    renderRating = (result, id) => {
         return result && (
-            <p className={style.yoastInfoView__content}
+            <p key={id} className={style.yoastInfoView__content}
                title={this.props.i18nRegistry.translate('inspector.resultType.' + result.identifier, result.identifier, {}, 'Shel.Neos.YoastSeo')}>
                 <i className={style['yoastInfoView__rating_circle'] + ' ' + style['yoastInfoView__rating_' + result.rating]}/>
                 <span dangerouslySetInnerHTML={{__html: result.text}}/>
@@ -28,7 +28,7 @@ export default class ResultGroup extends PureComponent {
         return (
             <div className={style.yoastInfoView__result_group}>
                 <span><Icon icon={'caret-down'}/> {heading} ({results.length})</span>
-                {results.map(result => this.renderRating(result))}
+                {results.map((result, index) => this.renderRating(result, index))}
             </div>
         )
     }
