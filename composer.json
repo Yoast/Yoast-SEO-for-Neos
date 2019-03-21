@@ -19,11 +19,8 @@
     "require": {
         "php": "~7.0",
         "neos/neos": "^3.0 || ^4.0 || dev-master",
+        "neos/neos-ui": "^2.0 || ^3.0 || dev-master",
         "neos/seo": "^2.0"
-    },
-    "suggest": {
-        "neos/neos-ui": "Provides an additional Yoast view in the Neos CMS inspector and future compatibility",
-        "neos/neos-ui-compiled": "Provides an additional Yoast view in the Neos CMS inspector and future compatibility"
     },
     "autoload": {
         "psr-4": {
