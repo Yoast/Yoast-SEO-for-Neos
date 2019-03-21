@@ -76,14 +76,14 @@ class ContentAnalysisWrapper extends PureComponent {
                 <Collapsible
                     title={__('Focus keyphrase', 'yoast-components')}
                     prefixIcon={{
-                        icon: readabilityRatingIcon,
-                        color: colors['$color_' + readabilityRatingColor],
-                        size: '18px'
+                        icon: seoRatingIcon,
+                        color: colors['$color_' + seoRatingColor],
+                        size: "18px"
                     }}
                     prefixIconCollapsed={{
-                        icon: readabilityRatingIcon,
-                        color: colors['$color_' + readabilityRatingColor],
-                        size: '18px'
+                        icon: seoRatingIcon,
+                        color: colors['$color_' + seoRatingColor],
+                        size: "18px"
                     }}
                     headingProps={{level: 2, fontSize: '18px'}}
                 >
@@ -104,8 +104,16 @@ class ContentAnalysisWrapper extends PureComponent {
 
                 <Collapsible
                     title={__('Readability analysis', 'yoast-components')}
-                    prefixIcon={{icon: seoRatingIcon, color: colors['$color_' + seoRatingColor], size: "18px"}}
-                    prefixIconCollapsed={{icon: seoRatingIcon, color: colors['$color_' + seoRatingColor], size: "18px"}}
+                    prefixIcon={{
+                        icon: readabilityRatingIcon,
+                        color: colors['$color_' + readabilityRatingColor],
+                        size: '18px'
+                    }}
+                    prefixIconCollapsed={{
+                        icon: readabilityRatingIcon,
+                        color: colors['$color_' + readabilityRatingColor],
+                        size: '18px'
+                    }}
                     headingProps={{level: 2, fontSize: "18px"}}
                 >
                     <StyledContentAnalysisWrapper>
