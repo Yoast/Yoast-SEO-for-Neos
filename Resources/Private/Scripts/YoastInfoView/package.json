@@ -14,7 +14,8 @@
     "build-app": "webpack -p --progress --colors",
     "build-app-dev": "webpack -d --progress --colors",
     "watch-app": "NODE_ENV=development webpack --watch --progress --colors",
-    "update-translations": "bin/download_translations.js -u http://translate.wordpress.org -t wordpress-seo -d '../../Languages'"
+    "update-translations": "bin/download_translations.js -u http://translate.wordpress.org -t wordpress-seo -d '../../Languages'",
+    "test-inspector": "testcafe chrome tests/inspector.js"
   },
   "devDependencies": {
     "@babel/core": "^7.1.6",
@@ -53,6 +54,8 @@
     "sassdash": "^0.9.0",
     "style-loader": "^0.19.1",
     "styled-components": "^2.1.2",
+    "testcafe": "^1.1.0",
+    "testcafe-react-selectors": "^3.1.0",
     "uglifyjs-webpack-plugin": "^2.1",
     "webpack": "^3.12.0",
     "yoast-components": "^4.22.1",
