@@ -190,10 +190,10 @@ This view is helpful when optimizing a single page while working on it's content
 
 ### Building the assets
 
-You can generate the `js` and `css` files by running the following commands in the package folder:
+You can generate the `js` and `css` files by running the following commands in the folder `Resources/Private/Scripts/YoastInfoView`:
 
     yarn install
-    yarn run build-all
+    yarn run build
     
 #### Building and watchting the app for the edit mode
     
