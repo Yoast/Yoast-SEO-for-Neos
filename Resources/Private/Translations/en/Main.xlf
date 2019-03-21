@@ -10,22 +10,6 @@
                 <source>Yoast SEO Analysis</source>
             </trans-unit>
 
-            <trans-unit id="field.title">
-                <source>Title</source>
-            </trans-unit>
-            <trans-unit id="field.titleOverride">
-                <source>Title override</source>
-            </trans-unit>
-            <trans-unit id="field.metaDescription">
-                <source>Meta Description</source>
-            </trans-unit>
-            <trans-unit id="field.uriPathSegment">
-                <source>Uri Path Segment</source>
-            </trans-unit>
-            <trans-unit id="field.focusKeyword">
-                <source>Focus Keyword</source>
-            </trans-unit>
-
             <trans-unit id="inspector.loading">
                 <source>Loading…</source>
             </trans-unit>

@@ -1,0 +1,6 @@
+prototype(Shel.Neos.YoastSeo:BaseUri) < prototype(Neos.Neos:NodeUri) {
+    @class = 'Shel\\Neos\\YoastSeo\\FusionObjects\\BaseUriImplementation'
+    node = ${q(documentNode == site ? site : q(documentNode).parent().get()).context({workspaceName: 'live'}).get(0)}
+    absolute = true
+    resolveShortcuts = false
+}

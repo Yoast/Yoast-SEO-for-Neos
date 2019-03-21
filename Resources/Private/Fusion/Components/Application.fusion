@@ -1,0 +1,38 @@
+prototype(Shel.Neos.YoastSeo:Component.Application) < prototype(Neos.Fusion:Tag) {
+    attributes {
+        class = 'yoast-seo__application'
+        id = 'yoast-app'
+        data-configuration = Neos.Fusion:RawArray {
+            title = ${q(documentNode).property('title')}
+            titleOverride = ${q(documentNode).property('titleOverride')}
+            description = ${q(documentNode).property('metaDescription')}
+            focusKeyword = ${q(documentNode).property('focusKeyword')}
+            isCornerstone = ${q(documentNode).property('isCornerstone')}
+            uriPathSegment = ${q(documentNode).property('uriPathSegment')}
+            isHomepage = ${site == documentNode}
+            isAmp = false
+            uiLocale = Shel.Neos.YoastSeo:InterfaceLanguage
+
+            translationsUrl = '/neosyoastseo/data/fetchTranslations'
+            workerUrl = Neos.Fusion:ResourceUri {
+                path = 'resource://Shel.Neos.YoastSeo/Public/Assets/webWorker.js'
+            }
+            previewUrl = ${'/neosyoastseo/page/renderPreviewPage?node=' + documentNode.contextPath}
+            baseUrl = Shel.Neos.YoastSeo:BaseUri
+            pageUrl = Neos.Neos:NodeUri {
+                node = ${documentNode}
+                absolute = true
+                @process.stripWorkspace = ${String.split(value, '@')[0]}
+            }
+
+            breadcrumbs = Neos.Fusion:RawCollection {
+                collection = ${Array.reverse(q(documentNode).parents('[instanceof Neos.Neos:Document]').get())}
+                itemRenderer = ${q(item).property('uriPathSegment')}
+            }
+
+            contentSelector = ${Configuration.setting('Neos.Neos.Ui.frontendConfiguration')['Shel.Neos.YoastSeo']['contentSelector']}
+
+            @process.encode = ${Json.stringify(value)}
+        }
+    }
+}

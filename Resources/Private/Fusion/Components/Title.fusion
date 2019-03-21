@@ -1,6 +1,0 @@
-prototype(Shel.Neos.YoastSeo:Component.Title) < prototype(Shel.Neos.YoastSeo:Component.AbstractEditableField) {
-    @context {
-        fieldName = 'title'
-        fieldClass = 'title'
-    }
-}

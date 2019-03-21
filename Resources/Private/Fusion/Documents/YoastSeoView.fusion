@@ -11,7 +11,7 @@ prototype(Shel.Neos.YoastSeo:Documents.YoastSeoView) < prototype(Neos.Neos:Page)
                     rel = 'stylesheet'
                     type = 'text/css'
                     href = Neos.Fusion:ResourceUri {
-                        path = 'resource://Shel.Neos.YoastSeo/Public/Styles/main.css'
+                        path = 'resource://Shel.Neos.YoastSeo/Public/Assets/main.css'
                     }
                 }
             }
@@ -22,39 +22,40 @@ prototype(Shel.Neos.YoastSeo:Documents.YoastSeoView) < prototype(Neos.Neos:Page)
 
     body {
         templatePath = 'resource://Shel.Neos.YoastSeo/Private/Templates/YoastSeoView.html'
-        sectionName = 'body'
 
         previewWrapper = Neos.Fusion:Tag {
             tagName = 'main'
-            attributes.class = 'yoast-seo__wrapper'
+            attributes.class = 'yoast-seo__container'
 
             content = Neos.Fusion:Array {
                 header = Shel.Neos.YoastSeo:Component.Header
-                snippetPreview = Shel.Neos.YoastSeo:Component.SnippetPreview
-                focusKeyword = Shel.Neos.YoastSeo:Component.FocusKeyword
-                snippetFields = Shel.Neos.YoastSeo:Component.SnippetFields
-                output = Shel.Neos.YoastSeo:Component.Output
-                errorOutput = Shel.Neos.YoastSeo:Component.ErrorOutput
-
-                configuration = Shel.Neos.YoastSeo:Component.Configuration
+                application = Shel.Neos.YoastSeo:Component.Application
+                modal = Neos.Fusion:Component {
+                    renderer = afx`
+                        <div id="yoast-modal"></div>
+                    `
+                }
+                snippetEditor = Shel.Neos.YoastSeo:Component.SnippetEditor
             }
         }
 
         javascripts {
+            yoastseo = Neos.Fusion:Tag {
+                tagName = 'script'
+                attributes {
+                    src = Neos.Fusion:ResourceUri {
+                        path = 'resource://Shel.Neos.YoastSeo/Public/Assets/yoastseo.js'
+                    }
+                }
+            }
             app = Neos.Fusion:Tag {
                 tagName = 'script'
                 attributes {
                     async = 'async'
                     src = Neos.Fusion:ResourceUri {
-                        path = 'resource://Shel.Neos.YoastSeo/Public/Scripts/App.js'
+                        path = 'resource://Shel.Neos.YoastSeo/Public/Assets/app.js'
                     }
                 }
-            }
-
-            browserSync = Neos.Fusion:Template {
-                templatePath = 'resource://Shel.Neos.YoastSeo/Private/Templates/YoastSeoView.html'
-                sectionName = 'browserSync'
-                @if.inDevMode = ${Configuration.setting('Shel.Neos.YoastSeo.devMode')}
             }
         }
     }

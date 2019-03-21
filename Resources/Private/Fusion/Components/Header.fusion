@@ -1,7 +1,4 @@
 prototype(Shel.Neos.YoastSeo:Component.Header) < prototype(Neos.Fusion:Tag) {
     tagName = 'h1'
-    content = Neos.Fusion:Array {
-        header = ${I18n.translate('header', null, [], 'Main', 'Shel.Neos.YoastSeo', null, interfaceLanguage)}
-        spinner = Shel.Neos.YoastSeo:Component.Spinner
-    }
+    content = ${I18n.translate('header', null, [], 'Main', 'Shel.Neos.YoastSeo', null, interfaceLanguage)}
 }
