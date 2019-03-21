@@ -32,8 +32,8 @@ problems as it just provides a additionals views in Neos.
 
 | Yoast SEO version | Neos CMS | Old UI | New UI |
 | ----------------- | -------- | ------ | ------ |
-| 0.2.0+            | 3.3+     | No     | Yes    |
-| 0.1.*             | 3.3+     | Yes    | Yes    |
+| 0.2.*             | 3.3+     | No     | 2.0+   |
+| 0.1.*             | 3.3+     | Yes    | 1.4+   |
 
 Find the installation instructions for the new Neos UI [here](https://github.com/neos/neos-ui).
 
