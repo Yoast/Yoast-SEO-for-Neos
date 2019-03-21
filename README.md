@@ -10,8 +10,6 @@
 This package provides a new backend preview and inspector integration for [Neos CMS](https://neos.io) to look at 
 your page with the help of the [Yoast SEO](https://github.com/Yoast/YoastSEO.js) plugin.
 
-It's currently compatible with Neos 3.3 (old UI and new UI) and 4.x.
-
 This view will show you a preview snippet how the selected page will look in the Google search results
 and will give you insights and helpers to further improve the page for search engines.
 
@@ -30,6 +28,15 @@ problems as it just provides a additionals views in Neos.
 
 ![Inspector view in a blog](Documentation/Neos-Yoast-SEO-Inspector.jpg) 
 
+## Compatibility chart
+
+| Yoast SEO version | Neos CMS | Old UI | New UI |
+| ----------------- | -------- | ------ | ------ |
+| 0.2.0+            | 3.3+     | No     | Yes    |
+| 0.1.*             | 3.3+     | Yes    | Yes    |
+
+Find the installation instructions for the new Neos UI [here](https://github.com/neos/neos-ui).
+
 ## Installation
 
 Add the dependency to your site package like this
@@ -47,7 +54,8 @@ the `neos/seo` package.
 
 ## Using this package with Neos CMS 3.3 and the old UI
 
-Many features of this package will also work in the old UI out of the box.
+To use this package with the old UI you have to use version 0.1.*.
+Version 0.2.0 dropped the support for the old UI.
 
 To remove a javascript error and to make the Yoast tab work correctly you should override 
 the provided SEO mixin in your site package:
