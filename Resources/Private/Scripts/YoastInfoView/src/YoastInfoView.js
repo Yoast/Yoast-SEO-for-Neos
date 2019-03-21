@@ -101,10 +101,18 @@ export default class YoastInfoView extends PureComponent {
             this.fetchContent();
         }
 
-        this.props.serverFeedbackHandlers.set('Neos.Neos.Ui:ReloadDocument/DocumentUpdated', () => {
-            this.fetchContent();
-        }, 'after Neos.Neos.Ui:ReloadDocument/Main');
+        this.props.serverFeedbackHandlers.set('Neos.Neos.Ui:ReloadDocument/DocumentUpdated', this.onDocumentUpdated, 'after Neos.Neos.Ui:ReloadDocument/Main');
     }
+
+    onDocumentUpdated = () => {
+        const {documentNodePath, getNodeByContextPath} = this.props;
+        const documentNode = getNodeByContextPath(documentNodePath);
+        this.setState({
+            nodeUri: $get('uri', documentNode),
+            focusKeyword: $get('properties.focusKeyword', documentNode),
+            isCornerstone: $get('properties.isCornerstone', documentNode),
+        }, this.fetchContent);
+    };
 
     /**
      * Fetch new translations from the backend.
