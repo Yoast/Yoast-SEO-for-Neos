@@ -326,10 +326,11 @@ export default class YoastInfoView extends PureComponent {
     };
 
     renderTextElement = (heading, text) => {
+        const {i18nRegistry} = this.props;
         return (
             <li className={style.yoastInfoView__item}>
                 <strong className={style.yoastInfoView__title}>{heading}</strong>
-                <p className={style.yoastInfoView__value}>{text}</p>
+                <p className={style.yoastInfoView__value}>{text ? text : i18nRegistry.translate('inspector.emptyText', 'Not available', {}, 'Shel.Neos.YoastSeo')}</p>
             </li>
         );
     };

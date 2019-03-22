@@ -13,6 +13,9 @@
             <trans-unit id="inspector.loading">
                 <source>Loading…</source>
             </trans-unit>
+            <trans-unit id="inspector.emptyText">
+                <source>Not available</source>
+            </trans-unit>
             <trans-unit id="inspector.renderedTitle">
                 <source>Rendered title</source>
             </trans-unit>
