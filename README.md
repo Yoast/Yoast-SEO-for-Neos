@@ -63,6 +63,8 @@ the provided SEO mixin in your site package:
     'Shel.Neos.YoastSeo:Mixin.SEO':
       superTypes:
         'Shel.Neos.YoastSeo:Mixin.Analysis.OldUi': true
+        
+This mixin is only available in version 0.1.*.
 
 ## Supported languages
 
