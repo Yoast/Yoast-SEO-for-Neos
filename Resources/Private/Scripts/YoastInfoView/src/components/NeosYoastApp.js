@@ -65,6 +65,7 @@ export default class NeosYoastApp extends PureComponent {
                 description: this.props.description || '',
                 slug: this.props.uriPathSegment,
                 url: this.props.pageUrl,
+                focusKeyword: this.props.focusKeyword,
             },
             page: {
                 titleTemplate: '{title}',
@@ -192,7 +193,7 @@ export default class NeosYoastApp extends PureComponent {
             const paper = new Paper(
                 this.state.page.content,
                 {
-                    keyword: this.props.focusKeyword || '',
+                    keyword: this.state.editorData.focusKeyword || '',
                     description: this.state.page.description || '',
                     title: this.state.page.title,
                     titleWidth: measureTextWidth(this.state.page.title),
@@ -324,6 +325,17 @@ export default class NeosYoastApp extends PureComponent {
             hasPaperStyle: false,
             onChange: this.onSnippetEditorChange,
             mapEditorDataToPreview: this.mapEditorDataToPreview,
+            mode: this.state.mode,
+        };
+
+        const analysisProps = {
+            modalContainer: this.props.modalContainer,
+            allResults: this.state.allResults,
+            readabilityResults: this.state.readabilityResults,
+            seoResults: this.state.seoResults,
+            isAnalyzing: this.state.isAnalyzing,
+            onChange: this.onSnippetEditorChange,
+            focusKeyword: this.state.editorData.focusKeyword,
         };
 
         return (
@@ -331,13 +343,9 @@ export default class NeosYoastApp extends PureComponent {
                 <div>
                     <Loader className=""/>
                     <div className="yoast-seo__snippet-editor-wrapper">
-                        <SnippetEditor {...editorProps} mode={this.state.mode}/>
+                        <SnippetEditor {...editorProps}/>
                     </div>
-                    <ContentAnalysisWrapper modalContainer={this.props.modalContainer}
-                                            allResults={this.state.allResults}
-                                            readabilityResults={this.state.readabilityResults}
-                                            seoResults={this.state.seoResults}
-                                            isAnalyzing={this.state.isAnalyzing}/>
+                    <ContentAnalysisWrapper {...analysisProps}/>
                 </div>
             </ThemeProvider>
         )

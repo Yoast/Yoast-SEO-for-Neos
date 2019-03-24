@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import Jed from "jed";
 import {$transform, $get} from 'plow-js';
+import debounce from 'lodash.debounce';
 
 import {Icon, IconButton} from '@neos-project/react-ui-components';
 import {neos} from '@neos-project/neos-ui-decorators';
@@ -101,7 +102,9 @@ export default class YoastInfoView extends PureComponent {
             this.fetchContent();
         }
 
+        this.onDocumentUpdated = debounce(this.onDocumentUpdated.bind(this), 500);
         this.props.serverFeedbackHandlers.set('Neos.Neos.Ui:ReloadDocument/DocumentUpdated', this.onDocumentUpdated, 'after Neos.Neos.Ui:ReloadDocument/Main');
+        this.props.serverFeedbackHandlers.set('Neos.Neos.Ui:UpdateNodeInfo/YoastSeo', this.onDocumentUpdated, 'after Neos.Neos.Ui:UpdateNodeInfo/Main');
     }
 
     onDocumentUpdated = () => {

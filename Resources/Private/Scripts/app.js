@@ -16,6 +16,8 @@ import fetch from './YoastInfoView/src/helper/fetch';
     const titleOverrideField = snippetEditorContainer.querySelector('.snippet-editor__title-override');
     const descriptionField = snippetEditorContainer.querySelector('.snippet-editor__description');
     const uriPathSegmentField = snippetEditorContainer.querySelector('.snippet-editor__uri-path-segment');
+    const focusKeywordField = snippetEditorContainer.querySelector('.snippet-editor__focus-keyword');
+
     let translations = {
         domain: "js-text-analysis",
         locale_data: {
@@ -28,6 +30,7 @@ import fetch from './YoastInfoView/src/helper/fetch';
     const editorFieldMapping = {
         title: titleField,
         titleOverride: titleOverrideField,
+        focusKeyword: focusKeywordField,
         description: descriptionField,
         slug: uriPathSegmentField,
     };

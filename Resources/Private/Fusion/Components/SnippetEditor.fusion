@@ -13,6 +13,9 @@ prototype(Shel.Neos.YoastSeo:Component.SnippetEditor) < prototype(Neos.Neos:Cont
             <div class="snippet-editor__uri-path-segment">
                 <Neos.Neos:Editable property="uriPathSegment"/>
             </div>
+            <div class="snippet-editor__focus-keyword">
+                <Neos.Neos:Editable property="focusKeyword"/>
+            </div>
         </div>
     `
 }
