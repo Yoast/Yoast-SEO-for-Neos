@@ -65,7 +65,7 @@ export default class NeosYoastApp extends PureComponent {
                 description: this.props.description || '',
                 slug: this.props.uriPathSegment,
                 url: this.props.pageUrl,
-                focusKeyword: this.props.focusKeyword,
+                focusKeyword: this.props.focusKeyword || '',
             },
             page: {
                 titleTemplate: '{title}',
@@ -319,7 +319,7 @@ export default class NeosYoastApp extends PureComponent {
             data: this.state.editorData,
             baseUrl: this.props.baseUrl,
             locale: this.props.uiLocale,
-            keyword: this.props.focusKeyword,
+            keyword: this.state.editorData.focusKeyword,
             breadcrumbs: this.props.breadcrumbs,
             isAmp: this.props.isAmp,
             hasPaperStyle: false,

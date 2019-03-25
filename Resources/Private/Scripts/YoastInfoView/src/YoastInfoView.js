@@ -80,7 +80,7 @@ export default class YoastInfoView extends PureComponent {
 
         this.state = {
             nodeUri: $get('uri', documentNode),
-            focusKeyword: $get('properties.focusKeyword', documentNode),
+            focusKeyword: $get('properties.focusKeyword', documentNode) || '',
             isCornerstone: $get('properties.isCornerstone', documentNode),
             isAnalyzing: false,
             page: {
@@ -112,7 +112,7 @@ export default class YoastInfoView extends PureComponent {
         const documentNode = getNodeByContextPath(documentNodePath);
         this.setState({
             nodeUri: $get('uri', documentNode),
-            focusKeyword: $get('properties.focusKeyword', documentNode),
+            focusKeyword: $get('properties.focusKeyword', documentNode) || '',
             isCornerstone: $get('properties.isCornerstone', documentNode),
         }, this.fetchContent);
     };
