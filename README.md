@@ -24,9 +24,9 @@ problems as it just provides a additionals views in Neos.
 
 ## Examples
 
-![Preview in the Neos demo site](Documentation/Neos-Yoast-SEO-Example.png) 
+![Preview in the Neos demo site](Documentation/snippet-preview.jpg) 
 
-![Inspector view in a blog](Documentation/Neos-Yoast-SEO-Inspector.jpg) 
+![Inspector view in a blog](Documentation/inspector.jpg) 
 
 ## Compatibility chart
 
