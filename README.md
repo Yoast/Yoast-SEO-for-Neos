@@ -178,10 +178,15 @@ information without needing a reload of the whole page.
 
 This view is helpful when optimizing a single page while working on it's content.
 
-## Notes about the packages capabilities
+## FAQ
 
-* The language of your content is used in the analyzer but the summaries are currently english only.
-* We try to render your site as good as possible for the YoastSEO analyzer to parse it. This might not work for every usecase! 
+### I get a login modal after opening the Yoast tab in the inspector
+
+First try to log out and log in again as the session might be missing some policy information.
+
+If that doesn't help then the policy file of this package might not have been loaded.
+Clear your caches and make sure they appear when running `flow security:showeffectivepolicy --privilegeType "Neos\Flow\Security\Authorization\Privilege\Method\MethodPrivilege"`.
+Then logout and login again and everything should work again.
 
 ## Contributing && issues
 
