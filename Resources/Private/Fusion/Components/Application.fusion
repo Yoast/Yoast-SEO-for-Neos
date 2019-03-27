@@ -20,9 +20,8 @@ prototype(Shel.Neos.YoastSeo:Component.Application) < prototype(Neos.Fusion:Tag)
             previewUrl = ${'/neosyoastseo/page/renderPreviewPage?node=' + documentNode.contextPath}
             baseUrl = Shel.Neos.YoastSeo:BaseUri
             pageUrl = Neos.Neos:NodeUri {
-                node = ${documentNode}
+                node = ${q(documentNode).context({workspaceName: 'live'}).get(0)}
                 absolute = true
-                @process.stripWorkspace = ${String.split(value, '@')[0]}
             }
 
             breadcrumbs = Neos.Fusion:RawCollection {
