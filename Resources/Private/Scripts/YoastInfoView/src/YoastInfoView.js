@@ -83,7 +83,7 @@ export default class YoastInfoView extends PureComponent {
             focusKeyword: $get('properties.focusKeyword', documentNode) || '',
             isCornerstone: $get('properties.isCornerstone', documentNode),
             isAnalyzing: false,
-            page: {
+            page: this.props.analysis.page || {
                 title: '',
                 description: '',
                 isAnalyzing: false,
