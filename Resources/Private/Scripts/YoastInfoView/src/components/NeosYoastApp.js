@@ -60,6 +60,7 @@ export default class NeosYoastApp extends PureComponent {
             worker: null,
             mode: MODES.MODE_DESKTOP,
             activeTitleField: activeTitleField,
+            firstPageLoadComplete: false,
             editorData: {
                 title: this.props[activeTitleField],
                 description: this.props.description || '',
@@ -134,10 +135,12 @@ export default class NeosYoastApp extends PureComponent {
             })
             .then(documentContent => {
                 const pageParser = new PageParser(documentContent, this.props.contentSelector);
+                const titleTemplate = this.state.firstPageLoadComplete ? this.state.page.titleTemplate : NeosYoastApp.buildTitleTemplate(this.props[this.state.activeTitleField], pageParser.title);
 
                 this.setState({
+                    firstPageLoadComplete: true,
                     page: {
-                        titleTemplate: NeosYoastApp.buildTitleTemplate(this.props[this.state.activeTitleField], pageParser.title),
+                        titleTemplate: titleTemplate,
                         title: pageParser.title,
                         description: pageParser.description,
                         locale: pageParser.locale,
@@ -315,6 +318,8 @@ export default class NeosYoastApp extends PureComponent {
      * Renders the snippet editor and analysis component
      */
     render() {
+        const {firstPageLoadComplete} = this.state;
+
         const editorProps = {
             data: this.state.editorData,
             baseUrl: this.props.baseUrl,
@@ -343,7 +348,7 @@ export default class NeosYoastApp extends PureComponent {
                 <div>
                     <Loader className=""/>
                     <div className="yoast-seo__snippet-editor-wrapper">
-                        <SnippetEditor {...editorProps}/>
+                        {firstPageLoadComplete && <SnippetEditor {...editorProps}/>}
                     </div>
                     <ContentAnalysisWrapper {...analysisProps}/>
                 </div>
