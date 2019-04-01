@@ -16,7 +16,7 @@ export default class ResultGroup extends PureComponent {
     renderRating = (result, id) => {
         return result && (
             <p key={id} className={style.yoastInfoView__content}
-               title={this.props.i18nRegistry.translate('inspector.resultType.' + result.identifier, result.identifier, {}, 'Shel.Neos.YoastSeo')}>
+               title={this.props.i18nRegistry.translate('inspector.resultType.' + result.id, result.id, {}, 'Shel.Neos.YoastSeo')}>
                 <i className={style['yoastInfoView__rating_circle'] + ' ' + style['yoastInfoView__rating_' + result.rating]}/>
                 <span dangerouslySetInnerHTML={{__html: result.text}}/>
             </p>
