@@ -102,7 +102,7 @@ export default class YoastInfoView extends PureComponent {
             this.fetchContent();
         }
 
-        this.onDocumentUpdated = debounce(this.onDocumentUpdated.bind(this), 500);
+        this.onDocumentUpdated = debounce(this.onDocumentUpdated.bind(this), 2000);
         this.props.serverFeedbackHandlers.set('Neos.Neos.Ui:ReloadDocument/DocumentUpdated', this.onDocumentUpdated, 'after Neos.Neos.Ui:ReloadDocument/Main');
         this.props.serverFeedbackHandlers.set('Neos.Neos.Ui:UpdateNodeInfo/YoastSeo', this.onDocumentUpdated, 'after Neos.Neos.Ui:UpdateNodeInfo/Main');
     }

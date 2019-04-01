@@ -96,7 +96,7 @@ export default class NeosYoastApp extends PureComponent {
         };
 
         this.updateNeosFields = debounce(this.updateNeosFields.bind(this), 500);
-        this.requestNewPageContent = debounce(this.requestNewPageContent.bind(this), 1500);
+        this.requestNewPageContent = debounce(this.requestNewPageContent.bind(this), 3000);
     };
 
     /**
