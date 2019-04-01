@@ -17,7 +17,7 @@ import Paper from 'yoastseo/src/values/Paper';
 import {measureTextWidth} from 'yoastseo/src/helpers';
 
 const errorResult = {
-    text: 'An error occured while analyzing the page!',
+    text: 'An error occurred while analyzing the page!',
     id: '1',
     rating: 'feedback',
     hasMarks: false,
