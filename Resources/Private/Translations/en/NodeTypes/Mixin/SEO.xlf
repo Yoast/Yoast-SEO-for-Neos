@@ -3,7 +3,7 @@
     <file original="" product="Shel.Neos.YoastSeo" source-language="en" datatype="plaintext">
         <body>
             <trans-unit id="properties.focusKeyword">
-                <source>Focus Keyword</source>
+                <source>Focus keyphrase</source>
             </trans-unit>
             <trans-unit id="properties.isCornerstone">
                 <source>is Cornerstone</source>
