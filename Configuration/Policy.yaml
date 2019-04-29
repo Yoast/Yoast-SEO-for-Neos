@@ -1,16 +1,16 @@
 privilegeTargets:
   Neos\Flow\Security\Authorization\Privilege\Method\MethodPrivilege:
-    'Shel.Neos.YoastSeo:DataSources':
-      matcher: 'method(Shel\Neos\YoastSeo\Controller\DataController->(.*)Action())'
-    'Shel.Neos.YoastSeo:PreviewRenderer':
-      matcher: 'method(Shel\Neos\YoastSeo\Controller\PageController->(.*)Action())'
+    'Yoast.YoastSeoForNeos:DataSources':
+      matcher: 'method(Yoast\YoastSeoForNeos\Controller\DataController->(.*)Action())'
+    'Yoast.YoastSeoForNeos:PreviewRenderer':
+      matcher: 'method(Yoast\YoastSeoForNeos\Controller\PageController->(.*)Action())'
 
 roles:
   'Neos.Neos:Editor':
     privileges:
       -
-        privilegeTarget: 'Shel.Neos.YoastSeo:DataSources'
+        privilegeTarget: 'Yoast.YoastSeoForNeos:DataSources'
         permission: GRANT
       -
-        privilegeTarget: 'Shel.Neos.YoastSeo:PreviewRenderer'
+        privilegeTarget: 'Yoast.YoastSeoForNeos:PreviewRenderer'
         permission: GRANT

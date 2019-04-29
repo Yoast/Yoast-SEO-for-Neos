@@ -1,3 +1,3 @@
 'Neos.Neos:Content':
   superTypes:
-    'Shel.Neos.YoastSeo:Mixin.Analysis': true
+    'Yoast.YoastSeoForNeos:Mixin.Analysis': true

@@ -1,4 +1,4 @@
-prototype(Shel.Neos.YoastSeo:Component.SnippetEditor) < prototype(Neos.Neos:ContentComponent) {
+prototype(Yoast.YoastSeoForNeos:Component.SnippetEditor) < prototype(Neos.Neos:ContentComponent) {
     renderer = afx`
         <div class="snippet-editor">
             <div class="snippet-editor__title">

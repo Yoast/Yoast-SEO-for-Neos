@@ -1,5 +1,5 @@
 {
-  "description": "Shel.Neos.YoastSeo:YoastInfoView",
+  "description": "Yoast.YoastSeoForNeos:YoastInfoView",
   "license": "GPL-3.0",
   "private": true,
   "sideEffects": false,

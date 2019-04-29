@@ -1,5 +1,5 @@
 <?php
-namespace Shel\Neos\YoastSeo\Controller;
+namespace Yoast\YoastSeoForNeos\Controller;
 
 use Neos\ContentRepository\Domain\Model\NodeInterface;
 use Neos\Flow\Mvc\Controller\ActionController;
@@ -19,7 +19,7 @@ class PageController extends ActionController
         $this->response->getHeaders()->setCacheControlDirective('no-store');
         $this->redirect('show', 'Frontend\Node', 'Neos.Neos', [
             'node' => $node,
-            'shelYoastSeoPreviewMode' => true,
+            'yoastSeoPreviewMode' => true,
         ]);
     }
 }

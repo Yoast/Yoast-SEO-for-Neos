@@ -1,7 +1,7 @@
-'Shel.Neos.YoastSeo:Mixin.SEO':
+'Yoast.YoastSeoForNeos:Mixin.SEO':
   abstract: true
   superTypes:
-    'Shel.Neos.YoastSeo:Mixin.Analysis': true
+    'Yoast.YoastSeoForNeos:Mixin.Analysis': true
   properties:
     focusKeyword:
       type: string

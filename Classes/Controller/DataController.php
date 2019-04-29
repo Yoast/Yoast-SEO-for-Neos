@@ -1,5 +1,5 @@
 <?php
-namespace Shel\Neos\YoastSeo\Controller;
+namespace Yoast\YoastSeoForNeos\Controller;
 
 use Neos\Cache\Frontend\VariableFrontend;
 use Neos\Flow\Annotations as Flow;
@@ -18,7 +18,7 @@ class DataController extends ActionController
     ];
 
     /**
-     * @Flow\InjectConfiguration(path="languageToLocaleMapping", package="Shel.Neos.YoastSeo")
+     * @Flow\InjectConfiguration(path="languageToLocaleMapping", package="Yoast.YoastSeoForNeos")
      * @var array
      */
     protected $languageToLocaleMapping = [
@@ -66,7 +66,7 @@ class DataController extends ActionController
             $translationData = $this->translationCache->get($locale);
             if (!$translationData) {
                 try {
-                    $rawTranslationData = file_get_contents('resource://Shel.Neos.YoastSeo/Private/Languages/' . $locale . '.json');
+                    $rawTranslationData = file_get_contents('resource://Yoast.YoastSeoForNeos/Private/Languages/' . $locale . '.json');
                     $translationData = json_decode($rawTranslationData, true);
                     $this->translationCache->set($locale, $translationData);
                 } catch (\Exception $e) {

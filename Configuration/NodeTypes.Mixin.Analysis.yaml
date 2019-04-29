@@ -1,4 +1,4 @@
-'Shel.Neos.YoastSeo:Mixin.Analysis':
+'Yoast.YoastSeoForNeos:Mixin.Analysis':
   abstract: true
 
   ui:
@@ -21,5 +21,5 @@
         yoastInfo:
           label: i18n
           group: 'yoast'
-          view: 'Shel.Neos.YoastSeo/Inspector/Views/YoastInfoView'
+          view: 'Yoast.YoastSeoForNeos/Inspector/Views/YoastInfoView'
           position: 20

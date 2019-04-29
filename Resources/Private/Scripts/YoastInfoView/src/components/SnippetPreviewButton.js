@@ -17,7 +17,7 @@ export default class SnippetPreviewButton extends PureComponent {
 
     handleToggleSnippetPreviewClick = () => {
         const {setEditPreviewMode, editPreviewMode} = this.props;
-        setEditPreviewMode(editPreviewMode === 'shelYoastSeoView' ? 'inPlace' : 'shelYoastSeoView');
+        setEditPreviewMode(editPreviewMode === 'yoastSeoView' ? 'inPlace' : 'yoastSeoView');
     };
 
     render () {
@@ -25,7 +25,7 @@ export default class SnippetPreviewButton extends PureComponent {
             <Button style="lighter" hoverStyle="brand" onClick={this.handleToggleSnippetPreviewClick}>
                 <span>
                     <Icon icon={'edit'}/>
-                    &nbsp;{this.props.i18nRegistry.translate('inspector.editSnippetPreview', 'Toggle Snippet Preview', {}, 'Shel.Neos.YoastSeo')}
+                    &nbsp;{this.props.i18nRegistry.translate('inspector.editSnippetPreview', 'Toggle Snippet Preview', {}, 'Yoast.YoastSeoForNeos')}
                 </span>
             </Button>
         );
