@@ -1,54 +1,53 @@
-Shel:
-  Neos:
-    YoastSeo:
-      devMode: false
-      defaultContentLocale: en-US
-      languageToLocaleMapping:
-        da: 'da_DK'
-        de: 'de_DE-formal'
-        en: ''
-        es: 'es_ES'
-        fi: 'fi'
-        fr: 'fr_FR'
-        km: ''
-        lv: ''
-        nl: 'nl_NL-formal'
-        no: 'nb_NO'
-        pl: 'pl_PL'
-        pt-BR: 'pt_BR'
-        ru: 'ru_RU'
-        zh-CN: 'zh_CN'
+Yoast:
+  YoastSeoForNeos:
+    devMode: false
+    defaultContentLocale: en-US
+    languageToLocaleMapping:
+      da: 'da_DK'
+      de: 'de_DE-formal'
+      en: ''
+      es: 'es_ES'
+      fi: 'fi'
+      fr: 'fr_FR'
+      km: ''
+      lv: ''
+      nl: 'nl_NL-formal'
+      no: 'nb_NO'
+      pl: 'pl_PL'
+      pt-BR: 'pt_BR'
+      ru: 'ru_RU'
+      zh-CN: 'zh_CN'
 
 Neos:
   Neos:
     userInterface:
       editPreviewModes:
-        shelYoastSeoView:
+        yoastSeoView:
           isEditingMode: true
           isPreviewMode: false
-          fusionRenderingPath: shelYoastSeoView
-          title: 'Shel.Neos.YoastSeo:Main:editPreviewModes.yoastSeoView'
+          fusionRenderingPath: yoastSeoView
+          title: 'Yoast.YoastSeoForNeos:Main:editPreviewModes.yoastSeoView'
           position: 'after inPlace'
 
       translation:
         autoInclude:
-          Shel.Neos.YoastSeo:
+          Yoast.YoastSeoForNeos:
             - 'Main'
             - 'NodeTypes/*'
             - 'NodeTypes/Mixin/*'
 
     fusion:
       autoInclude:
-        Shel.Neos.YoastSeo: true
+        Yoast.YoastSeoForNeos: true
 
     Ui:
       resources:
         javascript:
-          Shel.Neos.YoastSeo:YoastInfoView:
-            resource: resource://Shel.Neos.YoastSeo/Public/YoastInfoView/Plugin.js
+          Yoast.YoastSeoForNeos:YoastInfoView:
+            resource: resource://Yoast.YoastSeoForNeos/Public/YoastInfoView/Plugin.js
 
       frontendConfiguration:
-        'Shel.Neos.YoastSeo':
+        'Yoast.YoastSeoForNeos':
           contentSelector: 'body'
 
   Flow:
@@ -57,11 +56,11 @@ Neos:
         providers:
           'Neos.Neos:Backend':
             requestPatterns:
-              'Shel.Neos.YoastSeo:DataSources':
+              'Yoast.YoastSeoForNeos:DataSources':
                 pattern: ControllerObjectName
                 patternOptions:
-                  controllerObjectNamePattern: 'Shel\Neos\YoastSeo\Controller\.*'
+                  controllerObjectNamePattern: 'Yoast\YoastSeoForNeos\Controller\.*'
     mvc:
       routes:
-        'Shel.Neos.YoastSeo':
+        'Yoast.YoastSeoForNeos':
           position: 'before Neos.Neos'

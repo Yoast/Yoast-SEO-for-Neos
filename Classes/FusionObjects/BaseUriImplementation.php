@@ -1,5 +1,5 @@
 <?php
-namespace Shel\Neos\YoastSeo\FusionObjects;
+namespace Yoast\YoastSeoForNeos\FusionObjects;
 
 use Neos\Neos\Exception as NeosException;
 

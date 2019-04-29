@@ -50,7 +50,7 @@ const iconRatingMapping = {
 @neos(globalRegistry => ({
     i18nRegistry: globalRegistry.get('i18n'),
     serverFeedbackHandlers: globalRegistry.get('serverFeedbackHandlers'),
-    contentSelector: globalRegistry.get('frontendConfiguration').get('Shel.Neos.YoastSeo').contentSelector,
+    contentSelector: globalRegistry.get('frontendConfiguration').get('Yoast.YoastSeoForNeos').contentSelector,
 }))
 export default class YoastInfoView extends PureComponent {
     static propTypes = {
@@ -70,7 +70,7 @@ export default class YoastInfoView extends PureComponent {
     };
 
     static defaultProps = {
-        workerUrl: '/_Resources/Static/Packages/Shel.Neos.YoastSeo/Assets/webWorker.js', // TODO: Resolve path via Neos api
+        workerUrl: '/_Resources/Static/Packages/Yoast.YoastSeoForNeos/Assets/webWorker.js', // TODO: Resolve path via Neos api
     };
 
     constructor(props) {
@@ -293,16 +293,16 @@ export default class YoastInfoView extends PureComponent {
         return (
             <li className={style.yoastInfoView__item}>
                 <div className={style.yoastInfoView__title}>
-                    {this.props.i18nRegistry.translate('inspector.results', 'Analysis results', {}, 'Shel.Neos.YoastSeo')}
+                    {this.props.i18nRegistry.translate('inspector.results', 'Analysis results', {}, 'Yoast.YoastSeoForNeos')}
                 </div>
                 {groupedResults.bad.length > 0 && (
-                    <ResultGroup heading={this.props.i18nRegistry.translate('inspector.problems', 'Problems', {}, 'Shel.Neos.YoastSeo')} results={groupedResults.bad}/>
+                    <ResultGroup heading={this.props.i18nRegistry.translate('inspector.problems', 'Problems', {}, 'Yoast.YoastSeoForNeos')} results={groupedResults.bad}/>
                 )}
                 {groupedResults.ok.length > 0 && (
-                    <ResultGroup heading={this.props.i18nRegistry.translate('inspector.improvements', 'Improvements', {}, 'Shel.Neos.YoastSeo')} results={groupedResults.ok}/>
+                    <ResultGroup heading={this.props.i18nRegistry.translate('inspector.improvements', 'Improvements', {}, 'Yoast.YoastSeoForNeos')} results={groupedResults.ok}/>
                 )}
                 {groupedResults.good.length > 0 && (
-                    <ResultGroup heading={this.props.i18nRegistry.translate('inspector.goodResults', 'Good results', {}, 'Shel.Neos.YoastSeo')} results={groupedResults.good}/>
+                    <ResultGroup heading={this.props.i18nRegistry.translate('inspector.goodResults', 'Good results', {}, 'Yoast.YoastSeoForNeos')} results={groupedResults.good}/>
                 )}
             </li>
         );
@@ -333,7 +333,7 @@ export default class YoastInfoView extends PureComponent {
         return (
             <li className={style.yoastInfoView__item}>
                 <strong className={style.yoastInfoView__title}>{heading}</strong>
-                <p className={style.yoastInfoView__value}>{text ? text : i18nRegistry.translate('inspector.emptyText', 'Not available', {}, 'Shel.Neos.YoastSeo')}</p>
+                <p className={style.yoastInfoView__value}>{text ? text : i18nRegistry.translate('inspector.emptyText', 'Not available', {}, 'Yoast.YoastSeoForNeos')}</p>
             </li>
         );
     };
@@ -362,14 +362,14 @@ export default class YoastInfoView extends PureComponent {
                     <SnippetPreviewButton/>
                 </li>
 
-                {!page.isAnalyzing && this.renderTextElement(i18nRegistry.translate('inspector.renderedTitle', 'Rendered title', {}, 'Shel.Neos.YoastSeo'), page.title)}
-                {!page.isAnalyzing && this.renderTextElement(i18nRegistry.translate('inspector.renderedDescription', 'Rendered description', {}, 'Shel.Neos.YoastSeo'), page.description)}
+                {!page.isAnalyzing && this.renderTextElement(i18nRegistry.translate('inspector.renderedTitle', 'Rendered title', {}, 'Yoast.YoastSeoForNeos'), page.title)}
+                {!page.isAnalyzing && this.renderTextElement(i18nRegistry.translate('inspector.renderedDescription', 'Rendered description', {}, 'Yoast.YoastSeoForNeos'), page.description)}
 
 
                 {!isAnalyzing && (
                     <li className={style.yoastInfoView__item}>
                         <div className={style.yoastInfoView__heading}>
-                            {this.renderOverallScore(i18nRegistry.translate('inspector.seoScore', 'Focus Keyphrase', {}, 'Shel.Neos.YoastSeo'), analysis.seo.score)}
+                            {this.renderOverallScore(i18nRegistry.translate('inspector.seoScore', 'Focus Keyphrase', {}, 'Yoast.YoastSeoForNeos'), analysis.seo.score)}
                             <IconButton icon={seoResultsIconState} className={style.rightSideBar__toggleBtn}
                                         onClick={this.handleExpandSeoClick}/>
                         </div>
@@ -380,7 +380,7 @@ export default class YoastInfoView extends PureComponent {
                 {!isAnalyzing && (
                     <li className={style.yoastInfoView__item}>
                         <div className={style.yoastInfoView__heading}>
-                            {this.renderOverallScore(i18nRegistry.translate('inspector.contentScore', 'Readability analysis', {}, 'Shel.Neos.YoastSeo'), analysis.readability.score)}
+                            {this.renderOverallScore(i18nRegistry.translate('inspector.contentScore', 'Readability analysis', {}, 'Yoast.YoastSeoForNeos'), analysis.readability.score)}
                             <IconButton icon={contentResultsIconState} className={style.rightSideBar__toggleBtn}
                                         onClick={this.handleExpandContentClick}/>
                         </div>
@@ -392,7 +392,7 @@ export default class YoastInfoView extends PureComponent {
                 {(isAnalyzing) && (
                     <li style={{textAlign: 'center'}}>
                         <Icon spin={true} icon={'spinner'}/>
-                        &nbsp;{i18nRegistry.translate('inspector.loading', 'Loading…', {}, 'Shel.Neos.YoastSeo')}
+                        &nbsp;{i18nRegistry.translate('inspector.loading', 'Loading…', {}, 'Yoast.YoastSeoForNeos')}
                     </li>
                 )}
             </ul>

@@ -1,4 +1,4 @@
-Shel\Neos\YoastSeo\Controller\DataController:
+Yoast\YoastSeoForNeos\Controller\DataController:
   properties:
     translationCache:
       object:
@@ -6,4 +6,4 @@ Shel\Neos\YoastSeo\Controller\DataController:
         factoryMethodName: getCache
         arguments:
           1:
-            value: ShelNeosYoastSeo_TranslationCache
+            value: YoastSeoForNeos_TranslationCache

@@ -3,11 +3,11 @@ import YoastInfoView from './YoastInfoView';
 import manifest from '@neos-project/neos-ui-extensibility';
 import {reducer} from './actions';
 
-manifest('Shel.Neos.YoastSeo:YoastInfoView', {}, globalRegistry => {
+manifest('Yoast.YoastSeoForNeos:YoastInfoView', {}, globalRegistry => {
     const viewsRegistry = globalRegistry.get('inspector').get('views');
     const reducersRegistry = globalRegistry.get('reducers');
 
-    viewsRegistry.set('Shel.Neos.YoastSeo/Inspector/Views/YoastInfoView', {
+    viewsRegistry.set('Yoast.YoastSeoForNeos/Inspector/Views/YoastInfoView', {
         component: YoastInfoView
     });
 

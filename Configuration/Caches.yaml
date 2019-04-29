@@ -1,4 +1,4 @@
-ShelNeosYoastSeo_TranslationCache:
+YoastSeoForNeos_TranslationCache:
   backend: Neos\Cache\Backend\FileBackend
   backendOptions:
     defaultLifetime: 0

@@ -1,8 +1,8 @@
 {
-    "name": "shel/neos-yoast-seo",
+    "name": "yoast/yoast-seo-for-neos",
     "type": "neos-plugin",
     "description": "Yoast SEO for Neos CMS",
-    "license": "GPL-3.0",
+    "license": "GPL-3.0-or-later",
     "keywords": [
         "Neos CMS",
         "Yoast",
@@ -10,26 +10,35 @@
     ],
     "authors": [
         {
+            "name": "Team Yoast",
+            "email": "support@yoast.com",
+            "homepage": "https://yoast.com"
+        },
+        {
             "name": "Sebastian Helzle",
-            "email": "sebastian@helzle.it",
+            "email": "support@helzle.it",
             "homepage": "https://www.helzle.it",
             "role": "Developer"
         }
     ],
+    "homepage": "https://yoast.com",
     "require": {
         "php": "~7.0",
         "neos/neos": "^3.0 || ^4.0 || dev-master",
         "neos/neos-ui": "^2.0 || ^3.0 || dev-master",
         "neos/seo": "^2.0 || ^3.0"
     },
+    "replace": {
+        "shel/neos-yoast-seo": "self.version"
+    },
     "autoload": {
         "psr-4": {
-            "Shel\\Neos\\YoastSeo\\": "Classes"
+            "Yoast\\YoastSeoForNeos\\": "Classes"
         }
     },
     "extra": {
         "neos": {
-            "package-key": "Shel.Neos.YoastSeo"
+            "package-key": "Yoast.YoastSeoForNeos"
         }
     }
 }

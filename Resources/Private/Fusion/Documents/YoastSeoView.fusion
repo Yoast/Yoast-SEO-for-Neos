@@ -1,6 +1,6 @@
-prototype(Shel.Neos.YoastSeo:Documents.YoastSeoView) < prototype(Neos.Neos:Page) {
+prototype(Yoast.YoastSeoForNeos:Documents.YoastSeoView) < prototype(Neos.Neos:Page) {
 
-    @context.interfaceLanguage = Shel.Neos.YoastSeo:InterfaceLanguage
+    @context.interfaceLanguage = Yoast.YoastSeoForNeos:InterfaceLanguage
 
     head {
         stylesheets >
@@ -11,31 +11,31 @@ prototype(Shel.Neos.YoastSeo:Documents.YoastSeoView) < prototype(Neos.Neos:Page)
                     rel = 'stylesheet'
                     type = 'text/css'
                     href = Neos.Fusion:ResourceUri {
-                        path = 'resource://Shel.Neos.YoastSeo/Public/Assets/main.css'
+                        path = 'resource://Yoast.YoastSeoForNeos/Public/Assets/main.css'
                     }
                 }
             }
         }
     }
 
-    bodyTag.attributes.class = 'neos-shel-yoast-seo-view-mode'
+    bodyTag.attributes.class = 'neos-yoast-seo-view-mode'
 
     body {
-        templatePath = 'resource://Shel.Neos.YoastSeo/Private/Templates/YoastSeoView.html'
+        templatePath = 'resource://Yoast.YoastSeoForNeos/Private/Templates/YoastSeoView.html'
 
         previewWrapper = Neos.Fusion:Tag {
             tagName = 'main'
             attributes.class = 'yoast-seo__container'
 
             content = Neos.Fusion:Array {
-                header = Shel.Neos.YoastSeo:Component.Header
-                application = Shel.Neos.YoastSeo:Component.Application
+                header = Yoast.YoastSeoForNeos:Component.Header
+                application = Yoast.YoastSeoForNeos:Component.Application
                 modal = Neos.Fusion:Component {
                     renderer = afx`
                         <div id="yoast-modal"></div>
                     `
                 }
-                snippetEditor = Shel.Neos.YoastSeo:Component.SnippetEditor
+                snippetEditor = Yoast.YoastSeoForNeos:Component.SnippetEditor
             }
         }
 
@@ -44,7 +44,7 @@ prototype(Shel.Neos.YoastSeo:Documents.YoastSeoView) < prototype(Neos.Neos:Page)
                 tagName = 'script'
                 attributes {
                     src = Neos.Fusion:ResourceUri {
-                        path = 'resource://Shel.Neos.YoastSeo/Public/Assets/yoastseo.js'
+                        path = 'resource://Yoast.YoastSeoForNeos/Public/Assets/yoastseo.js'
                     }
                 }
             }
@@ -53,7 +53,7 @@ prototype(Shel.Neos.YoastSeo:Documents.YoastSeoView) < prototype(Neos.Neos:Page)
                 attributes {
                     async = 'async'
                     src = Neos.Fusion:ResourceUri {
-                        path = 'resource://Shel.Neos.YoastSeo/Public/Assets/app.js'
+                        path = 'resource://Yoast.YoastSeoForNeos/Public/Assets/app.js'
                     }
                 }
             }
