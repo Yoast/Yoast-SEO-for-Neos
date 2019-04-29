@@ -211,9 +211,3 @@ You can generate the `js` and `css` files by running the following commands in t
     yarn run build-inspector
     
     yarn run watch-inspector
-
-### Roadmap
-
-* Test plugin with various projects to check behavior
-* Implement more features from the Yoast javascript library (Text reading ease, etc...)
-* Nicer backend view
