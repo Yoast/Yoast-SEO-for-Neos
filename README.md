@@ -41,7 +41,7 @@ Find the installation instructions for the new Neos UI [here](https://github.com
 
 Add the dependency to your site package like this
 
-    `composer require --no-update yoast/yoast-seo-for-neos`
+    composer require --no-update yoast/yoast-seo-for-neos
     
 And then run `composer update` in your projects root folder.
     
