@@ -32,6 +32,7 @@ problems as it just provides a additionals views in Neos.
 
 | Yoast SEO version | Neos CMS | Old UI | New UI |
 | ----------------- | -------- | ------ | ------ |
+| 1.0.0             | 3.3+     | No     | 2.0+   |
 | 0.2.*             | 3.3+     | No     | 2.0+   |
 | 0.1.*             | 3.3+     | Yes    | 1.4+   |
 
