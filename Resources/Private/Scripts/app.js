@@ -63,55 +63,10 @@ import fetch from './YoastInfoView/src/helper/fetch';
     }
 
     /**
-     * Helper for checking whether an element is descendant of another
-     */
-    function _belongsTo(element, ancestor) {
-        if (element === null || element === document) {
-            return false;
-        }
-
-        if (element === ancestor) {
-            return true;
-        }
-
-        return _belongsTo(element.parentNode, ancestor);
-    }
-
-    /**
      * After everything is loaded, fetch translations and run the app
      */
     window.onload = () => {
         const configuration = JSON.parse(applicationContainer.dataset.configuration);
-
-        // Hotfix for issues with mousetrap version of new Neos UI
-        // This is needed as there is an issue with content editable elements not being detected correctly
-        // Which causes the hotkeys to fire when editing the Yoast title and description fields.
-        // This can be removed when all UI versions are fixed by using Mousetrap 1.6.3.
-        if (parent.Mousetrap) {
-            const originalMousetrapCallback = parent.Mousetrap.prototype.stopCallback;
-
-            parent.Mousetrap.prototype.stopCallback = (e, element) => {
-                let originalCheck = originalMousetrapCallback(e, element);
-                if (originalCheck) {
-                    return true;
-                }
-
-                let self = this;
-
-                if (_belongsTo(element, self.target)) {
-                    return false;
-                }
-
-                if ('composedPath' in e && typeof e.composedPath === 'function') {
-                    let initialEventTarget = e.composedPath()[0];
-                    if (initialEventTarget !== e.target) {
-                        element = initialEventTarget;
-                    }
-                }
-
-                return element.tagName === 'INPUT' || element.tagName === 'SELECT' || element.tagName === 'TEXTAREA' || element.isContentEditable;
-            };
-        }
 
         fetchTranslations(configuration.translationsUrl)
             .then(() => {
