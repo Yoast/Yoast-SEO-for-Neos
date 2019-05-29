@@ -9,7 +9,7 @@ import Modal from "@yoast/components/Modal";
 import Collapsible from "@yoast/components/Collapsible";
 import KeywordInput from "yoast-components/composites/Plugin/Shared/components/KeywordInput";
 import colors from "@yoast/style-guide/colors";
-import {__} from "@wordpress/i18n/src";
+import {__} from "@wordpress/i18n";
 
 // Internal dependencies
 import scoreToRating from "yoastseo/src/interpreters/scoreToRating";
