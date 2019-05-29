@@ -1,10 +1,14 @@
-import '../Styles/Main.scss';
-import './YoastInfoView/node_modules/yoast-components/css/loadingSpinner.scss';
+/**
+ * This script creates the app for the Yoast preview mode in Neos CMS
+ */
 
+// External dependencies
 import React from './YoastInfoView/node_modules/react';
 import ReactDOM from './YoastInfoView/node_modules/react-dom';
 import {setLocaleData} from "./YoastInfoView/node_modules/@wordpress/i18n";
 
+// Internal dependencies
+import '../Styles/Main.scss';
 import NeosYoastApp from './YoastInfoView/src/components/NeosYoastApp';
 import fetch from './YoastInfoView/src/helper/fetch';
 
@@ -18,6 +22,7 @@ import fetch from './YoastInfoView/src/helper/fetch';
     const uriPathSegmentField = snippetEditorContainer.querySelector('.snippet-editor__uri-path-segment');
     const focusKeywordField = snippetEditorContainer.querySelector('.snippet-editor__focus-keyword');
 
+    // Generate basic translation object which is required in case the translations cannot be fetched.
     let translations = {
         domain: "js-text-analysis",
         locale_data: {
@@ -36,7 +41,7 @@ import fetch from './YoastInfoView/src/helper/fetch';
     };
 
     /**
-     * Fetch translations and set them globally
+     * Fetch translations and store them for global usage
      */
     function fetchTranslations(translationsUrl) {
         return fetch(translationsUrl)
@@ -57,6 +62,9 @@ import fetch from './YoastInfoView/src/helper/fetch';
             });
     }
 
+    /**
+     * Helper for checking whether an element is descendant of another
+     */
     function _belongsTo(element, ancestor) {
         if (element === null || element === document) {
             return false;
@@ -69,6 +77,9 @@ import fetch from './YoastInfoView/src/helper/fetch';
         return _belongsTo(element.parentNode, ancestor);
     }
 
+    /**
+     * After everything is loaded, fetch translations and run the app
+     */
     window.onload = () => {
         const configuration = JSON.parse(applicationContainer.dataset.configuration);
 
@@ -104,6 +115,7 @@ import fetch from './YoastInfoView/src/helper/fetch';
 
         fetchTranslations(configuration.translationsUrl)
             .then(() => {
+                console.log(translations);
                 ReactDOM.render((
                     <NeosYoastApp modalContainer={modalContainer} translations={translations}
                                   editorFieldMapping={editorFieldMapping} {...configuration}/>), applicationContainer);

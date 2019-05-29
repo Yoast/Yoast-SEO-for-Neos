@@ -7,9 +7,9 @@ import ContentAnalysisWrapper from "./ContentAnalysisWrapper";
 import PageParser from "../helper/PageParser";
 import {groupResultsByRating, parseResults} from "../helper/resultParser";
 
-import Loader from "yoast-components/composites/basic/Loader";
-import SnippetEditor from "yoast-components/composites/Plugin/SnippetEditor/components/SnippetEditor";
-import {MODES} from "yoast-components/composites/Plugin/SnippetPreview/constants";
+import {Loader} from "@yoast/components";
+import {SnippetEditor} from "@yoast/search-metadata-previews";
+import {MODES} from "@yoast/search-metadata-previews/snippet-preview/constants";
 
 import AnalysisWorkerWrapper from 'yoastseo/src/worker/AnalysisWorkerWrapper';
 import createWorker from 'yoastseo/src/worker/createWorker';
@@ -346,7 +346,7 @@ export default class NeosYoastApp extends PureComponent {
         return (
             <ThemeProvider theme={{isRtl: false}}>
                 <div>
-                    <Loader className=""/>
+                    <Loader className={analysisProps.isAnalyzing ? '' : 'yoast-loader--stop'}/>
                     <div className="yoast-seo__snippet-editor-wrapper">
                         {firstPageLoadComplete && <SnippetEditor {...editorProps}/>}
                     </div>

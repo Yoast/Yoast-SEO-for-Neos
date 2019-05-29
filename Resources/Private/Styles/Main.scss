@@ -77,6 +77,10 @@ body {
   top: 1rem;
   right: 1rem;
   width: 2rem;
+
+  &--stop {
+    animation: none !important;
+  }
 }
 
 .snippet-editor {

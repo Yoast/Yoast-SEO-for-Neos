@@ -1,6 +1,7 @@
 const path = require('path');
 const webpack = require("webpack");
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 
 const webpackConfig = [
     {
@@ -21,6 +22,9 @@ const webpackConfig = [
         externals: {
             yoastseo: 'yoastseo'
         },
+        optimization: {
+            minimizer: [new TerserPlugin()],
+        },
         module: {
             rules: [
                 {
@@ -30,7 +34,7 @@ const webpackConfig = [
                 {
                     test: /\.s?css$/,
                     use: [
-                        ExtractTextPlugin.loader,
+                        MiniCssExtractPlugin.loader,
                         {
                             loader: "css-loader",
                             options: {
@@ -49,19 +53,21 @@ const webpackConfig = [
                 },
                 {
                     test: /\.jsx?$/,
-                    loader: 'babel-loader',
                     exclude: [
-                        /node_modules\/(?!yoast-components)(?!yoastseo).*$/
+                        /node_modules\/(?!yoast-components)(?!yoastseo)(?!@yoast).*$/
                     ],
-                    options: {
-                        cacheDirectory: true,
-                    }
+                    use: [{
+                        loader: 'babel-loader',
+                        options: {
+                            cacheDirectory: true,
+                        }
+                    }]
                 }
             ]
         },
         plugins: [
             new webpack.optimize.OccurrenceOrderPlugin(),
-            new ExtractTextPlugin({
+            new MiniCssExtractPlugin({
                 filename: "[name].css",
             }),
         ]
@@ -72,6 +78,9 @@ const webpackConfig = [
             filename: 'webWorker.js',
             path: path.resolve(__dirname, '../../../Public/Assets')
         },
+        optimization: {
+            minimizer: [new TerserPlugin()],
+        },
         module: {
             rules: [
                 {
@@ -80,6 +89,7 @@ const webpackConfig = [
                         loader: 'babel-loader',
                         options: {
                             presets: ['@babel/env'],
+                            plugins: ["@babel/plugin-transform-modules-umd"],
                         }
                     }]
                 }
@@ -91,6 +101,9 @@ const webpackConfig = [
         output: {
             filename: 'yoastseo.js',
             path: path.resolve(__dirname, '../../../Public/Assets')
+        },
+        optimization: {
+            minimizer: [new TerserPlugin()],
         },
         module: {
             rules: [
