@@ -1,14 +1,17 @@
+// External generic dependencies
 import React, {PureComponent} from 'react';
 import styled from "styled-components";
 import PropTypes from "prop-types";
 
-import {ContentAnalysis} from "@yoast/analysis-report";
-import {Modal} from "@yoast/components";
-import {Collapsible} from "@yoast/components/Collapsible";
+// External Yoast dependencies
+import ContentAnalysis from "@yoast/analysis-report/ContentAnalysis";
+import Modal from "@yoast/components/Modal";
+import Collapsible from "@yoast/components/Collapsible";
 import KeywordInput from "yoast-components/composites/Plugin/Shared/components/KeywordInput";
-import {colors} from "@yoast/style-guide";
+import colors from "@yoast/style-guide/colors";
 import {__} from "@wordpress/i18n/src";
 
+// Internal dependencies
 import scoreToRating from "yoastseo/src/interpreters/scoreToRating";
 
 const modalStyles = {

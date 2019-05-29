@@ -2,7 +2,8 @@ import MetaDescriptionLengthAssessment from 'yoastseo/src/assessments/seo/MetaDe
 import PageTitleWidthAssessment from 'yoastseo/src/assessments/seo/PageTitleWidthAssessment';
 import {measureTextWidth} from 'yoastseo/src/helpers';
 import wordBoundaries from 'yoastseo/src/config/wordBoundaries';
-import {stripSpaces, replaceDiacritics} from 'yoastseo/src/stringProcessing';
+import replaceDiacritics from 'yoastseo/src/stringProcessing/replaceDiacritics';
+import stripSpaces from 'yoastseo/src/stringProcessing/stripSpaces';
 
 /**
  * Store yoast seo libraries in global scope to make the available to NeosYoastApp.

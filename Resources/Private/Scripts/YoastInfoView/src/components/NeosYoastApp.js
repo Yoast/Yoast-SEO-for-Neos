@@ -1,20 +1,23 @@
+// External generic dependencies
 import React, {PureComponent} from "react";
 import PropTypes from "prop-types";
 import {ThemeProvider} from "styled-components";
 import debounce from "lodash.debounce";
 
-import ContentAnalysisWrapper from "./ContentAnalysisWrapper";
-import PageParser from "../helper/PageParser";
-import {groupResultsByRating, parseResults} from "../helper/resultParser";
-
-import {Loader} from "@yoast/components";
-import {SnippetEditor} from "@yoast/search-metadata-previews";
+// External Yoast dependencies
+import Loader from "@yoast/components/Loader";
+import SnippetEditor from "@yoast/search-metadata-previews/snippet-editor/SnippetEditor";
 import {MODES} from "@yoast/search-metadata-previews/snippet-preview/constants";
 
 import AnalysisWorkerWrapper from 'yoastseo/src/worker/AnalysisWorkerWrapper';
 import createWorker from 'yoastseo/src/worker/createWorker';
 import Paper from 'yoastseo/src/values/Paper';
 import {measureTextWidth} from 'yoastseo/src/helpers';
+
+// Internal dependencies
+import ContentAnalysisWrapper from "./ContentAnalysisWrapper";
+import PageParser from "../helper/PageParser";
+import {groupResultsByRating, parseResults} from "../helper/resultParser";
 
 const errorResult = {
     text: 'An error occurred while analyzing the page!',
