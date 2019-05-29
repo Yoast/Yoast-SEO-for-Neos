@@ -70,7 +70,6 @@ import fetch from './YoastInfoView/src/helper/fetch';
 
         fetchTranslations(configuration.translationsUrl)
             .then(() => {
-                console.log(translations);
                 ReactDOM.render((
                     <NeosYoastApp modalContainer={modalContainer} translations={translations}
                                   editorFieldMapping={editorFieldMapping} {...configuration}/>), applicationContainer);
