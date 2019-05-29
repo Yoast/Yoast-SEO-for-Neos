@@ -44,7 +44,10 @@ Neos:
       resources:
         javascript:
           Yoast.YoastSeoForNeos:YoastInfoView:
-            resource: resource://Yoast.YoastSeoForNeos/Public/YoastInfoView/Plugin.js
+            resource: 'resource://Yoast.YoastSeoForNeos/Public/YoastInfoView/Plugin.js'
+        stylesheets:
+          Yoast.YoastSeoForNeos:YoastInfoView:
+            resource: 'resource://Yoast.YoastSeoForNeos/Public/YoastInfoView/Plugin.css'
 
       frontendConfiguration:
         'Yoast.YoastSeoForNeos':
