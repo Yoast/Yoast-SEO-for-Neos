@@ -83,6 +83,42 @@ body {
   }
 }
 
+
+.yoast-svg-icon-loading-spinner {
+  animation: rotator 1.4s linear infinite;
+
+  .path {
+    stroke: #64a60a;
+    stroke-dasharray: 187;
+    stroke-dashoffset: 0;
+    transform-origin: center;
+    animation: dash 1.4s ease-in-out infinite;
+  }
+
+  @keyframes dash {
+    0% {
+      stroke-dashoffset: 187;
+    }
+    50% {
+      stroke-dashoffset: 46.75;
+      transform: rotate(135deg);
+    }
+    to {
+      stroke-dashoffset: 187;
+      transform: rotate(450deg);
+    }
+  }
+
+  @keyframes rotator {
+    0% {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(270deg);
+    }
+  }
+}
+
 .snippet-editor {
   display: none;
 }
