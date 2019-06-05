@@ -5,58 +5,37 @@ prototype(Yoast.YoastSeoForNeos:Documents.YoastSeoView) < prototype(Neos.Neos:Pa
     head {
         stylesheets >
         stylesheets = Neos.Fusion:Array {
-            main = Neos.Fusion:Tag {
-                tagName = 'link'
-                attributes {
-                    rel = 'stylesheet'
-                    type = 'text/css'
-                    href = Neos.Fusion:ResourceUri {
-                        path = 'resource://Yoast.YoastSeoForNeos/Public/Assets/main.css'
-                    }
-                }
-            }
+            main = afx`
+                <link rel="stylesheet" type="text/css">
+                    <Neos.Fusion:ResourceUri @path="attributes.href" path="resource://Yoast.YoastSeoForNeos/Public/Assets/main.css"/>
+                </link>
+            `
         }
     }
 
     bodyTag.attributes.class = 'neos-yoast-seo-view-mode'
 
-    body {
-        templatePath = 'resource://Yoast.YoastSeoForNeos/Private/Templates/YoastSeoView.html'
+    body >
+    body = Neos.Fusion:Component {
+        @position = 'after bodyTag'
+        node = ${node}
+        site = ${site}
 
-        previewWrapper = Neos.Fusion:Tag {
-            tagName = 'main'
-            attributes.class = 'yoast-seo__container'
-
-            content = Neos.Fusion:Array {
-                header = Yoast.YoastSeoForNeos:Component.Header
-                application = Yoast.YoastSeoForNeos:Component.Application
-                modal = Neos.Fusion:Component {
-                    renderer = afx`
-                        <div id="yoast-modal"></div>
-                    `
-                }
-                snippetEditor = Yoast.YoastSeoForNeos:Component.SnippetEditor
-            }
-        }
-
-        javascripts {
-            yoastseo = Neos.Fusion:Tag {
-                tagName = 'script'
-                attributes {
-                    src = Neos.Fusion:ResourceUri {
-                        path = 'resource://Yoast.YoastSeoForNeos/Public/Assets/yoastseo.js'
-                    }
-                }
-            }
-            app = Neos.Fusion:Tag {
-                tagName = 'script'
-                attributes {
-                    async = 'async'
-                    src = Neos.Fusion:ResourceUri {
-                        path = 'resource://Yoast.YoastSeoForNeos/Public/Assets/app.js'
-                    }
-                }
-            }
+        renderer = Neos.Fusion:Array {
+            appWrapper = afx`
+                <main class="yoast-seo__container" @key="appWrapper">
+                    <Yoast.YoastSeoForNeos:Component.Header/>
+                    <Yoast.YoastSeoForNeos:Component.Application/>
+                    <Yoast.YoastSeoForNeos:Component.Modal/>
+                    <Yoast.YoastSeoForNeos:Component.SnippetEditor/>
+                </main>
+                <script @key="yoastBundle">
+                    <Neos.Fusion:ResourceUri @path="attributes.src" path="resource://Yoast.YoastSeoForNeos/Public/Assets/yoastseo.js"/>
+                </script>
+                <script async="async" @key="appBundle">
+                    <Neos.Fusion:ResourceUri @path="attributes.src" path="resource://Yoast.YoastSeoForNeos/Public/Assets/app.js"/>
+                </script>
+            `
         }
     }
 }
