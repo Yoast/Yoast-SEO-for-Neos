@@ -187,6 +187,13 @@ If that doesn't help then the policy file of this package might not have been lo
 Clear your caches and make sure they appear when running `flow security:showeffectivepolicy --privilegeType "Neos\Flow\Security\Authorization\Privilege\Method\MethodPrivilege"`.
 Then logout and login again and everything should work again.
 
+### The Neos backend crashes after upgrading vom version 0.x to 1.x
+
+Neos might have stored the current preview mode in your user preferences and it was renamed in version 1.0.
+
+This can be either fixed by downgrading and switching the preview mode to the edit mode before upgrading again,
+or by manually removing the setting in the database in the `neos_neos_domain_model_userpreferences` table. 
+
 ## Contributing && issues
 
 * Contributions are very welcome. 
