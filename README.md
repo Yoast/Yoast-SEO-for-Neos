@@ -150,7 +150,7 @@ Example:
 
     Neos:
       Neos:
-        UI:    
+        Ui:    
           frontendConfiguration:
             'Yoast.YoastSeoForNeos':
                contentSelector: '.my-content'
