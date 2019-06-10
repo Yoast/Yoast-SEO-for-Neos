@@ -1,3 +1,4 @@
+// External generic dependencies
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
@@ -5,17 +6,20 @@ import Jed from "jed";
 import {$transform, $get} from 'plow-js';
 import debounce from 'lodash.debounce';
 
+// External Neos dependencies
 import {Icon, IconButton} from '@neos-project/react-ui-components';
 import {neos} from '@neos-project/neos-ui-decorators';
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 import {fetchWithErrorHandling} from '@neos-project/neos-ui-backend-connector';
 
+// External Yoast dependencies
 import Paper from 'yoastseo/src/values/Paper';
 import AnalysisWorkerWrapper from 'yoastseo/src/worker/AnalysisWorkerWrapper';
 import createWorker from 'yoastseo/src/worker/createWorker';
 import scoreToRating from 'yoastseo/src/interpreters/scoreToRating';
 import {measureTextWidth} from 'yoastseo/src/helpers';
 
+// Internal dependencies
 import style from './style.css';
 import PageParser from "./helper/PageParser";
 import {actions as yoastActions, selectors as yoastSelectors} from './actions';

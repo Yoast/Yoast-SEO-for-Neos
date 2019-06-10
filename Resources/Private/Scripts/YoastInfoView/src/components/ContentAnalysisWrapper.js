@@ -1,14 +1,17 @@
+// External generic dependencies
 import React, {PureComponent} from 'react';
 import styled from "styled-components";
 import PropTypes from "prop-types";
 
-import ContentAnalysis from "yoast-components/composites/Plugin/ContentAnalysis/components/ContentAnalysis";
-import YoastModal from "yoast-components/composites/Plugin/Shared/components/YoastModal";
-import {Collapsible} from "yoast-components/composites/Plugin/Shared/components/Collapsible";
+// External Yoast dependencies
+import ContentAnalysis from "@yoast/analysis-report/ContentAnalysis";
+import Modal from "@yoast/components/Modal";
+import Collapsible from "@yoast/components/Collapsible";
 import KeywordInput from "yoast-components/composites/Plugin/Shared/components/KeywordInput";
-import colors from "yoast-components/style-guide/colors";
+import colors from "@yoast/style-guide/colors";
 import {__} from "@wordpress/i18n";
 
+// Internal dependencies
 import scoreToRating from "yoastseo/src/interpreters/scoreToRating";
 
 const modalStyles = {
@@ -62,7 +65,7 @@ class ContentAnalysisWrapper extends PureComponent {
         return (
             <div className="yoast-seo__content-analysis-wrapper">
                 {this.state.currentMarkerId && (
-                    <YoastModal isOpen={this.state.modalIsOpen} onClose={this.closeModal}
+                    <Modal isOpen={this.state.modalIsOpen} onClose={this.closeModal}
                                 modalAriaLabel={this.props.allResults[this.state.currentMarkerId]['text']}
                                 appElement={this.props.modalContainer} style={modalStyles}
                                 closeIconButton="Close" heading={__('Analysis results', 'yoast-components')}>
@@ -74,7 +77,7 @@ class ContentAnalysisWrapper extends PureComponent {
                                     dangerouslySetInnerHTML={{__html: mark._properties.marked}}/>
                             ))}
                         </ul>
-                    </YoastModal>
+                    </Modal>
                 )}
 
                 <Collapsible
