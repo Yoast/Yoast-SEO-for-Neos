@@ -25,6 +25,9 @@ body {
     margin: 0 1rem 1rem;
     font-size: 20px; }
 
+.yoast-seo__keyphrase-editor-wrapper {
+  margin: 1rem 1rem; }
+
 .yoast-seo__snippet-editor-wrapper {
   margin: 1rem 1rem; }
   .yoast-seo__snippet-editor-wrapper section button {
