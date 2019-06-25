@@ -19,10 +19,15 @@ prototype(Yoast.YoastSeoForNeos:Component.Application) < prototype(Neos.Fusion:T
             }
             previewUrl = ${'/neosyoastseo/page/renderPreviewPage?node=' + documentNode.contextPath}
             baseUrl = Yoast.YoastSeoForNeos:BaseUri
+            siteUrl = Neos.Neos:NodeUri {
+                node = ${q(site).context({workspaceName: 'live'}).get(0)}
+                absolute = true
+            }
             pageUrl = Neos.Neos:NodeUri {
                 node = ${q(documentNode).context({workspaceName: 'live'}).get(0)}
                 absolute = true
             }
+            faviconSrc = ${this.siteUrl + '/favicon.ico'}
 
             breadcrumbs = Neos.Fusion:RawCollection {
                 collection = ${Array.reverse(q(documentNode).parents('[instanceof Neos.Neos:Document]').get())}

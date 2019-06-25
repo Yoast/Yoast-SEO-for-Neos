@@ -54,6 +54,7 @@ export default class NeosYoastApp extends PureComponent {
         pageUrl: PropTypes.string.isRequired,
         contentSelector: PropTypes.string.isRequired,
         breadcrumbs: PropTypes.array,
+        faviconSrc: PropTypes.string,
     };
 
     constructor(props) {
@@ -336,6 +337,7 @@ export default class NeosYoastApp extends PureComponent {
             onChange: this.onSnippetEditorChange,
             mapEditorDataToPreview: this.mapEditorDataToPreview,
             mode: this.state.mode,
+            faviconSrc: this.props.faviconSrc,
         };
 
         const analysisProps = {
