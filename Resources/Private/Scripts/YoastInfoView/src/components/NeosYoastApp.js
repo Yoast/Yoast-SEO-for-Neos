@@ -3,12 +3,14 @@ import React, {PureComponent} from "react";
 import PropTypes from "prop-types";
 import {ThemeProvider} from "styled-components";
 import debounce from "lodash.debounce";
+import {__} from "@wordpress/i18n";
 
 // External Yoast dependencies
 import Loader from "@yoast/components/Loader";
+import KeywordInput from "yoast-components/composites/Plugin/Shared/components/KeywordInput";
 import SnippetEditor from "@yoast/search-metadata-previews/snippet-editor/SnippetEditor";
-import {MODES} from "@yoast/search-metadata-previews/snippet-preview/constants";
 
+import {MODES} from "@yoast/search-metadata-previews/snippet-preview/constants";
 import AnalysisWorkerWrapper from 'yoastseo/src/worker/AnalysisWorkerWrapper';
 import createWorker from 'yoastseo/src/worker/createWorker';
 import Paper from 'yoastseo/src/values/Paper';
@@ -350,6 +352,15 @@ export default class NeosYoastApp extends PureComponent {
             <ThemeProvider theme={{isRtl: false}}>
                 <div>
                     <Loader className={analysisProps.isAnalyzing ? '' : 'yoast-loader--stop'}/>
+                    <div className="yoast-seo__keyphrase-editor-wrapper">
+                        <KeywordInput
+                            id="focus-keyphrase"
+                            keyword={editorProps.keyword}
+                            onChange={(value) => this.onSnippetEditorChange('focusKeyword', value)}
+                            onRemoveKeyword={() => this.onSnippetEditorChange('focusKeyword', '')}
+                            label={__('Focus keyphrase', 'yoast-components')}
+                            ariaLabel={__('Focus keyphrase', 'yoast-components')}/>
+                    </div>
                     <div className="yoast-seo__snippet-editor-wrapper">
                         {firstPageLoadComplete && <SnippetEditor {...editorProps}/>}
                     </div>

@@ -7,7 +7,6 @@ import PropTypes from "prop-types";
 import ContentAnalysis from "@yoast/analysis-report/ContentAnalysis";
 import Modal from "@yoast/components/Modal";
 import Collapsible from "@yoast/components/Collapsible";
-import KeywordInput from "yoast-components/composites/Plugin/Shared/components/KeywordInput";
 import colors from "@yoast/style-guide/colors";
 import {__} from "@wordpress/i18n";
 
@@ -95,14 +94,6 @@ class ContentAnalysisWrapper extends PureComponent {
                     headingProps={{level: 2, fontSize: '18px'}}
                 >
                     <StyledContentAnalysisWrapper>
-                        <KeywordInput
-                            id="focus-keyphrase"
-                            keyword={this.props.focusKeyword}
-                            onChange={(value) => this.props.onChange('focusKeyword', value)}
-                            onRemoveKeyword={() => this.props.onChange('focusKeyword', '')}
-                            label={__('Focus keyphrase', 'yoast-components')}
-                            ariaLabel={__('Focus keyphrase', 'yoast-components')}/>
-
                         <ContentAnalysis
                             {...this.props.seoResults}
                             onMarkButtonClick={(id, marker) => {
