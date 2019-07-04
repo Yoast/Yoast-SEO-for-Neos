@@ -27,7 +27,7 @@
         "neos/neos": "^3.3 || ^4.0 || dev-master",
         "neos/neos-ui": "^2.2 || ^3.2 || dev-master",
         "neos/seo": "^2.1 || ^3.0",
-        "neos/fusion-afx": ">1.1"
+        "neos/fusion-afx": ">=1.1"
     },
     "replace": {
         "shel/neos-yoast-seo": "self.version"
