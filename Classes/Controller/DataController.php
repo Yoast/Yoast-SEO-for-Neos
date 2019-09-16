@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Yoast\YoastSeoForNeos\Controller;
 
 use Neos\Cache\Frontend\VariableFrontend;
@@ -55,7 +57,7 @@ class DataController extends ActionController
      *
      * @Flow\SkipCsrfProtection
      */
-    public function fetchTranslationsAction()
+    public function fetchTranslationsAction(): void
     {
         $interfaceLanguage = $this->userService->getInterfaceLanguage();
         $locale = $this->getValidLocale($interfaceLanguage);
@@ -82,7 +84,6 @@ class DataController extends ActionController
                 'error' => $error ? $error : 'No translation available for language ' . $interfaceLanguage
             ]);
         }
-
     }
 
     /**
@@ -91,7 +92,7 @@ class DataController extends ActionController
      * @param string $interfaceLanguage
      * @return string
      */
-    protected function getValidLocale($interfaceLanguage)
+    protected function getValidLocale(string $interfaceLanguage): string
     {
         if (array_key_exists($interfaceLanguage, $this->languageToLocaleMapping)) {
             return $this->languageToLocaleMapping[$interfaceLanguage];

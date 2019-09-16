@@ -1,20 +1,26 @@
 <?php
+declare(strict_types=1);
+
 namespace Yoast\YoastSeoForNeos\FusionObjects;
 
+use Neos\Flow\Mvc\Routing\Exception\MissingActionNameException;
+use Neos\Flow\Property\Exception as PropertyException;
+use Neos\Flow\Security\Exception as SecurityException;
 use Neos\Neos\Exception as NeosException;
+use Neos\Neos\Fusion\NodeUriImplementation;
 
 /**
  * Create a link to a node and trim the format.
  * Also enforce a slash at the end.
  */
-class BaseUriImplementation extends \Neos\Neos\Fusion\NodeUriImplementation
+class BaseUriImplementation extends NodeUriImplementation
 {
     /**
      * If true, shortcuts will be resolved
      *
-     * @return boolean
+     * @return bool
      */
-    public function resolveShortcuts()
+    public function resolveShortcuts(): bool
     {
         return (boolean)$this->fusionValue('resolveShortcuts');
     }
@@ -24,11 +30,11 @@ class BaseUriImplementation extends \Neos\Neos\Fusion\NodeUriImplementation
      *
      * @return string The rendered URI or NULL if no URI could be resolved for the given node
      * @throws NeosException
-     * @throws \Neos\Flow\Mvc\Routing\Exception\MissingActionNameException
-     * @throws \Neos\Flow\Property\Exception
-     * @throws \Neos\Flow\Security\Exception
+     * @throws MissingActionNameException
+     * @throws PropertyException
+     * @throws SecurityException
      */
-    public function evaluate()
+    public function evaluate(): string
     {
         $baseNode = null;
         $baseNodeName = $this->getBaseNodeName() ?: 'documentNode';

@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Yoast\YoastSeoForNeos\FusionObjects;
 
 use Neos\Flow\Annotations as Flow;
@@ -22,7 +24,7 @@ class InterfaceLanguageImplementation extends AbstractFusionObject
      *
      * @return string
      */
-    public function evaluate()
+    public function evaluate(): string
     {
         return $this->userService->getInterfaceLanguage();
     }
