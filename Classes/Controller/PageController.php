@@ -18,8 +18,19 @@ class PageController extends ActionController
      */
     public function renderPreviewPageAction(NodeInterface $node): void
     {
-        $this->response->getHeaders()->setCacheControlDirective('no-cache');
-        $this->response->getHeaders()->setCacheControlDirective('no-store');
+        if (method_exists($this->response, 'setComponentParameter')) {
+            /** @noinspection PhpUndefinedClassInspection */
+            /** @noinspection PhpUndefinedNamespaceInspection */
+            $this->response->setComponentParameter(Neos\Flow\Http\Component\SetHeaderComponent::class, 'Cache-Control', [
+                'no-cache',
+                'no-store'
+            ]);
+        } else {
+            /** @noinspection PhpUndefinedMethodInspection */
+            $this->response->getHeaders()->setCacheControlDirective('no-cache');
+            /** @noinspection PhpUndefinedMethodInspection */
+            $this->response->getHeaders()->setCacheControlDirective('no-store');
+        }
         $this->redirect('show', 'Frontend\Node', 'Neos.Neos', [
             'node' => $node,
             'yoastSeoPreviewMode' => true,
