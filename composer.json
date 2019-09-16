@@ -27,7 +27,8 @@
         "neos/neos": ">=3.3",
         "neos/neos-ui": "~2.2 || ~3.2 || >=4.0",
         "neos/seo": ">=2.1",
-        "neos/fusion-afx": ">=1.1"
+        "neos/fusion-afx": ">=1.1",
+        "ext-json": "*"
     },
     "replace": {
         "shel/neos-yoast-seo": "self.version"
