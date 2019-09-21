@@ -372,10 +372,9 @@ export default class YoastInfoView extends PureComponent {
 
                 {!isAnalyzing && (
                     <li className={style.yoastInfoView__item}>
-                        <div className={style.yoastInfoView__heading}>
+                        <div className={style.yoastInfoView__heading} onClick={this.handleExpandSeoClick}>
                             {this.renderOverallScore(i18nRegistry.translate('inspector.seoScore', 'Focus Keyphrase', {}, 'Yoast.YoastSeoForNeos'), analysis.seo.score)}
-                            <IconButton icon={seoResultsIconState} className={style.rightSideBar__toggleBtn}
-                                        onClick={this.handleExpandSeoClick}/>
+                            <IconButton icon={seoResultsIconState} className={style.rightSideBar__toggleBtn}/>
                         </div>
                     </li>
                 )}
@@ -383,10 +382,9 @@ export default class YoastInfoView extends PureComponent {
 
                 {!isAnalyzing && (
                     <li className={style.yoastInfoView__item}>
-                        <div className={style.yoastInfoView__heading}>
+                        <div className={style.yoastInfoView__heading} onClick={this.handleExpandContentClick}>
                             {this.renderOverallScore(i18nRegistry.translate('inspector.contentScore', 'Readability analysis', {}, 'Yoast.YoastSeoForNeos'), analysis.readability.score)}
-                            <IconButton icon={contentResultsIconState} className={style.rightSideBar__toggleBtn}
-                                        onClick={this.handleExpandContentClick}/>
+                            <IconButton icon={contentResultsIconState} className={style.rightSideBar__toggleBtn}/>
                         </div>
                     </li>
                 )}

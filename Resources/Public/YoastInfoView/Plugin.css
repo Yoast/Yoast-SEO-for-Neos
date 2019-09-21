@@ -13,6 +13,7 @@
         -ms-flex-pack: justify;
             justify-content: space-between;
         margin: 0 -16px 0 0;
+        cursor: pointer;
     }
 
     .style__yoastInfoView__item___3sLd8 {
