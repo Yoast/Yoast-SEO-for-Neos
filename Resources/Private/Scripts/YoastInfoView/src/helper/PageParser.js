@@ -28,6 +28,12 @@ export default class PageParser {
     }
 
     get description() {
-        return this.metaSection.querySelector('meta[name="description"]') ? this.metaSection.querySelector('meta[name="description"]').getAttribute('content') : '';
+        const query = 'meta[name="description"]';
+        return this.metaSection.querySelector(query) ? this.metaSection.querySelector(query).getAttribute('content') : '';
+    }
+
+    get faviconSrc() {
+        const query = 'link[rel="shortcut icon"],link[rel="icon"]';
+        return this.metaSection.querySelector(query) ? this.metaSection.querySelector(query).getAttribute('href') : '';
     }
 }

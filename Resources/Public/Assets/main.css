@@ -1,2 +1,101 @@
-@font-face{font-family:'Noto Sans';font-weight:normal;font-style:normal;src:url(NotoSans-Regular.ttf) format("ttf")}body{--main-bg-color: #fff;--mark-bg-color: rgba(0, 173, 238, .75);--text-color: #222;--text-color-light: #666;--border-light: 1px solid rgb(226, 228, 231);background-color:var(--main-bg-color);color:var(--text-color);font-family:'Noto Sans', sans-serif;-webkit-font-smoothing:antialiased;padding:1rem}.hidden{display:none}.yoast-seo__container{max-width:800px}.yoast-seo__container h1{margin:0 1rem 1rem;font-size:20px}.yoast-seo__keyphrase-editor-wrapper{margin:1rem 1rem}.yoast-seo__snippet-editor-wrapper{margin:1rem 1rem}.yoast-seo__snippet-editor-wrapper section button{display:none}.yoast-seo__content-analysis-wrapper h2{font-size:16px}.yoast-seo__content-analysis-wrapper a{text-decoration:none}.yoast-seo__content-analysis-wrapper a:hover{text-decoration:underline}.yoast-seo__content-analysis-wrapper li{margin:.3rem 0}.yoast-seo__content-analysis-wrapper p{font-size:13px;line-height:1.5}.yoast-seo__content-analysis-wrapper>*{border-top:var(--border-light)}.yoast-loader{position:fixed;top:1rem;right:1rem;width:2rem}.yoast-loader--stop{animation:none !important}.yoast-svg-icon-loading-spinner{animation:rotator 1.4s linear infinite}.yoast-svg-icon-loading-spinner .path{stroke:#64a60a;stroke-dasharray:187;stroke-dashoffset:0;transform-origin:center;animation:dash 1.4s ease-in-out infinite}@keyframes dash{0%{stroke-dashoffset:187}50%{stroke-dashoffset:46.75;transform:rotate(135deg)}to{stroke-dashoffset:187;transform:rotate(450deg)}}@keyframes rotator{0%{transform:rotate(0deg)}to{transform:rotate(270deg)}}.snippet-editor{display:none}.ReactModal__Content{box-shadow:0 2px 7px -1px rgba(0,0,0,0.15)}.ReactModal__Content strong{font-size:14px}.ReactModal__Content .yoast-seo__mark{color:var(--text-color-light);font-size:13px}.ReactModal__Content .yoast-text-mark{color:var(--text-color);font-size:13px;line-height:1.5}
+@font-face {
+  font-family: 'Noto Sans';
+  font-weight: normal;
+  font-style: normal;
+  src: url(NotoSans-Regular.ttf) format("ttf"); }
+
+body {
+  --main-bg-color: #fff;
+  --mark-bg-color: rgba(0, 173, 238, .75);
+  --text-color: #222;
+  --text-color-light: #666;
+  --border-light: 1px solid rgb(226, 228, 231);
+  background-color: var(--main-bg-color);
+  color: var(--text-color);
+  font-family: 'Noto Sans', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  padding: 1rem; }
+
+.hidden {
+  display: none; }
+
+.yoast-seo__container {
+  max-width: 800px; }
+  .yoast-seo__container h1 {
+    margin: 0 1rem 1rem;
+    font-size: 20px; }
+
+.yoast-seo__keyphrase-editor-wrapper {
+  margin: 1rem 1rem; }
+
+.yoast-seo__snippet-editor-wrapper {
+  margin: 1rem 1rem; }
+  .yoast-seo__snippet-editor-wrapper section button {
+    display: none; }
+
+.yoast-seo__content-analysis-wrapper h2 {
+  font-size: 16px; }
+
+.yoast-seo__content-analysis-wrapper a {
+  text-decoration: none; }
+  .yoast-seo__content-analysis-wrapper a:hover {
+    text-decoration: underline; }
+
+.yoast-seo__content-analysis-wrapper li {
+  margin: .3rem 0; }
+
+.yoast-seo__content-analysis-wrapper p {
+  font-size: 13px;
+  line-height: 1.5; }
+
+.yoast-seo__content-analysis-wrapper > * {
+  border-top: var(--border-light); }
+
+.yoast-loader {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  width: 2rem; }
+  .yoast-loader--stop {
+    animation: none !important; }
+
+.yoast-svg-icon-loading-spinner {
+  animation: rotator 1.4s linear infinite; }
+  .yoast-svg-icon-loading-spinner .path {
+    stroke: #64a60a;
+    stroke-dasharray: 187;
+    stroke-dashoffset: 0;
+    transform-origin: center;
+    animation: dash 1.4s ease-in-out infinite; }
+
+@keyframes dash {
+  0% {
+    stroke-dashoffset: 187; }
+  50% {
+    stroke-dashoffset: 46.75;
+    transform: rotate(135deg); }
+  to {
+    stroke-dashoffset: 187;
+    transform: rotate(450deg); } }
+
+@keyframes rotator {
+  0% {
+    transform: rotate(0deg); }
+  to {
+    transform: rotate(270deg); } }
+
+.snippet-editor {
+  display: none; }
+
+.ReactModal__Content {
+  box-shadow: 0 2px 7px -1px rgba(0, 0, 0, 0.15); }
+  .ReactModal__Content strong {
+    font-size: 14px; }
+  .ReactModal__Content .yoast-seo__mark {
+    color: var(--text-color-light);
+    font-size: 13px; }
+  .ReactModal__Content .yoast-text-mark {
+    color: var(--text-color);
+    font-size: 13px;
+    line-height: 1.5; }
 

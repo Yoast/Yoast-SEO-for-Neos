@@ -67,6 +67,7 @@ export default class NeosYoastApp extends PureComponent {
             mode: MODES.MODE_DESKTOP,
             activeTitleField: activeTitleField,
             firstPageLoadComplete: false,
+            faviconSrc: null,
             editorData: {
                 title: this.props[activeTitleField],
                 description: this.props.description || '',
@@ -143,6 +144,10 @@ export default class NeosYoastApp extends PureComponent {
                 const pageParser = new PageParser(documentContent, this.props.contentSelector);
                 const titleTemplate = this.state.firstPageLoadComplete ? this.state.page.titleTemplate : NeosYoastApp.buildTitleTemplate(this.props[this.state.activeTitleField], pageParser.title);
 
+                if (!this.state.firstPageLoadComplete) {
+                    this.updateFavicon(pageParser.faviconSrc);
+                }
+
                 this.setState({
                     firstPageLoadComplete: true,
                     page: {
@@ -159,6 +164,30 @@ export default class NeosYoastApp extends PureComponent {
             .catch((error) => {
                 console.error(error, 'An error occurred while loading the preview');
             });
+    };
+
+    /**
+     * Checks the page content for a favicon meta tag and will try to retrieve it.
+     * If it fails it will try to load the favicon from the default src.
+     * If it fails it will instruct the yoast component to use it's default.
+     *
+     * @returns {Promise<void>}
+     */
+    async updateFavicon(faviconMetaTagSrc) {
+        if (faviconMetaTagSrc) {
+            let response = await fetch(faviconMetaTagSrc);
+
+            if (response.ok) {
+                this.setState({faviconSrc: faviconMetaTagSrc});
+                return;
+            }
+        }
+
+        const {faviconSrc} = this.props;
+        let response = await fetch(faviconSrc);
+        if (response.ok) {
+            this.setState({faviconSrc});
+        }
     };
 
     /**
@@ -337,7 +366,7 @@ export default class NeosYoastApp extends PureComponent {
             onChange: this.onSnippetEditorChange,
             mapEditorDataToPreview: this.mapEditorDataToPreview,
             mode: this.state.mode,
-            faviconSrc: this.props.faviconSrc,
+            faviconSrc: this.state.faviconSrc,
         };
 
         const analysisProps = {
