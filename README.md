@@ -32,7 +32,7 @@ problems as it just provides a additionals views in Neos.
 
 | Yoast SEO version | Neos CMS | Old UI | New UI |
 | ----------------- | -------- | ------ | ------ |
-| 1.0.0             | 3.3+     | No     | 2.0+   |
+| 1.*               | 3.3+     | No     | 2.0+   |
 | 0.2.*             | 3.3+     | No     | 2.0+   |
 | 0.1.*             | 3.3+     | Yes    | 1.4+   |
 
@@ -45,6 +45,15 @@ Add the dependency to your site package like this
     composer require --no-update yoast/yoast-seo-for-neos
     
 And then run `composer update` in your projects root folder.
+
+### Deploying to production
+
+As the package adds some additional permissions to the system you should flush the session cache once after 
+the first deployment of your website which includes this package. This prevents errors for your logged in editors:
+
+    ./flow flow:session:destroyAll
+    
+This will force them to login again, so be careful and warn them before doing this.    
     
 ## Dependencies
 
