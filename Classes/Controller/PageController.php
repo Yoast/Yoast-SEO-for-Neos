@@ -17,6 +17,7 @@ namespace Yoast\YoastSeoForNeos\Controller;
 use Neos\ContentRepository\Domain\Model\NodeInterface;
 use Neos\Flow\Mvc\Controller\ActionController;
 use Neos\Flow\Mvc\Exception\StopActionException;
+use Neos\Neos\Controller\Frontend\NodeController;
 
 class PageController extends ActionController
 {
@@ -42,7 +43,12 @@ class PageController extends ActionController
             /** @noinspection PhpUndefinedMethodInspection */
             $this->response->getHeaders()->setCacheControlDirective('no-store');
         }
-        $this->redirect('show', 'Frontend\Node', 'Neos.Neos', [
+
+        $previewAction = 'show';
+        if (method_exists(NodeController::class, 'previewAction')) {
+            $previewAction = 'preview';
+        }
+        $this->redirect($previewAction, 'Frontend\Node', 'Neos.Neos', [
             'node' => $node,
             'yoastSeoPreviewMode' => true,
         ]);
