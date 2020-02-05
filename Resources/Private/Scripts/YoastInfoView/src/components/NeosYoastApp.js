@@ -64,6 +64,7 @@ export default class NeosYoastApp extends PureComponent {
 
         this.state = {
             worker: null,
+            error: null,
             mode: MODES.MODE_DESKTOP,
             activeTitleField: activeTitleField,
             firstPageLoadComplete: false,
@@ -138,6 +139,9 @@ export default class NeosYoastApp extends PureComponent {
                 if (!response) {
                     return;
                 }
+                if (!response.ok) {
+                    throw new Error(`Failed fetching preview for Yoast SEO analysis: ${response.status} ${response.statusText}`);
+                }
                 return response.text();
             })
             .then(documentContent => {
@@ -162,6 +166,12 @@ export default class NeosYoastApp extends PureComponent {
                 }, this.refreshAnalysis);
             })
             .catch((error) => {
+                this.setState({
+                    error: error.message,
+                    page: {
+                        isLoading: false,
+                    },
+                });
                 console.error(error, 'An error occurred while loading the preview');
             });
     };
@@ -353,7 +363,7 @@ export default class NeosYoastApp extends PureComponent {
      * Renders the snippet editor and analysis component
      */
     render() {
-        const {firstPageLoadComplete} = this.state;
+        const {firstPageLoadComplete, error} = this.state;
 
         const editorProps = {
             data: this.state.editorData,
@@ -383,19 +393,24 @@ export default class NeosYoastApp extends PureComponent {
             <ThemeProvider theme={{isRtl: false}}>
                 <div>
                     <Loader className={analysisProps.isAnalyzing ? '' : 'yoast-loader--stop'}/>
-                    <div className="yoast-seo__keyphrase-editor-wrapper">
-                        <KeywordInput
-                            id="focus-keyphrase"
-                            keyword={editorProps.keyword}
-                            onChange={(value) => this.onSnippetEditorChange('focusKeyword', value)}
-                            onRemoveKeyword={() => this.onSnippetEditorChange('focusKeyword', '')}
-                            label={__('Focus keyphrase', 'yoast-components')}
-                            ariaLabel={__('Focus keyphrase', 'yoast-components')}/>
-                    </div>
-                    <div className="yoast-seo__snippet-editor-wrapper">
-                        {firstPageLoadComplete && <SnippetEditor {...editorProps}/>}
-                    </div>
-                    <ContentAnalysisWrapper {...analysisProps}/>
+                    {error && <div className="yoast-seo__error">{error}</div>}
+                    {!error &&
+                        <>
+                            <div className="yoast-seo__keyphrase-editor-wrapper">
+                                <KeywordInput
+                                    id="focus-keyphrase"
+                                    keyword={editorProps.keyword}
+                                    onChange={(value) => this.onSnippetEditorChange('focusKeyword', value)}
+                                    onRemoveKeyword={() => this.onSnippetEditorChange('focusKeyword', '')}
+                                    label={__('Focus keyphrase', 'yoast-components')}
+                                    ariaLabel={__('Focus keyphrase', 'yoast-components')}/>
+                            </div>
+                            <div className="yoast-seo__snippet-editor-wrapper">
+                                {firstPageLoadComplete && <SnippetEditor {...editorProps}/>}
+                            </div>
+                            <ContentAnalysisWrapper {...analysisProps}/>
+                        </>
+                    }
                 </div>
             </ThemeProvider>
         )

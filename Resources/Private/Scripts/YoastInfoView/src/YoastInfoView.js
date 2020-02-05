@@ -205,6 +205,9 @@ export default class YoastInfoView extends PureComponent {
                 if (!response) {
                     return;
                 }
+                if (!response.ok) {
+                    throw new Error(`Failed fetching preview for Yoast SEO analysis: ${response.status} ${response.statusText}`);
+                }
                 this.setState({slug: new URL(response.url).pathname.split('@')[0]});
                 return response.text();
             })
@@ -220,7 +223,8 @@ export default class YoastInfoView extends PureComponent {
                         isAnalyzing: false
                     }
                 }, this.refreshAnalysis);
-            });
+            })
+            .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
     };
 
     /**
