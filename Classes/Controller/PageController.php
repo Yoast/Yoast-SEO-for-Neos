@@ -3,6 +3,17 @@ declare(strict_types=1);
 
 namespace Yoast\YoastSeoForNeos\Controller;
 
+/**
+ * This file is part of the Yoast.YoastSeoForNeos package
+ *
+ * (c) 2020
+ * Sebastian Helzle <yoast@helzle.it>
+ *
+ * This package is Open Source Software. For the full copyright and license
+ * information, please view the LICENSE file which was distributed with this
+ * source code.
+ */
+
 use Neos\ContentRepository\Domain\Model\NodeInterface;
 use Neos\Flow\Mvc\Controller\ActionController;
 use Neos\Flow\Mvc\Exception\StopActionException;
