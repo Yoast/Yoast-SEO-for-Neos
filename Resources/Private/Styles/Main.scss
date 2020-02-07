@@ -145,3 +145,8 @@ body {
     line-height: 1.5;
   }
 }
+
+// Workaround to prevent neos showing inline validation errors in the wrong place
+#neos-new-backend-container {
+  display: none;
+}
