@@ -9,7 +9,7 @@ import debounce from 'lodash.debounce';
 // External Neos dependencies
 import {Icon, IconButton} from '@neos-project/react-ui-components';
 import {neos} from '@neos-project/neos-ui-decorators';
-import {actions, selectors} from '@neos-project/neos-ui-redux-store';
+import {selectors} from '@neos-project/neos-ui-redux-store';
 import {fetchWithErrorHandling} from '@neos-project/neos-ui-backend-connector';
 
 // External Yoast dependencies

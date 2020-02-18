@@ -8,6 +8,10 @@ const webpackConfig = [
         entry: [
             '../app.js',
         ],
+        performance: {
+            maxEntrypointSize: 4000000,
+            maxAssetSize: 4000000,
+        },
         watchOptions: {
             aggregateTimeout: 300,
             ignored: /node_modules/
@@ -42,12 +46,7 @@ const webpackConfig = [
                             }
                         },
                         {
-                            loader: 'sass-loader',
-                            options: {
-                                includePaths: [
-                                    path.resolve('node_modules'),
-                                ]
-                            }
+                            loader: 'sass-loader'
                         }
                     ]
                 },

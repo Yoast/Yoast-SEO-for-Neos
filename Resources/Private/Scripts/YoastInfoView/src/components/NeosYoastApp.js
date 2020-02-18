@@ -377,6 +377,8 @@ export default class NeosYoastApp extends PureComponent {
             mapEditorDataToPreview: this.mapEditorDataToPreview,
             mode: this.state.mode,
             faviconSrc: this.state.faviconSrc,
+            replacementVariables: [],
+            recommendedReplacementVariables: [],
         };
 
         const analysisProps = {
