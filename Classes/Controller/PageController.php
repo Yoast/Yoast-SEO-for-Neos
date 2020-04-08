@@ -22,7 +22,7 @@ use Neos\Neos\Controller\Frontend\NodeController;
 class PageController extends ActionController
 {
 
-    /**                                                                w
+    /**
      * Redirects request to the given node in preview mode without the neos backend
      *
      * @param NodeInterface $node
@@ -30,25 +30,17 @@ class PageController extends ActionController
      */
     public function renderPreviewPageAction(NodeInterface $node): void
     {
-        if (method_exists($this->response, 'setComponentParameter')) {
-            /** @noinspection PhpUndefinedClassInspection */
-            /** @noinspection PhpUndefinedNamespaceInspection */
-            $this->response->setComponentParameter(Neos\Flow\Http\Component\SetHeaderComponent::class, 'Cache-Control', [
-                'no-cache',
-                'no-store'
-            ]);
-        } else {
+        $previewAction = 'preview';
+
+        # Neos 5.x uses the 'preview' action which also sets cache headers
+        # So for Neos 4.x we have to add the cache headers and use the 'show' action
+        if (!method_exists(NodeController::class, 'previewAction')) {
+            $previewAction = 'show';
             /** @noinspection PhpUndefinedMethodInspection */
-            $this->response->getHeaders()->setCacheControlDirective('no-cache');
-            /** @noinspection PhpUndefinedMethodInspection */
-            $this->response->getHeaders()->setCacheControlDirective('no-store');
+            $this->response->getHeaders()->setCacheControlDirective('no-cache, no-store, must-revalidate');
         }
 
-        $previewAction = 'show';
-        if (method_exists(NodeController::class, 'previewAction')) {
-            $previewAction = 'preview';
-        }
-        $this->redirect($previewAction, 'Frontend\Node', 'Neos.Neos', [
+        $this->forward($previewAction, 'Frontend\Node', 'Neos.Neos', [
             'node' => $node,
             'yoastSeoPreviewMode' => true,
         ]);
