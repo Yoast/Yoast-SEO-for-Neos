@@ -117,7 +117,7 @@ and
 
     Neos:
       Neos:
-        UI:    
+        Ui:    
           frontendConfiguration:
             'Yoast.YoastSeoForNeos':
                contentSelector: 'body'
