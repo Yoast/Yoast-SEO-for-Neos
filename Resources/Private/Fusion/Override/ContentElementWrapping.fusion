@@ -1,0 +1,8 @@
+prototype(Neos.Neos:ContentElementWrapping) {
+    # Strip nodedata script tags from rendered contetn in Yoast SEO preview mode to prevent duplicate content in analyser
+    @process.stripNodeDataTags {
+        expression = ${String.pregReplace(value, '/<script data-neos-nodedata>.*<\/script>/', '')}
+        @position = 'end 9999'
+        @if.onlyInYoastSeoPreviewMode = ${!!request.arguments.yoastSeoPreviewMode}
+    }
+}
