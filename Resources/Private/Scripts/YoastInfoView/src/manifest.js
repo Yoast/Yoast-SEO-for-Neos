@@ -11,5 +11,5 @@ manifest('Yoast.YoastSeoForNeos:YoastInfoView', {}, globalRegistry => {
         component: YoastInfoView
     });
 
-    reducersRegistry.set('neos-yoast-seo', {reducer: reducer});
+    reducersRegistry.set('neos-yoast-seo', {reducer});
 });

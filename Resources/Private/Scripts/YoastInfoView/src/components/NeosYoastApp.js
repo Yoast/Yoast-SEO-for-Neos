@@ -145,10 +145,13 @@ export default class NeosYoastApp extends PureComponent {
                 return response.text();
             })
             .then(documentContent => {
-                const pageParser = new PageParser(documentContent, this.props.contentSelector);
-                const titleTemplate = this.state.firstPageLoadComplete ? this.state.page.titleTemplate : NeosYoastApp.buildTitleTemplate(this.props[this.state.activeTitleField], pageParser.title);
+                const {page, firstPageLoadComplete, activeTitleField} = this.state;
+                const {contentSelector} = this.props;
 
-                if (!this.state.firstPageLoadComplete) {
+                const pageParser = new PageParser(documentContent, contentSelector);
+                const titleTemplate = firstPageLoadComplete ? page.titleTemplate : NeosYoastApp.buildTitleTemplate(this.props[activeTitleField], pageParser.title);
+
+                if (!firstPageLoadComplete) {
                     this.updateFavicon(pageParser.faviconSrc);
                 }
 
@@ -218,18 +221,20 @@ export default class NeosYoastApp extends PureComponent {
      * @returns {Promise}
      */
     initializeWorker = () => {
-        let {worker} = this.state;
+        let {worker, page} = this.state;
+        const {workerUrl, isCornerstone, translations} = this.props;
+
         if (!worker) {
-            worker = new AnalysisWorkerWrapper(createWorker(this.props.workerUrl));
+            worker = new AnalysisWorkerWrapper(createWorker(workerUrl));
             this.setState({worker: worker});
         }
         return worker.initialize({
-            useCornerstone: this.props.isCornerstone,
-            locale: this.state.page.locale,
+            useCornerstone: isCornerstone,
+            locale: page.locale,
             contentAnalysisActive: true,
             keywordAnalysisActive: true,
             logLevel: "ERROR",
-            translations: this.props.translations,
+            translations: translations,
         });
     };
 
@@ -238,19 +243,21 @@ export default class NeosYoastApp extends PureComponent {
      */
     refreshAnalysis = () => {
         this.initializeWorker().then(() => {
+            const {page, editorData, worker} = this.state;
+
             const paper = new Paper(
-                this.state.page.content,
+                page.content,
                 {
-                    keyword: this.state.editorData.focusKeyword || '',
-                    description: this.state.page.description || '',
-                    title: this.state.page.title,
-                    titleWidth: measureTextWidth(this.state.page.title),
+                    keyword: editorData.focusKeyword || '',
+                    description: page.description || '',
+                    title: page.title,
+                    titleWidth: measureTextWidth(page.title),
                     url: new URL(this.props.pageUrl).pathname,
-                    locale: this.state.page.locale,
+                    locale: page.locale,
                     permalink: ""
                 }
             );
-            return this.state.worker.analyze(paper);
+            return worker.analyze(paper);
         }).then((results) => {
             let seoResults = parseResults(results.result.seo[''].results);
             let readabilityResults = parseResults(results.result.readability.results);
@@ -278,14 +285,15 @@ export default class NeosYoastApp extends PureComponent {
             });
         }).catch((error) => {
             console.error(error, 'An error occurred while analyzing the page');
+            const {seoResults, readabilityResults} = this.state;
 
             this.setState({
                 seoResults: {
-                    ...this.state.seoResults,
+                    ...seoResults,
                     errorResults: [errorResult]
                 },
                 readabilityResults: {
-                    ...this.state.readabilityResults,
+                    ...readabilityResults,
                     errorResults: [errorResult]
                 },
                 isAnalyzing: false,
@@ -363,32 +371,33 @@ export default class NeosYoastApp extends PureComponent {
      * Renders the snippet editor and analysis component
      */
     render() {
-        const {firstPageLoadComplete, error} = this.state;
+        const {firstPageLoadComplete, error, editorData, mode, faviconSrc, allResults, seoResults, isAnalyzing, readabilityResults} = this.state;
+        const {baseUrl, uiLocale, breadcrumbs, isAmp, modalContainer} = this.props;
 
         const editorProps = {
-            data: this.state.editorData,
-            baseUrl: this.props.baseUrl,
-            locale: this.props.uiLocale,
-            keyword: this.state.editorData.focusKeyword,
-            breadcrumbs: this.props.breadcrumbs,
-            isAmp: this.props.isAmp,
+            data: editorData,
+            baseUrl: baseUrl,
+            locale: uiLocale,
+            keyword: editorData.focusKeyword,
+            breadcrumbs: breadcrumbs,
+            isAmp: isAmp,
             hasPaperStyle: false,
             onChange: this.onSnippetEditorChange,
             mapEditorDataToPreview: this.mapEditorDataToPreview,
-            mode: this.state.mode,
-            faviconSrc: this.state.faviconSrc,
+            mode: mode,
+            faviconSrc: faviconSrc,
             replacementVariables: [],
             recommendedReplacementVariables: [],
         };
 
         const analysisProps = {
-            modalContainer: this.props.modalContainer,
-            allResults: this.state.allResults,
-            readabilityResults: this.state.readabilityResults,
-            seoResults: this.state.seoResults,
-            isAnalyzing: this.state.isAnalyzing,
+            modalContainer: modalContainer,
+            allResults: allResults,
+            readabilityResults: readabilityResults,
+            seoResults: seoResults,
+            isAnalyzing: isAnalyzing,
             onChange: this.onSnippetEditorChange,
-            focusKeyword: this.state.editorData.focusKeyword,
+            focusKeyword: editorData.focusKeyword,
         };
 
         return (
