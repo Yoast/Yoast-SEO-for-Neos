@@ -1,7 +1,3 @@
-main.css binary
-app.js binary
-webWorker.js binary
-yoastseo.js binary
+Resources/Public/**/*.js binary
+Resources/Public/**/*.css binary
 *.map binary
-Plugin.js binary
-Plugin.css binary
