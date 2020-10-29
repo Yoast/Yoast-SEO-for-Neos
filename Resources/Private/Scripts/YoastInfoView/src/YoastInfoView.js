@@ -9,7 +9,7 @@ import debounce from 'lodash.debounce';
 // External Neos dependencies
 import {Icon, IconButton} from '@neos-project/react-ui-components';
 import {neos} from '@neos-project/neos-ui-decorators';
-import {actions, selectors} from '@neos-project/neos-ui-redux-store';
+import {selectors} from '@neos-project/neos-ui-redux-store';
 import {fetchWithErrorHandling} from '@neos-project/neos-ui-backend-connector';
 
 // External Yoast dependencies
@@ -253,15 +253,16 @@ export default class YoastInfoView extends PureComponent {
      */
     refreshAnalysis = () => {
         this.initializeWorker().then(() => {
+            const {page, slug, focusKeyword, pageContent} = this.state;
             let paper = new Paper(
-                this.state.pageContent,
+                pageContent,
                 {
-                    keyword: this.state.focusKeyword,
-                    description: this.state.page.description,
-                    title: this.state.page.title,
-                    titleWidth: measureTextWidth(this.state.page.title),
-                    url: this.state.slug,
-                    locale: this.state.page.locale,
+                    keyword: focusKeyword,
+                    description: page.description,
+                    title: page.title,
+                    titleWidth: measureTextWidth(page.title),
+                    url: slug,
+                    locale: page.locale,
                     permalink: ""
                 }
             );
@@ -296,21 +297,22 @@ export default class YoastInfoView extends PureComponent {
      * @param filter
      */
     renderResults = (results, filter = []) => {
+        const {i18nRegistry} = this.props;
         let groupedResults = groupResultsByRating(results, filter);
 
         return (
             <li className={style.yoastInfoView__item}>
                 <div className={style.yoastInfoView__title}>
-                    {this.props.i18nRegistry.translate('inspector.results', 'Analysis results', {}, 'Yoast.YoastSeoForNeos')}
+                    {i18nRegistry.translate('inspector.results', 'Analysis results', {}, 'Yoast.YoastSeoForNeos')}
                 </div>
                 {groupedResults.bad.length > 0 && (
-                    <ResultGroup heading={this.props.i18nRegistry.translate('inspector.problems', 'Problems', {}, 'Yoast.YoastSeoForNeos')} results={groupedResults.bad}/>
+                    <ResultGroup heading={i18nRegistry.translate('inspector.problems', 'Problems', {}, 'Yoast.YoastSeoForNeos')} results={groupedResults.bad}/>
                 )}
                 {groupedResults.ok.length > 0 && (
-                    <ResultGroup heading={this.props.i18nRegistry.translate('inspector.improvements', 'Improvements', {}, 'Yoast.YoastSeoForNeos')} results={groupedResults.ok}/>
+                    <ResultGroup heading={i18nRegistry.translate('inspector.improvements', 'Improvements', {}, 'Yoast.YoastSeoForNeos')} results={groupedResults.ok}/>
                 )}
                 {groupedResults.good.length > 0 && (
-                    <ResultGroup heading={this.props.i18nRegistry.translate('inspector.goodResults', 'Good results', {}, 'Yoast.YoastSeoForNeos')} results={groupedResults.good}/>
+                    <ResultGroup heading={i18nRegistry.translate('inspector.goodResults', 'Good results', {}, 'Yoast.YoastSeoForNeos')} results={groupedResults.good}/>
                 )}
             </li>
         );

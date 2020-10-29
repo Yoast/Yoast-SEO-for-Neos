@@ -5,13 +5,13 @@ export default class PageParser {
         }
 
         this.parser = new DOMParser();
-        const parsedPreviewDocument = this.parser.parseFromString(documentContent, "text/html");
+        const parsedPreviewDocument = this.parser.parseFromString(documentContent, 'text/html');
 
         this.metaSection = parsedPreviewDocument.querySelector('head');
 
         // Remove problematic tags for the Yoast plugin from preview document
-        let scriptTags = parsedPreviewDocument.querySelectorAll('script,svg');
-        scriptTags.forEach((scriptTag) => {
+        const scriptTags = parsedPreviewDocument.querySelectorAll('script,svg');
+        scriptTags.forEach(scriptTag => {
             scriptTag.remove();
         });
 
@@ -21,6 +21,8 @@ export default class PageParser {
         // Remove problematic data attributes for the Yoast plugin from preview document
         const re = /data-.*?=".*?"/gim;
         this.pageContent = this.pageContent.replace(re, '');
+
+        debugger;
     }
 
     get title() {

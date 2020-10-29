@@ -1,5 +1,9 @@
 {
-    "extends": "@neos-project/eslint-config-neos",
+    "extends": [
+        "eslint:recommended",
+        "plugin:react/recommended",
+        "@neos-project/eslint-config-neos"
+    ],
     "globals": {
         "expect": true,
         "sinon": false
@@ -7,5 +11,11 @@
     "env": {
         "node": true,
         "mocha": true
-    }
+    },
+    "settings": {
+        "react": {
+            "version": "detect"
+        }
+    },
+    "ignorePatterns": ["node_modules/"]
 }
