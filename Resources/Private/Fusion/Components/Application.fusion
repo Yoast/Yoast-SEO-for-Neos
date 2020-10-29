@@ -35,6 +35,13 @@ prototype(Yoast.YoastSeoForNeos:Component.Application) < prototype(Neos.Fusion:T
                 itemRenderer = ${q(item).property('uriPathSegment')}
             }
 
+            twitterFallbackImage = Neos.Fusion:ResourceUri {
+                path = 'resource://Yoast.YoastSeoForNeos/Public/Assets/twitter.svg'
+            }
+            openGraphFallbackImage = Neos.Fusion:ResourceUri {
+                path = 'resource://Yoast.YoastSeoForNeos/Public/Assets/facebook.svg'
+            }
+
             contentSelector = ${Configuration.setting('Neos.Neos.Ui.frontendConfiguration')['Yoast.YoastSeoForNeos']['contentSelector']}
 
             @process.encode = ${Json.stringify(value)}

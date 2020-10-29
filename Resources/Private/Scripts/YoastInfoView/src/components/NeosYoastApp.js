@@ -6,18 +6,26 @@ import debounce from "lodash.debounce";
 import {__} from "@wordpress/i18n";
 
 // External Yoast dependencies
+import colors from '@yoast/style-guide/colors';
+
 import Loader from "@yoast/components/Loader";
 import KeywordInput from "yoast-components/composites/Plugin/Shared/components/KeywordInput";
-import SnippetEditor from "@yoast/search-metadata-previews/snippet-editor/SnippetEditor";
+import SvgIcon from "@yoast/components/SvgIcon";
+import Tabs from "@yoast/components/Tabs";
 
-import {MODES} from "@yoast/search-metadata-previews/snippet-preview/constants";
+import SnippetEditor from "@yoast/search-metadata-previews/snippet-editor/SnippetEditor";
+import {MODE_DESKTOP} from "@yoast/search-metadata-previews/snippet-preview/constants";
+
 import AnalysisWorkerWrapper from 'yoastseo/src/worker/AnalysisWorkerWrapper';
 import createWorker from 'yoastseo/src/worker/createWorker';
 import Paper from 'yoastseo/src/values/Paper';
+import scoreToRating from "yoastseo/src/interpreters/scoreToRating";
 import {measureTextWidth} from 'yoastseo/src/helpers';
 
 // Internal dependencies
-import ContentAnalysisWrapper from "./ContentAnalysisWrapper";
+import ReadabilityAnalysis from "./ReadabilityAnalysis";
+import SocialPreviews from "./SocialPreviews";
+import SeoAnalysis from "./SeoAnalysis";
 import PageParser from "../helper/PageParser";
 import {groupResultsByRating, parseResults} from "../helper/resultParser";
 
@@ -36,7 +44,7 @@ export default class NeosYoastApp extends PureComponent {
             title: PropTypes.object.isRequired,
             titleOverride: PropTypes.object.isRequired,
             description: PropTypes.object.isRequired,
-            slug: PropTypes.object.isRequired,
+            slug: PropTypes.object.isRequired
         }).isRequired,
         title: PropTypes.string.isRequired,
         titleOverride: PropTypes.string,
@@ -55,6 +63,8 @@ export default class NeosYoastApp extends PureComponent {
         contentSelector: PropTypes.string.isRequired,
         breadcrumbs: PropTypes.array,
         faviconSrc: PropTypes.string,
+        twitterFallbackImage: PropTypes.string,
+        openGraphFallbackImage: PropTypes.string
     };
 
     constructor(props) {
@@ -65,7 +75,7 @@ export default class NeosYoastApp extends PureComponent {
         this.state = {
             worker: null,
             error: null,
-            mode: MODES.MODE_DESKTOP,
+            mode: MODE_DESKTOP,
             activeTitleField: activeTitleField,
             firstPageLoadComplete: false,
             faviconSrc: null,
@@ -82,6 +92,27 @@ export default class NeosYoastApp extends PureComponent {
                 description: '',
                 content: '',
                 locale: '',
+                twitterCard: {
+                    card: null,
+                    title: null,
+                    site: null,
+                    description: null,
+                    creator: null,
+                    url: null,
+                    image: null
+                },
+                openGraph: {
+                    type: null,
+                    title: null,
+                    'site_name': null,
+                    locale: null,
+                    description: null,
+                    url: null,
+                    image: null,
+                    'image:width': null,
+                    'image:height': null,
+                    'image:alt': null
+                },
                 isLoading: true,
             },
             isAnalyzing: true,
@@ -135,48 +166,50 @@ export default class NeosYoastApp extends PureComponent {
         });
 
         fetch(this.props.previewUrl)
-            .then(response => {
-                if (!response) {
-                    return;
-                }
-                if (!response.ok) {
-                    throw new Error(`Failed fetching preview for Yoast SEO analysis: ${response.status} ${response.statusText}`);
-                }
-                return response.text();
-            })
-            .then(documentContent => {
-                const {page, firstPageLoadComplete, activeTitleField} = this.state;
-                const {contentSelector} = this.props;
+        .then(response => {
+            if (!response) {
+                return;
+            }
+            if (!response.ok) {
+                throw new Error(`Failed fetching preview for Yoast SEO analysis: ${response.status} ${response.statusText}`);
+            }
+            return response.text();
+        })
+        .then(documentContent => {
+            const { page, firstPageLoadComplete, activeTitleField } = this.state;
+            const { contentSelector } = this.props;
 
-                const pageParser = new PageParser(documentContent, contentSelector);
-                const titleTemplate = firstPageLoadComplete ? page.titleTemplate : NeosYoastApp.buildTitleTemplate(this.props[activeTitleField], pageParser.title);
+            const pageParser = new PageParser(documentContent, contentSelector);
+            const titleTemplate = firstPageLoadComplete ? page.titleTemplate : NeosYoastApp.buildTitleTemplate(this.props[activeTitleField], pageParser.title);
 
-                if (!firstPageLoadComplete) {
-                    this.updateFavicon(pageParser.faviconSrc);
-                }
+            if (!firstPageLoadComplete) {
+                this.updateFavicon(pageParser.faviconSrc);
+            }
 
-                this.setState({
-                    firstPageLoadComplete: true,
-                    page: {
-                        titleTemplate: titleTemplate,
-                        title: pageParser.title,
-                        description: pageParser.description,
-                        locale: pageParser.locale,
-                        content: pageParser.pageContent,
-                        isLoading: false,
-                    },
-                    results: {}
-                }, this.refreshAnalysis);
-            })
-            .catch((error) => {
-                this.setState({
-                    error: error.message,
-                    page: {
-                        isLoading: false,
-                    },
-                });
-                console.error(error, 'An error occurred while loading the preview');
+            this.setState({
+                firstPageLoadComplete: true,
+                page: {
+                    titleTemplate: titleTemplate,
+                    title: pageParser.title,
+                    description: pageParser.description,
+                    locale: pageParser.locale,
+                    content: pageParser.pageContent,
+                    twitterCard: pageParser.twitterCard,
+                    openGraph: pageParser.openGraph,
+                    isLoading: false,
+                },
+                results: {}
+            }, this.refreshAnalysis);
+        })
+        .catch((error) => {
+            this.setState({
+                error: error.message,
+                page: {
+                    isLoading: false,
+                },
             });
+            console.error(error, 'An error occurred while loading the preview');
+        });
     };
 
     /**
@@ -191,15 +224,15 @@ export default class NeosYoastApp extends PureComponent {
             let response = await fetch(faviconMetaTagSrc);
 
             if (response.ok) {
-                this.setState({faviconSrc: faviconMetaTagSrc});
+                this.setState({ faviconSrc: faviconMetaTagSrc });
                 return;
             }
         }
 
-        const {faviconSrc} = this.props;
+        const { faviconSrc } = this.props;
         let response = await fetch(faviconSrc);
         if (response.ok) {
-            this.setState({faviconSrc});
+            this.setState({ faviconSrc });
         }
     };
 
@@ -221,12 +254,12 @@ export default class NeosYoastApp extends PureComponent {
      * @returns {Promise}
      */
     initializeWorker = () => {
-        let {worker, page} = this.state;
-        const {workerUrl, isCornerstone, translations} = this.props;
+        let { worker, page } = this.state;
+        const { workerUrl, isCornerstone, translations } = this.props;
 
         if (!worker) {
             worker = new AnalysisWorkerWrapper(createWorker(workerUrl));
-            this.setState({worker: worker});
+            this.setState({ worker: worker });
         }
         return worker.initialize({
             useCornerstone: isCornerstone,
@@ -243,7 +276,7 @@ export default class NeosYoastApp extends PureComponent {
      */
     refreshAnalysis = () => {
         this.initializeWorker().then(() => {
-            const {page, editorData, worker} = this.state;
+            const { page, editorData, worker } = this.state;
 
             const paper = new Paper(
                 page.content,
@@ -266,7 +299,7 @@ export default class NeosYoastApp extends PureComponent {
             let groupedReadabilityResults = groupResultsByRating(readabilityResults);
 
             this.setState({
-                allResults: {...seoResults, ...readabilityResults},
+                allResults: { ...seoResults, ...readabilityResults },
                 seoResults: {
                     score: results.result.seo[''].score,
                     problemsResults: groupedSeoResults.bad,
@@ -285,7 +318,7 @@ export default class NeosYoastApp extends PureComponent {
             });
         }).catch((error) => {
             console.error(error, 'An error occurred while analyzing the page');
-            const {seoResults, readabilityResults} = this.state;
+            const { seoResults, readabilityResults } = this.state;
 
             this.setState({
                 seoResults: {
@@ -311,11 +344,11 @@ export default class NeosYoastApp extends PureComponent {
     onSnippetEditorChange = (key, data) => {
         if (this.props.editorFieldMapping[key]) {
             this.setState({
-                editorData: {...this.state.editorData, [key]: data}
+                editorData: { ...this.state.editorData, [key]: data }
             });
             this.updateNeosFields(key, data);
         } else if (key === 'mode') {
-            this.setState({mode: data});
+            this.setState({ mode: data });
         }
     };
 
@@ -363,7 +396,7 @@ export default class NeosYoastApp extends PureComponent {
         return {
             title: this.state.page.titleTemplate.replace('{title}', mappedData.title),
             url: this.props.isHomepage ? this.props.baseUrl : mappedData.url,
-            description: mappedData.description,
+            description: mappedData.description || this.state.page.description,
         };
     };
 
@@ -371,58 +404,125 @@ export default class NeosYoastApp extends PureComponent {
      * Renders the snippet editor and analysis component
      */
     render() {
-        const {firstPageLoadComplete, error, editorData, mode, faviconSrc, allResults, seoResults, isAnalyzing, readabilityResults} = this.state;
-        const {baseUrl, uiLocale, breadcrumbs, isAmp, modalContainer} = this.props;
+        const {
+            firstPageLoadComplete,
+            error,
+            editorData,
+            page,
+            mode,
+            faviconSrc,
+            allResults,
+            seoResults,
+            isAnalyzing,
+            readabilityResults
+        } = this.state;
+
+        const {
+            baseUrl,
+            uiLocale,
+            breadcrumbs,
+            isAmp,
+            modalContainer,
+            twitterFallbackImage,
+            openGraphFallbackImage
+        } = this.props;
 
         const editorProps = {
             data: editorData,
-            baseUrl: baseUrl,
+            baseUrl,
             locale: uiLocale,
             keyword: editorData.focusKeyword,
-            breadcrumbs: breadcrumbs,
-            isAmp: isAmp,
+            breadcrumbs,
+            isAmp,
             hasPaperStyle: false,
             onChange: this.onSnippetEditorChange,
             mapEditorDataToPreview: this.mapEditorDataToPreview,
-            mode: mode,
-            faviconSrc: faviconSrc,
+            mode,
+            faviconSrc,
             replacementVariables: [],
             recommendedReplacementVariables: [],
         };
 
-        const analysisProps = {
-            modalContainer: modalContainer,
-            allResults: allResults,
-            readabilityResults: readabilityResults,
-            seoResults: seoResults,
-            isAnalyzing: isAnalyzing,
-            onChange: this.onSnippetEditorChange,
-            focusKeyword: editorData.focusKeyword,
-        };
+        const seoRating = seoResults.score ? scoreToRating(seoResults.score / 10) : 'none';
+        const seoRatingIcon = isAnalyzing ? 'loading-spinner' : 'seo-score-' + seoRating;
+        const seoRatingColor = !isAnalyzing && seoRating !== 'none' ? seoRating : 'grey';
+
+        const readabilityRating = readabilityResults.score ? scoreToRating(readabilityResults.score / 10) : 'none';
+        const readabilityRatingIcon = isAnalyzing ? 'loading-spinner' : 'seo-score-' + readabilityRating;
+        const readabilityRatingColor = !isAnalyzing && readabilityRating !== 'none' ? readabilityRating : 'grey';
+
+        const tabPanels = [
+            {
+                id: 'seo',
+                label: (
+                    <>
+                        <SvgIcon
+                            icon={seoRatingIcon}
+                            color={colors['$color_' + seoRatingColor]}
+                            size="14px"
+                        />
+                        <span>{__('SEO', 'yoast-components')}</span>
+                    </>
+                ),
+                content: (
+                    <>
+                        <div className="yoast-seo-keyphrase-editor-wrapper">
+                            <KeywordInput
+                                id="focus-keyphrase"
+                                keyword={editorProps.keyword}
+                                onChange={(value) => this.onSnippetEditorChange('focusKeyword', value)}
+                                onRemoveKeyword={() => this.onSnippetEditorChange('focusKeyword', '')}
+                                label={__('Focus keyphrase', 'yoast-components')}
+                                ariaLabel={__('Focus keyphrase', 'yoast-components')} />
+                        </div>
+                        <div className="yoast-seo-snippet-editor-wrapper">
+                            {firstPageLoadComplete && <SnippetEditor {...editorProps} />}
+                        </div>
+                        <SeoAnalysis
+                            modalContainer={modalContainer}
+                            allResults={allResults}
+                            seoResults={seoResults}
+                            seoRatingColor={seoRatingColor}
+                            seoRatingIcon={seoRatingIcon}
+                        />
+                    </>
+                )
+            },
+            {
+                id: 'readability',
+                label: (
+                    <>
+                        <SvgIcon
+                            icon={readabilityRatingIcon}
+                            color={colors['$color_' + readabilityRatingColor]}
+                            size="14px"
+                        />
+                        <span>{__('Readability', 'yoast-components')}</span>
+                    </>
+                ),
+                content: <ReadabilityAnalysis
+                    modalContainer={modalContainer}
+                    allResults={allResults}
+                    readabilityResults={readabilityResults}
+                />
+            },
+            {
+                id: 'social',
+                label: __('Social', 'yoast-components'),
+                content: <SocialPreviews
+                    editorData={editorData}
+                    page={page}
+                    twitterFallbackImage={twitterFallbackImage}
+                    openGraphFallbackImage={openGraphFallbackImage}
+                />
+            }
+        ]
 
         return (
-            <ThemeProvider theme={{isRtl: false}}>
-                <div>
-                    <Loader className={analysisProps.isAnalyzing ? '' : 'yoast-loader--stop'}/>
-                    {error && <div className="yoast-seo__error">{error}</div>}
-                    {!error &&
-                        <>
-                            <div className="yoast-seo__keyphrase-editor-wrapper">
-                                <KeywordInput
-                                    id="focus-keyphrase"
-                                    keyword={editorProps.keyword}
-                                    onChange={(value) => this.onSnippetEditorChange('focusKeyword', value)}
-                                    onRemoveKeyword={() => this.onSnippetEditorChange('focusKeyword', '')}
-                                    label={__('Focus keyphrase', 'yoast-components')}
-                                    ariaLabel={__('Focus keyphrase', 'yoast-components')}/>
-                            </div>
-                            <div className="yoast-seo__snippet-editor-wrapper">
-                                {firstPageLoadComplete && <SnippetEditor {...editorProps}/>}
-                            </div>
-                            <ContentAnalysisWrapper {...analysisProps}/>
-                        </>
-                    }
-                </div>
+            <ThemeProvider theme={{ isRtl: false }}>
+                <Loader className={isAnalyzing ? '' : 'yoast-loader--stop'} />
+                {error && <div className="yoast-seo__error">{error}</div>}
+                {!error && <Tabs items={tabPanels} tabsFontSize="1em" tabsBaseWidth="auto" />}
             </ThemeProvider>
         )
     }

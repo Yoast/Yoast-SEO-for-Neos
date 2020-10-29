@@ -33,14 +33,26 @@ body {
       margin: 0 1rem 1rem;
       font-size: 20px;
     }
+
+    .react-tabs {
+      &__tab {
+        svg {
+          margin-right: .5rem;
+        }
+      }
+    }
   }
 
-  &__keyphrase-editor-wrapper {
-    margin: 1rem 1rem;
+  &-keyphrase-editor-wrapper {
+    margin-bottom: 1rem;
+    font-size: 13px;
   }
 
-  &__snippet-editor-wrapper {
-    margin: 1rem 1rem;
+  &-snippet-editor-wrapper {
+    margin: 1rem 0;
+    padding: 1rem 0;
+    border-top: 1px solid var(--border-light);
+    border-bottom: 1px solid var(--border-light);
 
     // Hotfix to hide `Insert snippet variable` button
     section button {
@@ -48,9 +60,23 @@ body {
     }
   }
 
-  &__content-analysis-wrapper {
+  &-social-preview {
+    > * {
+      margin-bottom: 1rem;
+    }
+  }
+
+  &-analysis {
+    font-size: 13px;
+
     h2 {
       font-size: 16px;
+
+      button {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        padding-top: 0 !important;
+      }
     }
 
     a {
@@ -66,12 +92,12 @@ body {
     }
 
     p {
-      font-size: 13px;
       line-height: 1.5;
     }
 
-    > * {
-      border-top: var(--border-light);
+    &__header {
+      margin-bottom: .5rem;
+      display: block;
     }
   }
 }
@@ -86,7 +112,6 @@ body {
     animation: none !important;
   }
 }
-
 
 .yoast-svg-icon-loading-spinner {
   animation: rotator 1.4s linear infinite;

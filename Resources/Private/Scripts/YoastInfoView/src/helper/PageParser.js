@@ -38,4 +38,51 @@ export default class PageParser {
         const query = 'link[rel="shortcut icon"],link[rel="icon"]';
         return this.metaSection.querySelector(query) ? this.metaSection.querySelector(query).getAttribute('href') : '';
     }
+
+    get twitterCard() {
+        const query = 'meta[name^="twitter:"]';
+        const tags = this.metaSection.querySelectorAll(query);
+
+        const twitterData = {
+            card: null,
+            title: null,
+            site: null,
+            description: null,
+            creator: null,
+            url: null,
+            image: null
+        };
+
+        tags.forEach(tag => {
+            const tagName = tag.getAttribute('name').replace('twitter:', '');
+            twitterData[tagName] = tag.getAttribute('content');
+        });
+
+        return twitterData;
+    }
+
+    get openGraph() {
+        const query = 'meta[property^="og:"]';
+        const tags = this.metaSection.querySelectorAll(query);
+
+        const openGraphData = {
+            type: null,
+            title: null,
+            'site_name': null,
+            locale: null,
+            description: null,
+            url: null,
+            image: null,
+            'image:width': null,
+            'image:height': null,
+            'image:alt': null
+        };
+
+        tags.forEach(tag => {
+            const tagName = tag.getAttribute('property').replace('og:', '');
+            openGraphData[tagName] = tag.getAttribute('content');
+        });
+
+        return openGraphData;
+    }
 }
