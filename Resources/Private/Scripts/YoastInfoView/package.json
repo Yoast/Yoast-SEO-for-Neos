@@ -46,7 +46,7 @@
     "css-loader": "^3.4.2",
     "eslint": "^7.10.0",
     "eslint-plugin-react": "^7.21.2",
-    "immer": "^5.3.4",
+    "immer": "^8.0.1",
     "jed": "^1.1.1",
     "lodash.debounce": "^4.0.8",
     "lodash.upperfirst": "^4.3.1",
