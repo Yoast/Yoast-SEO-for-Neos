@@ -193,7 +193,7 @@ export default class YoastInfoView extends PureComponent {
         }
 
         fetchWithErrorHandling.withCsrfToken(csrfToken => ({
-            url: `/neosyoastseo/page/renderPreviewPage?node=${previewPageNodePath}`,
+            url: `/neosyoastseo/page/renderPreviewPage?node=${encodeURIComponent(previewPageNodePath)}`,
             method: 'GET',
             credentials: 'include',
             headers: {
