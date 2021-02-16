@@ -9,9 +9,9 @@
         label: i18n
         inlineEditable: true
         reloadIfChanged: true
-        aloha:
-          placeholder: i18n
         inspector:
+          editorOptions:
+            placeholder: i18n
           group: yoast
           position: 10
     isCornerstone:
