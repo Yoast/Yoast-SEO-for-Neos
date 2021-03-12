@@ -17,7 +17,7 @@ prototype(Yoast.YoastSeoForNeos:Component.Application) < prototype(Neos.Fusion:T
             workerUrl = Neos.Fusion:ResourceUri {
                 path = 'resource://Yoast.YoastSeoForNeos/Public/Assets/webWorker.js'
             }
-            previewUrl = ${'/neosyoastseo/page/renderPreviewPage?node=' + documentNode.contextPath}
+            previewUrl = ${'/neosyoastseo/page/renderPreviewPage?node=' + String.rawUrlEncode(documentNode.contextPath)}
             baseUrl = Yoast.YoastSeoForNeos:BaseUri
             siteUrl = Neos.Neos:NodeUri {
                 node = ${q(site).context({workspaceName: 'live'}).get(0)}
