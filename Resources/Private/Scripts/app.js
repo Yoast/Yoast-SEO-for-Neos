@@ -3,9 +3,9 @@
  */
 
 // External dependencies
-import React from './YoastInfoView/node_modules/react';
-import ReactDOM from './YoastInfoView/node_modules/react-dom';
-import {setLocaleData} from './YoastInfoView/node_modules/@wordpress/i18n';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import {setLocaleData} from '@wordpress/i18n';
 
 // Internal dependencies
 import '../Styles/Main.scss';

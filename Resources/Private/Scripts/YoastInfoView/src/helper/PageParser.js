@@ -21,8 +21,6 @@ export default class PageParser {
         // Remove problematic data attributes for the Yoast plugin from preview document
         const re = /data-.*?=".*?"/gim;
         this.pageContent = this.pageContent.replace(re, '');
-
-        debugger;
     }
 
     get title() {

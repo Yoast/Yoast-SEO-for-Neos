@@ -1,0 +1,28 @@
+{
+    "name": "yoast-seo-for-neos",
+    "license": "GNU GPLv3",
+    "private": true,
+    "engines": {
+        "node": "14"
+    },
+    "scripts": {
+        "postinstall": "patch-package",
+        "watch": "yarn workspaces run watch",
+        "watch:editMode": "yarn workspace yoast-inspector-view run watch:app",
+        "watch:inspectorView": "yarn workspace yoast-inspector-view run watch:inspector",
+        "build": "yarn workspaces run build",
+        "build:editMode": "yarn workspace yoast-inspector-view run build:app",
+        "build:inspectorView": "yarn workspace yoast-inspector-view build:inspector",
+        "update-translations": "yarn workspace yoast-inspector-view update-translations",
+        "test": "yarn workspace yoast-inspector-view test-inspector"
+    },
+    "browserslist": [
+        "last 2 version",
+        "> 2%"
+    ],
+    "workspaces": [
+        "Resources/Private/Scripts/*"
+    ],
+    "devDependencies": {
+    }
+}

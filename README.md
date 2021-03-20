@@ -212,19 +212,22 @@ or by manually removing the setting in the database in the `neos_neos_domain_mod
 
 ### Building the assets
 
-You can generate the `js` and `css` files by running the following commands in the folder `Resources/Private/Scripts/YoastInfoView`:
+First install dependencies with `yarn`:
 
-    yarn install
-    yarn run build
+    yarn
+
+You can generate the `js` and `css` files by running the following command:
+
+    yarn build
     
-#### Building and watchting the app for the edit mode
+#### Building and watching the app for the edit mode
     
-    yarn run build-app
+    yarn build:editMode
     
-    yarn run watch-app
+    yarn watch:editMode
     
 #### Building and watching the inspector view
 
-    yarn run build-inspector
+    yarn build:inspectorView
     
-    yarn run watch-inspector
+    yarn watch:inspectorView

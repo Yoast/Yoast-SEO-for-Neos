@@ -17,5 +17,6 @@
             "version": "detect"
         }
     },
+    "root": true,
     "ignorePatterns": ["node_modules/"]
 }
