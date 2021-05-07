@@ -1,0 +1,119 @@
+.style__yoastInfoView___5BOWw {
+
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+    .style__yoastInfoView__heading___MSQIV {
+        align-items: center;
+        display: flex;
+        justify-content: space-between;
+        margin: 0 -16px 0 0;
+        cursor: pointer;
+    }
+
+    .style__yoastInfoView__item___3sLd8 {
+        margin: .6rem 0;
+    }
+
+    .style__yoastInfoView__uncollapse___2R81x {
+        margin-top: 1rem;
+    }
+
+    .style__yoastInfoView__title___1x1mz {
+        font-weight: bold;
+    }
+
+    .style__yoastInfoView__score___1kedk {
+        font-size: 110%;
+    }
+
+    .style__yoastInfoView__content___3V4hU {
+        font-size: 13px;
+        margin: .7rem 0 0;
+    }
+
+    .style__yoastInfoView__content___3V4hU a {
+            color: #FFF;
+            text-decoration: underline;
+        }
+
+    .style__yoastInfoView__content___3V4hU a:hover {
+                text-decoration: none;
+            }
+
+    .style__yoastInfoView__value___RNmd4 {
+        font-style: italic;
+        font-size: 13px;
+    }
+
+    .style__yoastInfoView__result_group___3oNID {
+        margin-top: .6rem;
+    }
+
+    .style__yoastInfoView__result_group___3oNID svg {
+            margin-right: 9px;
+        }
+
+    .style__yoastInfoView__rating_circle___2eH8y {
+        display: inline-block;
+        width: 12px;
+        height: 12px;
+        margin-right: 10px;
+        border-radius: 50%;
+        background: currentColor;
+    }
+
+    .style__yoastInfoView__rating_error___3yKz- {
+        color: #a0a5aa;
+    }
+
+    svg.style__yoastInfoView__rating_error___3yKz- {
+            color: #a0a5aa;
+            fill: #a0a5aa;
+            margin-right: 5px;
+        }
+
+    .style__yoastInfoView__rating_feedback___2_kgN {
+        color: #a0a5aa;
+    }
+
+    svg.style__yoastInfoView__rating_feedback___2_kgN {
+            color: #a0a5aa;
+            fill: #a0a5aa;
+            margin-right: 5px;
+        }
+
+    .style__yoastInfoView__rating_bad___3r6IV {
+        color: #dc3232;
+    }
+
+    svg.style__yoastInfoView__rating_bad___3r6IV {
+            color: #dc3232;
+            fill: #dc3232;
+            margin-right: 5px;
+        }
+
+    .style__yoastInfoView__rating_ok___2gUck {
+        color: #ee7c1b;
+    }
+
+    svg.style__yoastInfoView__rating_ok___2gUck {
+            color: #ee7c1b;
+            fill: #ee7c1b;
+            margin-right: 5px;
+        }
+
+    .style__yoastInfoView__rating_good___2Frfd {
+        color: #7ad03a;
+    }
+
+    svg.style__yoastInfoView__rating_good___2Frfd {
+            color: #7ad03a;
+            fill: #7ad03a;
+            margin-right: 5px;
+        }
+
+
+/*# sourceMappingURL=Plugin.css.map*/

@@ -5,6 +5,7 @@ const TerserPlugin = require('terser-webpack-plugin');
 const webpackConfig = [
     {
         entry: './src/index.jsx',
+        devtool: 'eval',
         performance: {
             maxEntrypointSize: 4000000,
             maxAssetSize: 4000000,
