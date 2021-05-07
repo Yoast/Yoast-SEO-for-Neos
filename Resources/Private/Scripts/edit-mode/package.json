@@ -1,0 +1,41 @@
+{
+    "name": "@yoast-seo-for-neos/edit-mode",
+    "license": "GPL-3.0",
+    "version": "1.0.0",
+    "private": true,
+    "main": "src/index.jsx",
+    "scripts": {
+        "build": "webpack --mode production",
+        "watch": "webpack --mode development -w"
+    },
+    "dependencies": {
+        "@yoast-seo-for-neos/shared": "*",
+        "@yoast/analysis-report": "^1.11.0",
+        "@yoast/components": "^2.9.0",
+        "@yoast/search-metadata-previews": "^2.11.1",
+        "@yoast/social-metadata-previews": "^1.4.1",
+        "@yoast/style-guide": "^0.13.0",
+        "material-ui": "^0.18.6",
+        "react": "^16.8.4",
+        "react-dom": "^16.6.3",
+        "recoil": "^0.2.0"
+    },
+    "devDependencies": {
+        "@babel/core": "^7.14.0",
+        "@babel/preset-env": "^7.14.0",
+        "@babel/preset-react": "^7.13.13",
+        "@yoast/browserslist-config": "^1.2.2",
+        "babel-loader": "^8.2.2",
+        "eslint-config-prettier": "^8.3.0",
+        "eslint-plugin-prettier": "^3.4.0",
+        "eslint-plugin-react": "^7.23.2",
+        "eslint-plugin-react-hooks": "^4.2.0",
+        "mini-css-extract-plugin": "^1.6.0",
+        "prettier": "^2.2.1",
+        "sass-loader": "^11.0.1",
+        "style-loader": "^2.0.0",
+        "terser-webpack-plugin": "^5.1.1",
+        "webpack": "^5.36.2",
+        "webpack-cli": "^4.6.0"
+    }
+}

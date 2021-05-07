@@ -7,22 +7,18 @@
     },
     "scripts": {
         "postinstall": "patch-package",
-        "watch": "yarn workspaces run watch",
-        "watch:editMode": "yarn workspace yoast-inspector-view run watch:app",
-        "watch:inspectorView": "yarn workspace yoast-inspector-view run watch:inspector",
-        "build": "yarn workspaces run build",
-        "build:editMode": "yarn workspace yoast-inspector-view run build:app",
-        "build:inspectorView": "yarn workspace yoast-inspector-view build:inspector",
-        "update-translations": "yarn workspace yoast-inspector-view update-translations",
-        "test": "yarn workspace yoast-inspector-view test-inspector"
+        "watch:editMode": "yarn workspace @yoast-seo-for-neos/edit-mode run watch",
+        "watch:inspectorView": "yarn workspace @yoast-seo-for-neos/neos-ui-plugin run watch",
+        "build": "yarn build:editMode && yarn build:inspectorView",
+        "build:editMode": "yarn workspace @yoast-seo-for-neos/edit-mode run build",
+        "build:inspectorView": "yarn workspace @yoast-seo-for-neos/neos-ui-plugin build",
+        "update-translations": "yarn workspace @yoast-seo-for-neos/neos-ui-plugin update-translations",
+        "test": "yarn workspace @yoast-seo-for-neos/neos-ui-plugin test-inspector"
     },
     "browserslist": [
-        "last 2 version",
-        "> 2%"
+        "defaults and > 1% and not ie <= 11"
     ],
     "workspaces": [
         "Resources/Private/Scripts/*"
-    ],
-    "devDependencies": {
-    }
+    ]
 }
