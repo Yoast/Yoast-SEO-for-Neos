@@ -42,8 +42,10 @@ Find the installation instructions for the new Neos UI [here](https://github.com
 
 Add the dependency to your site package like this
 
-    composer require --no-update yoast/yoast-seo-for-neos
-    
+```console
+composer require --no-update yoast/yoast-seo-for-neos
+```
+
 And then run `composer update` in your projects root folder.
 
 ### Deploying to production
@@ -51,7 +53,9 @@ And then run `composer update` in your projects root folder.
 As the package adds some additional permissions to the system you should flush the session cache once after 
 the first deployment of your website which includes this package. This prevents errors for your logged in editors:
 
-    ./flow flow:session:destroyAll
+```console
+./flow flow:session:destroyAll
+```
     
 This will force them to login again, so be careful and warn them before doing this.    
     
@@ -70,10 +74,11 @@ Version 0.2.0 dropped the support for the old UI.
 To remove a javascript error and to make the Yoast tab work correctly you should override 
 the provided SEO mixin in your site package:
 
-    'Yoast.YoastSeoForNeos:Mixin.SEO':
-      superTypes:
-        'Yoast.YoastSeoForNeos:Mixin.Analysis.OldUi': true
-        
+```yaml
+'Yoast.YoastSeoForNeos:Mixin.SEO':
+  superTypes:
+    'Yoast.YoastSeoForNeos:Mixin.Analysis.OldUi': true
+```        
 This mixin is only available in version 0.1.*.
 
 ## Supported languages
@@ -108,19 +113,22 @@ Please consult [YoastSEO.js readme](https://github.com/Yoast/YoastSEO.js/blob/de
 
 In your `Settings.yaml` you can override the following options:
 
-    Yoast:
-      YoastSeoForNeos:
-        defaultContentLocale: en-US
-        languageToLocaleMapping: [...]
-          
+```yaml
+Yoast:
+ YoastSeoForNeos:
+   defaultContentLocale: en-US
+   languageToLocaleMapping: [...]
+```          
 and
 
-    Neos:
-      Neos:
-        Ui:    
-          frontendConfiguration:
-            'Yoast.YoastSeoForNeos':
-               contentSelector: 'body'
+```yaml
+Neos:
+  Neos:
+    Ui:
+      frontendConfiguration:
+        Yoast.YoastSeoForNeos:
+          contentSelector: body
+```
           
 ### defaultContentLocale 
 
@@ -144,10 +152,12 @@ accordingly.
 
 For example the default mapping for `de` is `de_DE` but can be changed to Swiss German with the following configuration:
 
-    Yoast:
-      YoastSeoForNeos:
-        languageToLocaleMapping: 
-          de: 'de_CH'
+```yaml
+Yoast:
+  YoastSeoForNeos:
+    languageToLocaleMapping:
+      de: de_CH
+```
             
 ### contentSelector
 
@@ -157,12 +167,14 @@ elements.
 
 Example:
 
-    Neos:
-      Neos:
-        Ui:    
-          frontendConfiguration:
-            'Yoast.YoastSeoForNeos':
-               contentSelector: '.my-content'
+```yaml
+Neos:
+  Neos:
+    Ui:
+      frontendConfiguration:
+        Yoast.YoastSeoForNeos:
+          contentSelector: .my-content
+```
 
 ## Usage 
 
@@ -214,20 +226,29 @@ or by manually removing the setting in the database in the `neos_neos_domain_mod
 
 First install dependencies with `yarn`:
 
-    yarn
+```console
+yarn
+```
 
 You can generate the `js` and `css` files by running the following command:
 
-    yarn build
-    
+```console
+yarn build
+```    
 #### Building and watching the app for the edit mode
-    
-    yarn build:editMode
-    
-    yarn watch:editMode
-    
+
+```console
+yarn build:editMode
+```
+```console
+yarn watch:editMode
+```
+
 #### Building and watching the inspector view
 
-    yarn build:inspectorView
-    
-    yarn watch:inspectorView
+```console
+yarn build:inspectorView
+```
+```console
+yarn watch:inspectorView
+```
