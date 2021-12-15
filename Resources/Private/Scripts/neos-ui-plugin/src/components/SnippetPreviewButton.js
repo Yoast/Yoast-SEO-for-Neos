@@ -4,6 +4,7 @@ import {$transform} from 'plow-js';
 import {neos} from '@neos-project/neos-ui-decorators';
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 import {Icon, Button} from '@neos-project/react-ui-components';
+import PropTypes from "prop-types";
 
 @connect($transform({
     editPreviewMode: selectors.UI.EditPreviewMode.currentEditPreviewMode,
@@ -15,9 +16,13 @@ import {Icon, Button} from '@neos-project/react-ui-components';
 }))
 export default class SnippetPreviewButton extends PureComponent {
 
+    static propTypes = {
+        defaultEditPreviewMode: PropTypes.string.isRequired,
+    };
+
     handleToggleSnippetPreviewClick = () => {
-        const {setEditPreviewMode, editPreviewMode} = this.props;
-        setEditPreviewMode(editPreviewMode === 'yoastSeoView' ? 'inPlace' : 'yoastSeoView');
+        const {setEditPreviewMode, editPreviewMode, defaultEditPreviewMode} = this.props;
+        setEditPreviewMode(editPreviewMode === 'yoastSeoView' ? defaultEditPreviewMode : 'yoastSeoView');
     };
 
     render () {

@@ -78,6 +78,9 @@ export default class YoastInfoView extends PureComponent {
         setWorker: PropTypes.func.isRequired,
         setAnalysis: PropTypes.func.isRequired,
         workerUrl: PropTypes.string,
+        options: PropTypes.shape({
+            defaultEditPreviewMode: PropTypes.string,
+        }),
     };
 
     static defaultProps = {
@@ -408,7 +411,7 @@ export default class YoastInfoView extends PureComponent {
     };
 
     render() {
-        const { i18nRegistry, analysis } = this.props;
+        const { i18nRegistry, analysis, options } = this.props;
         const { isAnalyzing, page } = this.state;
         const contentResultsIconState = analysis.readability.expanded ? 'chevron-circle-up' : 'chevron-circle-down';
         const seoResultsIconState = analysis.seo.expanded ? 'chevron-circle-up' : 'chevron-circle-down';
@@ -416,7 +419,7 @@ export default class YoastInfoView extends PureComponent {
         return (
             <ul className={style.yoastInfoView}>
                 <li className={style.yoastInfoView__item}>
-                    <SnippetPreviewButton />
+                    <SnippetPreviewButton defaultEditPreviewMode={options.defaultEditPreviewMode || 'inPlace'}/>
                 </li>
 
                 {!page.isAnalyzing &&
