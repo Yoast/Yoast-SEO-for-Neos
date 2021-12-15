@@ -22,4 +22,6 @@
           label: i18n
           group: 'yoast'
           view: 'Yoast.YoastSeoForNeos/Inspector/Views/YoastInfoView'
+          viewOptions:
+            defaultEditPreviewMode: 'inPlace'
           position: 20
