@@ -1,11 +1,11 @@
 Yoast:
   YoastSeoForNeos:
     devMode: false
-    defaultContentLocale: en-US
+    defaultContentLocale: en_GB
     languageToLocaleMapping:
       da: 'da_DK'
       de: 'de_DE-formal'
-      en: ''
+      en: 'en_GB'
       es: 'es_ES'
       fi: 'fi'
       fr: 'fr_FR'
