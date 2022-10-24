@@ -14,20 +14,17 @@ const download_translations = (options) => {
         slug: false,
         textdomain: false,
         file_format: '%domainPath%/%textdomain%-%wp_locale%.%format%',
-        formats: [
-            'po',
-            'mo'
-        ],
+        formats: ['po', 'mo'],
         filter: {
             translation_sets: false,
             minimum_percentage: 30,
             maximum_percentage: 100,
-            waiting_strings: false
-        }
+            waiting_strings: false,
+        },
     });
 
     if (!options.url || !options.slug) {
-        console.log("Not all required options are filled in.");
+        console.error('Not all required options are filled in.');
         return;
     }
 
@@ -49,7 +46,7 @@ const clear_translations = (options) => {
         if (err) throw err;
 
         for (const file of files) {
-            fs.unlink(path.join(options.domainPath, file), err => {
+            fs.unlink(path.join(options.domainPath, file), (err) => {
                 if (err) throw err;
             });
         }
@@ -57,9 +54,11 @@ const clear_translations = (options) => {
 };
 
 const merge_defaults = (options, defaults) => {
-    Object.keys(options).forEach(function (name) {
-        defaults[name] = options[name];
-    }.bind());
+    Object.keys(options).forEach(
+        function (name) {
+            defaults[name] = options[name];
+        }.bind()
+    );
 
     return defaults;
 };
@@ -97,9 +96,8 @@ const get_project_data = (api_url, options) => {
                     download_translations_from_set(set, options.formats[format], options, api_url);
                 }
             }
-        }
-        else {
-            console.log('Error while downloading translations');
+        } else {
+            console.error('Error while downloading translations', error);
         }
     });
 };
@@ -117,7 +115,7 @@ const download_translations_from_set = (set, format, options, api_url) => {
         locale: set.locale,
         wp_locale: set.wp_locale,
         slug: set.slug,
-        slugSuffix: (set.slug === "default") ? "" : "-" + set.slug,
+        slugSuffix: set.slug === 'default' ? '' : '-' + set.slug,
         format: format,
     };
 
@@ -125,7 +123,7 @@ const download_translations_from_set = (set, format, options, api_url) => {
         info.wp_locale = info.locale;
 
         if (format.indexOf('%wp_locale%') > -1) {
-            console.log("Locale " + set.locale + " doesn't have a wp_locale set.");
+            console.error('Locale ' + set.locale + " doesn't have a wp_locale set.");
         }
     }
 
@@ -143,29 +141,29 @@ const download_file = (url, file) => {
 
     let request_options = {
         url: url,
-        encoding: null
+        encoding: null,
     };
 
     request(request_options, (error, response, body) => {
         if (!error && response.statusCode === 200) {
             let parsedBody = po2json.parse(body, {
-                format: "jed",
-                domain: "js-text-analysis",
+                format: 'jed',
+                domain: 'js-text-analysis',
             });
 
             let filename = file.replace('.po', '.json').replace('wordpress-seo-', '');
 
             fs.writeFile(process.cwd() + '/' + filename, JSON.stringify(parsedBody), (err) => {
-                console.log(err ? err : "The file " + filename + " was saved!");
+                console.info(err ? err : 'The file ' + filename + ' was saved!');
             });
         }
 
         current_requests--;
 
         if (current_requests === 0) {
-            console.log('Processed all translation files');
+            console.info('Processed all translation files');
         }
     });
 };
 
-module.exports = {download_translations};
+module.exports = { download_translations };
