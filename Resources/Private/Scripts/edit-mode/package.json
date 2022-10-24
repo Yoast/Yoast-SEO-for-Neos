@@ -10,15 +10,15 @@
     },
     "dependencies": {
         "@yoast-seo-for-neos/shared": "*",
-        "@yoast/analysis-report": "^1.11.0",
-        "@yoast/components": "^2.9.0",
-        "@yoast/search-metadata-previews": "^2.11.1",
-        "@yoast/social-metadata-previews": "^1.4.1",
+        "@yoast/analysis-report": "^1.21.0",
+        "@yoast/components": "^2.19.0",
+        "@yoast/search-metadata-previews": "^2.24.0",
+        "@yoast/social-metadata-previews": "^1.17.0",
         "@yoast/style-guide": "^0.13.0",
-        "material-ui": "^0.18.6",
-        "react": "^16.8.4",
-        "react-dom": "^16.6.3",
-        "recoil": "^0.2.0"
+        "material-ui": "^0.20.2",
+        "react": "^16.14.0",
+        "react-dom": "^16.14.0",
+        "recoil": "^0.7.6"
     },
     "devDependencies": {
         "@babel/core": "^7.14.0",
@@ -36,6 +36,6 @@
         "style-loader": "^2.0.0",
         "terser-webpack-plugin": "^5.1.1",
         "webpack": "^5.36.2",
-        "webpack-cli": "^4.6.0"
+        "webpack-cli": "^4.10.0"
     }
 }
