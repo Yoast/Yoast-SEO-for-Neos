@@ -3,7 +3,7 @@
     "license": "GNU GPLv3",
     "private": true,
     "engines": {
-        "node": "14"
+        "node": "16"
     },
     "scripts": {
         "postinstall": "patch-package",
