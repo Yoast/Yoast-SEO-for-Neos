@@ -65,7 +65,7 @@ const useAnalysis = () => {
      */
     const refreshAnalysis = useCallback(
         (pageState) => {
-            initializeWorker()
+            initializeWorker(configuration.uiLocale)
                 .then((worker) => {
                     const paper = new Paper(pageState.content, {
                         keyword: editorData.focusKeyword || '',
