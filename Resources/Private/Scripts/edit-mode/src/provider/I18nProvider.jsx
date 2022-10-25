@@ -22,6 +22,9 @@ const I18nProvider = ({ children, translationsUrl }) => {
     });
 
     useEffect(() => {
+        if (loaded) {
+            return;
+        }
         fetch(translationsUrl)
             .then((response) => {
                 if (!response) {
@@ -31,8 +34,10 @@ const I18nProvider = ({ children, translationsUrl }) => {
             })
             .then((newTranslations) => {
                 newTranslations = JSON.parse(newTranslations);
-                if (newTranslations && !newTranslations.error) {
+                if (newTranslations && !newTranslations.error && newTranslations['locale_data']) {
                     setTranslations(newTranslations);
+                } else {
+                    newTranslations = translations;
                 }
                 setLocaleData(newTranslations['locale_data']['js-text-analysis'], 'yoast-components');
                 setLoaded(true);
