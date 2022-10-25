@@ -14,29 +14,16 @@ This view will show you a preview snippet how the selected page will look in the
 and will give you insights and helpers to further improve the page for search engines.
 
 These insights are generated via the official Open Source **Yoast SEO** javascript plugin by [Yoast](https://yoast.com).
-This package is being developed in partnership with *Yoast BV* and will be moved in the Yoast namespace starting version 1.0.
+This package is being developed in partnership with *Yoast BV* and has been moved into the Yoast namespace since version 1.0.
 
 We try to keep this package up-to-date with releases by Yoast but depending on the compatibility and available time 
 this might take up to a few weeks after Yoast releases a new version of their library.
-
-**Attention!** This package is still a pre-release version but you should be able to use it without 
-problems as it just provides a additionals views in Neos. 
 
 ## Examples
 
 ![Preview in the Neos demo site](Documentation/snippet-preview.jpg) 
 
 ![Inspector view in a blog](Documentation/inspector.jpg) 
-
-## Compatibility chart
-
-| Yoast SEO version | Neos CMS | Old UI | New UI |
-| ----------------- | -------- | ------ | ------ |
-| 1.*               | 3.3+     | No     | 2.0+   |
-| 0.2.*             | 3.3+     | No     | 2.0+   |
-| 0.1.*             | 3.3+     | Yes    | 1.4+   |
-
-Find the installation instructions for the new Neos UI [here](https://github.com/neos/neos-ui).
 
 ## Installation
 
@@ -65,21 +52,6 @@ This package currently only requires Neos >= 3.0 but it's suggested to also have
 This package expects some document node properties to be present like `titleOverride` and `metaDescription` which
 are provided via the `neos/seo` package. But you can of course provide them yourself if you don't want to use
 the `neos/seo` package.
-
-## Using this package with Neos CMS 3.3 and the old UI
-
-To use this package with the old UI you have to use version 0.1.*.
-Version 0.2.0 dropped the support for the old UI.
-
-To remove a javascript error and to make the Yoast tab work correctly you should override 
-the provided SEO mixin in your site package:
-
-```yaml
-'Yoast.YoastSeoForNeos:Mixin.SEO':
-  superTypes:
-    'Yoast.YoastSeoForNeos:Mixin.Analysis.OldUi': true
-```        
-This mixin is only available in version 0.1.*.
 
 ## Supported languages
 
@@ -207,13 +179,6 @@ First try to log out and log in again as the session might be missing some polic
 If that doesn't help then the policy file of this package might not have been loaded.
 Clear your caches and make sure they appear when running `flow security:showeffectivepolicy --privilegeType "Neos\Flow\Security\Authorization\Privilege\Method\MethodPrivilege"`.
 Then logout and login again and everything should work again.
-
-### The Neos backend crashes after upgrading vom version 0.x to 1.x
-
-Neos might have stored the current preview mode in your user preferences and it was renamed in version 1.0.
-
-This can be either fixed by downgrading and switching the preview mode to the edit mode before upgrading again,
-or by manually removing the setting in the database in the `neos_neos_domain_model_userpreferences` table. 
 
 ## Contributing && issues
 
