@@ -10,10 +10,8 @@ export default class PageParser {
         this.metaSection = parsedPreviewDocument.querySelector('head');
 
         // Remove problematic tags for the Yoast plugin from preview document
-        const scriptTags = parsedPreviewDocument.querySelectorAll('script,svg');
-        scriptTags.forEach(scriptTag => {
-            scriptTag.remove();
-        });
+        const problematicTags = parsedPreviewDocument.querySelectorAll('noscript,script,svg');
+        problematicTags.forEach((tag) => tag.remove());
 
         this.locale = (parsedPreviewDocument.querySelector('html').getAttribute('lang') || 'en_US').replace('-', '_');
 
