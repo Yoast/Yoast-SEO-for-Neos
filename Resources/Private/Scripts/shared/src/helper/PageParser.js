@@ -10,10 +10,8 @@ export default class PageParser {
         this.metaSection = parsedPreviewDocument.querySelector('head');
 
         // Remove problematic tags for the Yoast plugin from preview document
-        const scriptTags = parsedPreviewDocument.querySelectorAll('script,svg');
-        scriptTags.forEach(scriptTag => {
-            scriptTag.remove();
-        });
+        const problematicTags = parsedPreviewDocument.querySelectorAll('noscript,script,svg');
+        problematicTags.forEach((tag) => tag.remove());
 
         this.locale = (parsedPreviewDocument.querySelector('html').getAttribute('lang') || 'en_US').replace('-', '_');
 
@@ -28,13 +26,13 @@ export default class PageParser {
     }
 
     get description() {
-        const query = 'meta[name="description"]';
-        return this.metaSection.querySelector(query) ? this.metaSection.querySelector(query).getAttribute('content') : '';
+        const descriptionTag = this.metaSection.querySelector('meta[name="description"]');
+        return descriptionTag ? descriptionTag.getAttribute('content') : '';
     }
 
     get faviconSrc() {
-        const query = 'link[rel="shortcut icon"],link[rel="icon"]';
-        return this.metaSection.querySelector(query) ? this.metaSection.querySelector(query).getAttribute('href') : '';
+        const faviconTag = this.metaSection.querySelector('link[rel="shortcut icon"],link[rel="icon"]');
+        return faviconTag ? faviconTag.getAttribute('href') : '';
     }
 
     get twitterCard() {
@@ -48,10 +46,10 @@ export default class PageParser {
             description: null,
             creator: null,
             url: null,
-            image: null
+            image: null,
         };
 
-        tags.forEach(tag => {
+        tags.forEach((tag) => {
             const tagName = tag.getAttribute('name').replace('twitter:', '');
             twitterData[tagName] = tag.getAttribute('content');
         });
@@ -66,17 +64,17 @@ export default class PageParser {
         const openGraphData = {
             type: null,
             title: null,
-            'site_name': null,
+            site_name: null,
             locale: null,
             description: null,
             url: null,
             image: null,
             'image:width': null,
             'image:height': null,
-            'image:alt': null
+            'image:alt': null,
         };
 
-        tags.forEach(tag => {
+        tags.forEach((tag) => {
             const tagName = tag.getAttribute('property').replace('og:', '');
             openGraphData[tagName] = tag.getAttribute('content');
         });

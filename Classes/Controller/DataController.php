@@ -75,7 +75,7 @@ class DataController extends ActionController
         $translationData = false;
         $error = '';
 
-        if (!empty($locale)) {
+        if (!empty($locale) && $locale !== 'en') {
             $translationData = $this->translationCache->get($locale);
             if (!$translationData) {
                 try {
@@ -92,7 +92,7 @@ class DataController extends ActionController
             $this->view->assign('value', $translationData);
         } else {
             $this->view->assign('value', [
-                'error' => $error ? $error : 'No translation available for language ' . $interfaceLanguage
+                'error' => $error ?: 'No translation available for language ' . $interfaceLanguage
             ]);
         }
     }
