@@ -1,0 +1,27 @@
+name: Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: 'Yoast SEO for Neos CMS frontend build'
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '16'
+          cache: 'yarn'
+
+      - name: Install dependencies
+        run: yarn
+
+      - name: Build inspector view plugin
+        run: yarn build:inspectorView
+
+      - name: Build edit/preview mode
+        run: yarn build:editMode
