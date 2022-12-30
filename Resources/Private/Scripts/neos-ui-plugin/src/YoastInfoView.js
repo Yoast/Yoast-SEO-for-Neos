@@ -3,7 +3,6 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Jed from 'jed';
-import { $transform, $get } from 'plow-js';
 import debounce from 'lodash.debounce';
 
 // External Neos dependencies
@@ -52,10 +51,10 @@ const iconRatingMapping = {
     }
 )
 @connect(
-    $transform({
-        contextPath: $get('ui.contentCanvas.contextPath'), // Only works with Neos UI 1.x
-        documentNodePath: $get('cr.nodes.documentNode'), // Only works with Neos UI 2+
-        canvasSrc: $get('ui.contentCanvas.src'),
+    state => ({
+        contextPath: (((state || {}).ui || {}).contentCanvas || {}).contextPath, // Only works with Neos UI 1.x
+        documentNodePath: (((state || {}).cr || {}).nodes || {}).documentNode, // Only works with Neos UI 2+
+        canvasSrc: (((state || {}).ui || {}).contentCanvas || {}).src,
     })
 )
 @neos((globalRegistry) => ({
@@ -93,9 +92,9 @@ export default class YoastInfoView extends PureComponent {
         const documentNode = getNodeByContextPath(documentNodePath);
 
         this.state = {
-            nodeUri: $get('uri', documentNode),
-            focusKeyword: $get('properties.focusKeyword', documentNode) || '',
-            isCornerstone: $get('properties.isCornerstone', documentNode),
+            nodeUri: (documentNode || {}).uri,
+            focusKeyword: ((documentNode || {}).properties || {}).focusKeyword || '',
+            isCornerstone: ((documentNode || {}).properties || {}).isCornerstone,
             isAnalyzing: false,
             page: this.props.analysis.page || {
                 title: '',
@@ -134,9 +133,9 @@ export default class YoastInfoView extends PureComponent {
         const documentNode = getNodeByContextPath(documentNodePath);
         this.setState(
             {
-                nodeUri: $get('uri', documentNode),
-                focusKeyword: $get('properties.focusKeyword', documentNode) || '',
-                isCornerstone: $get('properties.isCornerstone', documentNode),
+                nodeUri: (documentNode || {}).uri,
+                focusKeyword: ((documentNode || {}).properties || {}).focusKeyword || '',
+                isCornerstone: ((documentNode || {}).properties || {}).isCornerstone,
             },
             this.fetchContent
         );

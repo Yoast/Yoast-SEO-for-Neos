@@ -1,6 +1,5 @@
 import produce from 'immer';
 import {createAction} from 'redux-actions';
-import {$get} from 'plow-js';
 
 export const defaultState = {
     translations: null,
@@ -60,7 +59,7 @@ export const reducer = (state = defaultState, action) => produce(state, draft =>
 });
 
 export const selectors = {
-    translations: state => $get('plugins.yoastInfoView.translations', state),
-    worker: state => $get('plugins.yoastInfoView.worker', state),
-    analysis: state => $get('plugins.yoastInfoView.analysis', state)
+    translations: state => (((state || {}).plugins || {}).yoastInfoView || {}).translations,
+    worker: state => (((state || {}).plugins || {}).yoastInfoView || {}).worker,
+    analysis: state => (((state || {}).plugins || {}).yoastInfoView || {}).analysis
 };
