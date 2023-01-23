@@ -5,20 +5,11 @@
             <trans-unit id="properties.focusKeyword">
                 <source>Focus keyphrase</source>
             </trans-unit>
+            <trans-unit id="properties.focusKeyword.textFieldEditor.placeholder">
+                <source>Focus keyphrase for this page</source>
+            </trans-unit>
             <trans-unit id="properties.isCornerstone">
                 <source>is Cornerstone</source>
-            </trans-unit>
-            <trans-unit id="properties.title.aloha.placeholder">
-                <source>Enter the title for this page</source>
-            </trans-unit>
-            <trans-unit id="properties.titleOverride.aloha.placeholder">
-                <source>Enter the optional title override for this page</source>
-            </trans-unit>
-            <trans-unit id="properties.metaDescription.aloha.placeholder">
-                <source>Enter the meta description for this page</source>
-            </trans-unit>
-            <trans-unit id="properties.focusKeyword.aloha.placeholder">
-                <source>Enter the main keyword for this page</source>
             </trans-unit>
         </body>
     </file>

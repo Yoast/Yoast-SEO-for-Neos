@@ -10,6 +10,7 @@
         inlineEditable: true
         reloadIfChanged: true
         inspector:
+          editor: Neos.Neos/Inspector/Editors/TextFieldEditor
           editorOptions:
             placeholder: i18n
           group: yoast
