@@ -45,8 +45,8 @@
                 <target>Alle Ergebnisse zeigen</target>
             </trans-unit>
             <trans-unit id="inspector.editSnippetPreview">
-                <source>Toggle Snippet Preview</source>
-                <target>Vorschauschnipsel Ein-/Ausschalten</target>
+                <source>Switch to search result preview</source>
+                <target>Wechsel zur Suchergebnisvorscha</target>
             </trans-unit>
             <trans-unit id="inspector.problems">
                 <source>Problems</source>

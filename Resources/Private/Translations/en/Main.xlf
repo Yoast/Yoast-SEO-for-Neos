@@ -35,7 +35,7 @@
                 <source>Show all results</source>
             </trans-unit>
             <trans-unit id="inspector.editSnippetPreview">
-                <source>Toggle Snippet Preview</source>
+                <source>Switch to search result preview</source>
             </trans-unit>
             <trans-unit id="inspector.problems">
                 <source>Problems</source>
