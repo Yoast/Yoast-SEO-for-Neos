@@ -7,7 +7,7 @@ prototype(Yoast.YoastSeoForNeos:Component.Application) < prototype(Neos.Fusion:T
             titleOverride = ${q(documentNode).property('titleOverride')}
             description = ${q(documentNode).property('metaDescription')}
             focusKeyword = ${q(documentNode).property('focusKeyword')}
-            isCornerstone = ${q(documentNode).property('isCornerstone')}
+            isCornerstone = ${!!q(documentNode).property('isCornerstone')}
             uriPathSegment = ${q(documentNode).property('uriPathSegment')}
             isHomepage = ${site == documentNode}
             isAmp = false

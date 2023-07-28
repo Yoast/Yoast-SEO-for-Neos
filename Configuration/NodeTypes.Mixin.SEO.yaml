@@ -17,7 +17,6 @@
           position: 10
     isCornerstone:
       type: boolean
-      defaultValue: false
       ui:
         label: i18n
         reloadIfChanged: true
