@@ -9,6 +9,7 @@ const webpackConfig = [
         performance: {
             maxEntrypointSize: 4000000,
             maxAssetSize: 4000000,
+            hints: 'warning',
         },
         watchOptions: {
             aggregateTimeout: 300,
@@ -74,6 +75,11 @@ const webpackConfig = [
     },
     {
         entry: ['./src/webWorker.js'],
+        performance: {
+            maxEntrypointSize: 4000000,
+            maxAssetSize: 4000000,
+            hints: 'warning',
+        },
         output: {
             filename: 'webWorker.js',
             path: path.resolve(__dirname, '../../../Public/Assets'),
@@ -99,6 +105,11 @@ const webpackConfig = [
     },
     {
         entry: ['./src/yoastseo.js'],
+        performance: {
+            maxEntrypointSize: 4000000,
+            maxAssetSize: 4000000,
+            hints: 'warning',
+        },
         output: {
             filename: 'yoastseo.js',
             path: path.resolve(__dirname, '../../../Public/Assets'),
