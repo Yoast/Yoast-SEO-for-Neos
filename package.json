@@ -20,5 +20,6 @@
     ],
     "workspaces": [
         "Resources/Private/Scripts/*"
-    ]
+    ],
+    "packageManager": "yarn@1.22.19"
 }

@@ -1,0 +1,15 @@
+diff --git a/node_modules/@neos-project/neos-ui-extensibility-webpack-adapter/scripts/helpers/webpack.config.js b/node_modules/@neos-project/neos-ui-extensibility-webpack-adapter/scripts/helpers/webpack.config.js
+index 25930d4..9f94a69 100644
+--- a/node_modules/@neos-project/neos-ui-extensibility-webpack-adapter/scripts/helpers/webpack.config.js
++++ b/node_modules/@neos-project/neos-ui-extensibility-webpack-adapter/scripts/helpers/webpack.config.js
+@@ -135,6 +135,10 @@ module.exports = function (neosPackageJson) {
+                 }
+             ],
+         },
++        performance: {
++            maxEntrypointSize: 1000000,
++            maxAssetSize: 1000000
++        },
+         entry: {
+             Plugin: './src/index.js'
+         },

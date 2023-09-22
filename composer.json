@@ -24,8 +24,8 @@
     "homepage": "https://yoast.com",
     "require": {
         "php": ">=7.4",
-        "neos/neos": "~5.3 || ~7.0 || ~8.0 || dev-master",
-        "neos/neos-ui": "~5.3 || ~7.0 || ~8.0 || dev-master",
+        "neos/neos": "^7.3 || ^8.3",
+        "neos/neos-ui": "^7.3 || ^8.3",
         "neos/seo": "~3.0",
         "ext-json": "*"
     },
