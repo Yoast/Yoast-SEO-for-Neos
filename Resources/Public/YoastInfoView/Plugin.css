@@ -1,4 +1,11 @@
 .style__yoastInfoView___5BOWw {
+    --color-bad: #dc3232;
+    --color-ok: #ee7c1b;
+    --color-good: #7ad03a;
+    --color-feedback: #a0a5aa;
+    --color-error: #a0a5aa;
+    --icon-margin: 5px;
+    --text-font-size: 13px;
 
     margin: 0;
     padding: 0;
@@ -30,12 +37,12 @@
     }
 
     .style__yoastInfoView__content___3V4hU {
-        font-size: 13px;
+        font-size: var(--text-font-size);
         margin: .7rem 0 0;
     }
 
     .style__yoastInfoView__content___3V4hU a {
-            color: #FFF;
+            color: var(--colors-ContrastBrightest);
             text-decoration: underline;
         }
 
@@ -45,7 +52,7 @@
 
     .style__yoastInfoView__value___RNmd4 {
         font-style: italic;
-        font-size: 13px;
+        font-size: var(--text-font-size);
     }
 
     .style__yoastInfoView__result_group___3oNID {
@@ -66,54 +73,52 @@
     }
 
     .style__yoastInfoView__rating_error___3yKz- {
-        color: #a0a5aa;
+        color: var(--color-error);
     }
 
     svg.style__yoastInfoView__rating_error___3yKz- {
-            color: #a0a5aa;
-            fill: #a0a5aa;
-            margin-right: 5px;
+            color: var(--color-error);
+            fill: var(--color-error);
+            margin-right: var(--icon-margin);
         }
 
     .style__yoastInfoView__rating_feedback___2_kgN {
-        color: #a0a5aa;
+        color: var(--color-feedback);
     }
 
     svg.style__yoastInfoView__rating_feedback___2_kgN {
-            color: #a0a5aa;
-            fill: #a0a5aa;
-            margin-right: 5px;
+            color: var(--color-feedback);
+            fill: var(--color-feedback);
+            margin-right: var(--icon-margin);
         }
 
     .style__yoastInfoView__rating_bad___3r6IV {
-        color: #dc3232;
+        color: var(--color-bad);
     }
 
     svg.style__yoastInfoView__rating_bad___3r6IV {
-            color: #dc3232;
-            fill: #dc3232;
-            margin-right: 5px;
+            color: var(--color-bad);
+            fill: var(--color-bad);
+            margin-right: var(--icon-margin);
         }
 
     .style__yoastInfoView__rating_ok___2gUck {
-        color: #ee7c1b;
+        color: var(--color-ok);
     }
 
     svg.style__yoastInfoView__rating_ok___2gUck {
-            color: #ee7c1b;
-            fill: #ee7c1b;
-            margin-right: 5px;
+            color: var(--color-ok);
+            fill: var(--color-ok);
+            margin-right: var(--icon-margin);
         }
 
     .style__yoastInfoView__rating_good___2Frfd {
-        color: #7ad03a;
+        color: var(--color-good);
     }
 
     svg.style__yoastInfoView__rating_good___2Frfd {
-            color: #7ad03a;
-            fill: #7ad03a;
-            margin-right: 5px;
+            color: var(--color-good);
+            fill: var(--color-good);
+            margin-right: var(--icon-margin);
         }
 
-
-/*# sourceMappingURL=Plugin.css.map*/
