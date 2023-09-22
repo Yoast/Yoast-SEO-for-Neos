@@ -19,22 +19,13 @@ const useNeosFields = () => {
             if (key === 'title') {
                 key = 'titleOverride';
             }
-            const field = editorFieldMapping[key].querySelector('.neos-inline-editable');
+            const field = editorFieldMapping[key].querySelector('.ck-editor__editable');
 
-            // Try to update the hidden fields data via the CKEDITOR api
-            // The api might not be initialized yet
-            if (window.CKEDITOR && window.CKEDITOR.instances && Object.keys(window.CKEDITOR.instances).length > 0) {
-                // eslint-disable-next-line no-unused-vars
-                for (let [key, editor] of Object.entries(window.CKEDITOR.instances)) {
-                    if (editor.element.$ === field) editor.setData(data);
-                }
+            // Update the hidden field without the api. This works fine with CKEditor 5
+            if (field.hasChildNodes() && field.childNodes.length === 1 && field.childNodes[0].nodeType === 1) {
+                field.childNodes[0].innerHTML = data;
             } else {
-                // Update the hidden field without the api. This works fine with CKEditor 5
-                if (field.hasChildNodes() && field.childNodes.length === 1 && field.childNodes[0].nodeType === 1) {
-                    field.childNodes[0].innerHTML = data;
-                } else {
-                    field.innerHTML = data;
-                }
+                field.innerHTML = data;
             }
 
             // Request new page content and analysis after changes were applied
