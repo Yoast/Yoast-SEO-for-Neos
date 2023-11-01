@@ -23,11 +23,12 @@
     ],
     "homepage": "https://yoast.com",
     "require": {
-        "php": ">=7.4",
-        "neos/neos": "^7.3 || ^8.3",
-        "neos/neos-ui": "^7.3 || ^8.3",
-        "neos/seo": "~3.0",
-        "ext-json": "*"
+        "php": "^8.2",
+        "ext-json": "*",
+
+        "neos/neos": "^9.0",
+        "neos/neos-ui": "^9.0",
+        "neos/seo": "~4.1"
     },
     "replace": {
         "shel/neos-yoast-seo": "self.version"
