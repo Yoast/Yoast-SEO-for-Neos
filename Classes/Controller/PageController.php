@@ -17,7 +17,6 @@ namespace Yoast\YoastSeoForNeos\Controller;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
 use Neos\Flow\Mvc\Controller\ActionController;
 use Neos\Flow\Mvc\Exception\StopActionException;
-use Neos\Neos\Controller\Frontend\NodeController;
 
 class PageController extends ActionController
 {
@@ -30,17 +29,7 @@ class PageController extends ActionController
      */
     public function renderPreviewPageAction(Node $node): void
     {
-        $previewAction = 'preview';
-
-        # Neos 5.x uses the 'preview' action which also sets cache headers
-        # So for Neos 4.x we have to add the cache headers and use the 'show' action
-        if (!method_exists(NodeController::class, 'previewAction')) {
-            $previewAction = 'show';
-            /** @noinspection PhpUndefinedMethodInspection */
-            $this->response->getHeaders()->setCacheControlDirective('no-cache, no-store, must-revalidate');
-        }
-
-        $this->forward($previewAction, 'Frontend\Node', 'Neos.Neos', [
+        $this->forward('preview', 'Frontend\Node', 'Neos.Neos', [
             'node' => $node,
             'yoastSeoPreviewMode' => true,
         ]);
