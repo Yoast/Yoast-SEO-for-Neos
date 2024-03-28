@@ -18,6 +18,7 @@ use Neos\Cache\Frontend\VariableFrontend;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\Controller\ActionController;
 use Neos\Flow\Mvc\View\JsonView;
+use Neos\Flow\ResourceManagement\ResourceManager;
 use Neos\Neos\Service\UserService;
 
 class DataController extends ActionController
@@ -64,6 +65,12 @@ class DataController extends ActionController
     protected $translationCache;
 
     /**
+     * @Flow\Inject
+     * @var ResourceManager
+     */
+    protected $resourceManager;
+
+    /**
      * Returns json data containing the Yoast SEO translations for the current users backend language
      *
      * @Flow\SkipCsrfProtection
@@ -95,6 +102,13 @@ class DataController extends ActionController
                 'error' => $error ?: 'No translation available for language ' . $interfaceLanguage
             ]);
         }
+    }
+
+    public function fetchConfigurationAction(): void
+    {
+        $this->view->assign('value', [
+            'workerUrl' => $this->resourceManager->getPublicPackageResourceUriByPath('resource://Yoast.YoastSeoForNeos/Public/Assets/webWorker.js'),
+        ]);
     }
 
     /**

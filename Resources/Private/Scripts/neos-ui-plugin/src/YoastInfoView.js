@@ -36,17 +36,21 @@ const iconRatingMapping = {
     good: 'smile',
 };
 
+const WORKER_FALLBACK_URL = '/_Resources/Static/Packages/Yoast.YoastSeoForNeos/Assets/webWorker.js';
+
 @connect(
     (state) => ({
         focusedNodeContextPath: selectors.CR.Nodes.focusedNodePathSelector(state),
         getNodeByContextPath: selectors.CR.Nodes.nodeByContextPath(state),
         worker: yoastSelectors.worker(state),
         translations: yoastSelectors.translations(state),
+        configuration: yoastSelectors.configuration(state),
         analysis: yoastSelectors.analysis(state),
     }),
     {
         setWorker: yoastActions.setWorker,
         setTranslations: yoastActions.setTranslations,
+        setConfiguration: yoastActions.setConfiguration,
         setAnalysis: yoastActions.setAnalysis,
     }
 )
@@ -66,6 +70,7 @@ export default class YoastInfoView extends PureComponent {
     static propTypes = {
         worker: PropTypes.object,
         translations: PropTypes.object,
+        configuration: PropTypes.object,
         analysis: PropTypes.object,
         canvasSrc: PropTypes.string,
         contextPath: PropTypes.string,
@@ -74,16 +79,12 @@ export default class YoastInfoView extends PureComponent {
         focusedNodeContextPath: PropTypes.string,
         getNodeByContextPath: PropTypes.func.isRequired,
         setTranslations: PropTypes.func.isRequired,
+        setConfiguration: PropTypes.func.isRequired,
         setWorker: PropTypes.func.isRequired,
         setAnalysis: PropTypes.func.isRequired,
-        workerUrl: PropTypes.string,
         options: PropTypes.shape({
             defaultEditPreviewMode: PropTypes.string,
         }),
-    };
-
-    static defaultProps = {
-        workerUrl: '/_Resources/Static/Packages/Yoast.YoastSeoForNeos/Assets/webWorker.js', // TODO: Resolve path via Neos api
     };
 
     constructor(props) {
@@ -102,12 +103,13 @@ export default class YoastInfoView extends PureComponent {
                 isAnalyzing: false,
                 locale: 'en_US',
             },
-            i18n: {},
+            i18n: {}
         };
     }
 
     componentDidMount() {
         this.fetchTranslations();
+        this.fetchConfiguration();
 
         // Check if we can reuse that last analysis that ran if we are on the same page
         const { analysis } = this.props;
@@ -140,6 +142,35 @@ export default class YoastInfoView extends PureComponent {
             this.fetchContent
         );
     };
+
+    fetchConfiguration = () => {
+        if (this.props.configuration) {
+            return;
+        }
+
+        fetchWithErrorHandling
+            .withCsrfToken((csrfToken) => ({
+                url: '/neosyoastseo/data/fetchConfiguration',
+                method: 'GET',
+                credentials: 'include',
+                headers: {
+                    'X-Flow-Csrftoken': csrfToken,
+                    'Content-Type': 'application/json',
+                },
+            }))
+            .then((response) => response && response.json())
+            .then((configuration) => {
+                if (configuration && !configuration.error) {
+                    this.props.setConfiguration(configuration);
+                }
+            })
+            .catch(() => {
+                console.error('[Yoast SEO] Error fetching configuration - applying defaults');
+                this.props.setConfiguration({
+                    workerUrl: WORKER_FALLBACK_URL,
+                });
+            });
+    }
 
     /**
      * Fetch new translations from the backend.
@@ -260,7 +291,7 @@ export default class YoastInfoView extends PureComponent {
     initializeWorker = () => {
         let { worker } = this.props;
         if (!worker) {
-            worker = new AnalysisWorkerWrapper(createWorker(this.props.workerUrl));
+            worker = new AnalysisWorkerWrapper(createWorker(this.props.configuration.workerUrl));
             this.props.setWorker(worker);
         }
         return worker.initialize({
