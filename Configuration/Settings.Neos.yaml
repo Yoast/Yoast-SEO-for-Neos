@@ -1,0 +1,21 @@
+Neos:
+  Neos:
+    userInterface:
+      editPreviewModes:
+        yoastSeoView:
+          isEditingMode: true
+          isPreviewMode: false
+          fusionRenderingPath: yoastSeoView
+          title: 'Yoast.YoastSeoForNeos:Main:editPreviewModes.yoastSeoView'
+          position: 'after inPlace'
+
+      translation:
+        autoInclude:
+          Yoast.YoastSeoForNeos:
+            - 'Main'
+            - 'NodeTypes/*'
+            - 'NodeTypes/Mixin/*'
+
+    fusion:
+      autoInclude:
+        Yoast.YoastSeoForNeos: true

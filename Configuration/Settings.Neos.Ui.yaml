@@ -1,0 +1,14 @@
+Neos:
+  Neos:
+    Ui:
+      resources:
+        javascript:
+          Yoast.YoastSeoForNeos:YoastInfoView:
+            resource: 'resource://Yoast.YoastSeoForNeos/Public/YoastInfoView/Plugin.js'
+        stylesheets:
+          Yoast.YoastSeoForNeos:YoastInfoView:
+            resource: 'resource://Yoast.YoastSeoForNeos/Public/YoastInfoView/Plugin.css'
+
+      frontendConfiguration:
+        'Yoast.YoastSeoForNeos':
+          contentSelector: 'body'

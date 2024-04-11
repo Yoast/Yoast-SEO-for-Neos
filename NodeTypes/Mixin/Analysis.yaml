@@ -1,6 +1,5 @@
 'Yoast.YoastSeoForNeos:Mixin.Analysis':
   abstract: true
-
   ui:
     inlineEditable: true
     inspector:
