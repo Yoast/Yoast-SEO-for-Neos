@@ -13,7 +13,6 @@
         yoast:
           tab: yoast
           label: i18n
-          position: 10
           icon: yoast
 
       views:
@@ -23,4 +22,4 @@
           view: 'Yoast.YoastSeoForNeos/Inspector/Views/YoastInfoView'
           viewOptions:
             defaultEditPreviewMode: 'inPlace'
-          position: 20
+          position: end

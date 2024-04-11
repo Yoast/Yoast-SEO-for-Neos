@@ -14,7 +14,7 @@
           editorOptions:
             placeholder: i18n
           group: yoast
-          position: 10
+          position: start
     isCornerstone:
       type: boolean
       ui:
@@ -22,7 +22,7 @@
         reloadIfChanged: true
         inspector:
           group: yoast
-          position: 30
+          position: after focusKeyword
     title:
       ui:
         inlineEditable: true
