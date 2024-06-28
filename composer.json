@@ -23,10 +23,10 @@
     ],
     "homepage": "https://yoast.com",
     "require": {
-        "php": ">=7.4",
-        "neos/neos": "^7.3 || ^8.3",
-        "neos/neos-ui": "^7.3 || ^8.3",
-        "neos/seo": "~3.0",
+        "php": "^8.2",
+        "neos/neos": "^9",
+        "neos/neos-ui": "^9",
+        "neos/seo": "^4.1",
         "ext-json": "*"
     },
     "replace": {
