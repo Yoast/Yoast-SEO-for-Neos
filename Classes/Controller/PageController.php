@@ -14,7 +14,7 @@ namespace Yoast\YoastSeoForNeos\Controller;
  * source code.
  */
 
-use Neos\ContentRepository\Domain\Model\NodeInterface;
+use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
 use Neos\Flow\Mvc\Controller\ActionController;
 use Neos\Flow\Mvc\Exception\StopActionException;
 use Neos\Neos\Controller\Frontend\NodeController;
@@ -25,10 +25,10 @@ class PageController extends ActionController
     /**
      * Redirects request to the given node in preview mode without the neos backend
      *
-     * @param NodeInterface $node
+     * @param Node $node
      * @throws StopActionException
      */
-    public function renderPreviewPageAction(NodeInterface $node): void
+    public function renderPreviewPageAction(Node $node): void
     {
         $previewAction = 'preview';
 
