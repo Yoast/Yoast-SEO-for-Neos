@@ -30,9 +30,10 @@ prototype(Yoast.YoastSeoForNeos:Component.Application) < prototype(Neos.Fusion:T
             // Default url to check for the favicon if not set as link tag in the html head with `rel="shortcut icon"` or `rel="icon"`.
             faviconSrc = ${this.siteUrl + '/favicon.ico'}
 
-            breadcrumbs = Neos.Fusion:Map {
-                items = ${Array.reverse(q(documentNode).parents('[instanceof Neos.Neos:Document]').get())}
-                itemRenderer = ${q(item).property('uriPathSegment')}
+            breadcrumbs = Neos.Neos:NodeUri {
+                node = ${q(documentNode).context({workspaceName: 'live'}).get(0)}
+                absolute = false
+                @process.split = ${Array.slice(Array.values(Array.filter(String.split(value, '/'))), 0, -1)}
             }
 
             twitterFallbackImage = Neos.Fusion:ResourceUri {
