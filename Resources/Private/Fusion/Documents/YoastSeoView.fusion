@@ -4,7 +4,7 @@ prototype(Yoast.YoastSeoForNeos:Documents.YoastSeoView) < prototype(Neos.Neos:Pa
 
     head {
         stylesheets >
-        stylesheets = Neos.Fusion:Array {
+        stylesheets = Neos.Fusion:Join {
             main = afx`
                 <link rel="stylesheet" type="text/css">
                     <Neos.Fusion:ResourceUri @path="attributes.href" path="resource://Yoast.YoastSeoForNeos/Public/Assets/main.css"/>
@@ -21,7 +21,7 @@ prototype(Yoast.YoastSeoForNeos:Documents.YoastSeoView) < prototype(Neos.Neos:Pa
         node = ${node}
         site = ${site}
 
-        renderer = Neos.Fusion:Array {
+        renderer = Neos.Fusion:Join {
             appWrapper = afx`
                 <main class="yoast-seo__container" @key="appWrapper">
                     <Yoast.YoastSeoForNeos:Component.Header/>

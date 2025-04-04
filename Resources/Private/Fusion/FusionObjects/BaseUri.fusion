@@ -1,6 +1,5 @@
-prototype(Yoast.YoastSeoForNeos:BaseUri) < prototype(Neos.Neos:NodeUri) {
-    @class = 'Yoast\\YoastSeoForNeos\\FusionObjects\\BaseUriImplementation'
-    node = ${q(documentNode == site ? site : q(documentNode).parent().get()).context({workspaceName: 'live'}).get(0)}
-    absolute = true
-    resolveShortcuts = false
+prototype(Yoast.YoastSeoForNeos:BaseUri) < prototype(Neos.Fusion:Value) {
+  scheme = ${request.httpRequest.uri.scheme}
+  host = ${request.httpRequest.uri.host}
+  value = ${this.scheme + '://' + this.host + '/'}
 }
